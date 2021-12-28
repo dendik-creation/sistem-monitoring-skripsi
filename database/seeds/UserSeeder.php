@@ -23,5 +23,10 @@ class UserSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now(),
             'email_verified_at' => \Carbon\Carbon::now()
         ]);
+        DB::table('semester')->insert([
+            'semester' => 'GASAL',
+            'tahun' => '2021/2022',
+            'aktif' => 'Y',
+        ]);
     }
 }
