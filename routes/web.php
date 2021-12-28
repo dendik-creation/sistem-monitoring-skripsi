@@ -1,0 +1,225 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('auth/login');
+});
+
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/download/{nim}/proposal/{id}', 'MahasiswaController@downloadProposal')->name('downloadproposal');
+Route::get('/download/{nim}/berkas_sempro/{id}', 'MahasiswaController@downloadBerkasSempro')->name('downloadberkassempro');
+Route::get('/download/{nim}/berkas_ujian/{id}', 'MahasiswaController@downloadBerkasUjian')->name('downloadberkasujian');
+Route::get('/download/{nim}/bimbingan/{id}', 'MahasiswaController@downloadSkripsi')->name('downloadbimbingan');
+Route::get('/download/format/plotting/dosbing', 'MahasiswaController@downloadFormatPlottingDosbing')->name('downloadformatplottingdosbing');
+Route::get('/download/format/plotting/penguji', 'MahasiswaController@downloadFormatPlottingPenguji')->name('downloadformatplottingpenguji');
+
+Route::get('/sempro/hasil/cetak/{id}', 'DosenController@cetakDokumenSempro')->name('cetakdokumensempro');
+Route::get('/sempro/jadwal/cetak/{id}', 'DosenController@cetakUndanganSempro')->name('cetakundangansempro');
+
+Route::get('/ujian/hasil/cetak/{id}', 'DosenController@cetakDokumenUjian')->name('cetakdokumenujian');
+Route::get('/ujian/jadwal/cetak/{id}', 'DosenController@cetakUndanganUjian')->name('cetakundanganujian');
+
+Route::middleware(['auth'])->group(function () {
+ 
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    //ADMIN
+    Route::group(['middleware' => 'admin'], function () {
+        //Dashboard
+        Route::get('/admin', 'AdminController@index')->name('admin');
+
+        //Semester
+        Route::get('/admin/semester', 'AdminController@viewSemester')->name('datasemester');
+        Route::get('/admin/semester/edit/{id}', 'AdminController@formEditSemester')->name('formeditsemester');
+        Route::put('/admin/semester/{id}', 'AdminController@updateSemester')->name('updatesemester');
+
+        //Dosen
+        Route::get('/admin/dosen', 'AdminController@viewDosen')->name('datadosen');
+        Route::get('/admin/dosen/tambah', 'AdminController@formAddDosen')->name('formadddosen');
+        Route::post('/admin/insertdosen', 'AdminController@insertDosen')->name('insertdosen');
+        Route::get('/admin/dosen/edit/{id}', 'AdminController@formEditDosen')->name('formeditdosen');
+        Route::put('/admin/dosen/{id}', 'AdminController@updateDosen')->name('updatedosen');
+        Route::delete('/admin/dosen/{id}', 'AdminController@deleteDosen')->name('deletedosen');
+        //End Dosen
+
+        //Mahasiswa
+        Route::get('/admin/mahasiswa', 'AdminController@viewMahasiswa')->name('datamahasiswa');
+        Route::get('/admin/mahasiswa/tambah', 'AdminController@formAddMahasiswa')->name('formaddmahasiswa');
+        Route::post('/admin/insertmahasiswa', 'AdminController@insertMahasiswa')->name('insertmahasiswa');
+        Route::get('/admin/mahasiswa/edit/{id}', 'AdminController@formEditMahasiswa')->name('formeditmahasiswa');
+        Route::put('/admin/mahasiswa/{id}', 'AdminController@updateMahasiswa')->name('updatemahasiswa');
+        Route::delete('/admin/mahasiswa/{id}', 'AdminController@deleteMahasiswa')->name('deletemahasiswa');
+        //End Mahasiswa
+
+        //Proposal Plotting
+        Route::get('/admin/proposal/plotting', 'AdminController@viewProposalPlotting')->name('dataproposalplotting');
+        Route::get('/admin/proposal/plotting/tambah', 'AdminController@formAddSatuMahasiswa')->name('formaddsatumahasiswa');
+        Route::post('/admin/proposal/plotting/insert', 'AdminController@insertSatuMahasiswa')->name('insertsatumahasiswa');
+        Route::post('/admin/plotdosbing/importexcel', 'AdminController@plotDosbingImportExcel')->name('plotdosbingimportexcel');
+
+        //Proposal Monitoring
+        Route::get('/admin/proposal/monitoring', 'AdminController@viewProposalMonitoring')->name('dataproposalmonitoring');
+
+        //Proposal Pendaftar
+        Route::get('/admin/proposal/pendaftar', 'AdminController@viewProposalPendaftar')->name('dataproposalpendaftar');
+        Route::get('/admin/proposal/pendaftar/detail/{id}', 'AdminController@viewProposalPendaftarDetail')->name('dataproposalpendaftardetail');
+        Route::post('/admin/proposal/insertjadwalsempro', 'AdminController@insertJadwalSempro')->name('insertjadwalsempro');
+
+        //Proposal Penjadwalan
+        Route::get('/admin/proposal/penjadwalan', 'AdminController@viewProposalPenjadwalan')->name('dataproposalpenjadwalan');
+        Route::get('/admin/proposal/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalSempro')->name('datadetailjadwalsempro');
+
+        //Skripsi Monitoring
+        Route::get('/admin/skripsi/monitoring', 'AdminController@viewSkripsiMonitoring')->name('dataskripsimonitoring');
+
+        //Penguji Plotting
+        Route::get('/admin/skripsi/plotting', 'AdminController@viewPengujiPlotting')->name('datapengujiplotting');
+        Route::get('/admin/skripsi/plotting/tambah', 'AdminController@formPengujiAddSatuMahasiswa')->name('formpengujiaddsatumahasiswa');
+        Route::post('/admin/skripsi/plotting/insert', 'AdminController@insertPengujiSatuMahasiswa')->name('insertpengujisatumahasiswa');
+        Route::post('/admin/plotpenguji/importexcel', 'AdminController@plotPengujiImportExcel')->name('plotpengujiimportexcel');
+
+        //Ujian Skripsi Pendaftar
+        Route::get('/admin/skripsi/pendaftar', 'AdminController@viewSkripsiPendaftar')->name('dataskripsipendaftar');
+        Route::get('/admin/skripsi/pendaftar/detail/{id}', 'AdminController@viewSkripsiPendaftarDetail')->name('dataskripsipendaftardetail');
+        Route::post('/admin/skripsi/insertjadwalujian', 'AdminController@insertJadwalUjian')->name('insertjadwalujian');
+
+        //Ujian Skripsi Penjadwalan
+        Route::get('/admin/skripsi/penjadwalan', 'AdminController@viewSkripsiPenjadwalan')->name('dataskripsipenjadwalan');
+        Route::get('/admin/skripsi/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalUjian')->name('datadetailjadwalujian');
+        
+    });
+ 
+    //DOSEN
+    Route::group(['middleware' => 'dosen'], function () {
+        Route::get('/dosen', 'DosenController@index')->name('dosen');
+
+        //Mahasiswa Bimbingan
+        Route::get('/dosen/mahasiswa', 'DosenController@viewMahasiswaBimbingan')->name('datamhsbimbingan');
+        Route::get('/dosen/mahasiswa/{id}', 'DosenController@viewMahasiswaBimbinganFilter')->name('datamhsbimbinganfilter');
+        Route::get('/dosen/mahasiswa/detail/{nim}', 'DosenController@viewMahasiswaBimbinganDetail')->name('datamhsbimbingandetail');
+
+        //Profil
+        Route::get('/dosen/edit', 'DosenController@formEditProfil')->name('formeditprofildosen');
+        Route::put('/dosen/{id}', 'DosenController@updateProfil')->name('updateprofildosen');
+
+        //Monitoring Proposal Mahasiswa
+        Route::get('/dosen/monitoring/proposal', 'DosenController@viewProposalMahasiswa')->name('dataproposalmahasiswa');
+        Route::get('/dosen/monitoring/proposal/{id}', 'DosenController@viewProposalMahasiswaFilter')->name('dataproposalmahasiswafilter');
+        Route::get('/dosen/monitoring/proposal/detail/{id}', 'DosenController@viewDetailProposal')->name('dataproposalmahasiswadetail');
+        //Aksi
+        Route::put('/dosen/monitoring/proposal/acc/{id}', 'DosenController@accProposalMhs')->name('dosenaccproposal');
+        Route::put('/dosen/monitoring/proposal/tolak/{id}', 'DosenController@tolakProposalMhs')->name('dosentolakproposal');
+        Route::put('/dosen/monitoring/proposal/revisi/{id}', 'DosenController@revisiProposalMhs')->name('dosenrevisiproposal');
+
+        //Monitoring Bimbingan Mahasiswa
+        Route::get('/dosen/monitoring/bimbingan', 'DosenController@viewBimbinganMahasiswa')->name('databimbinganmahasiswa');
+        Route::get('/dosen/monitoring/bimbingan/detail/{nim}/{id}', 'DosenController@viewBimbinganDetail')->name('databimbingandetaildosen');
+        Route::post('/dosen/balas/pesan', 'DosenController@insertPesan')->name('insertpesandosen');
+
+        Route::put('/dosen/monitoring/bimbingan/selesai/{id}', 'DosenController@selesaiBimbinganMhs')->name('dosenselesaibimbinganmhs');
+        Route::put('/dosen/monitoring/bimbingan/selesaisemua/{id}', 'DosenController@selesaiSemuaBimbinganMhs')->name('dosenselesaisemuabimbinganmhs');
+        Route::get('/dosen/monitoring/bimbingan/{id}', 'DosenController@viewBimbinganMahasiswaFilter')->name('databimbinganmahasiswafilter');
+
+        //Monitoring Skripsi
+        Route::get('/dosen/monitoring/skripsi', 'DosenController@viewSkripsiMahasiswa')->name('dataskripsimahasiswa');
+        Route::get('/dosen/monitoring/skripsi/{id}', 'DosenController@viewSkripsiMahasiswaFilter')->name('dataskripsimahasiswafilter');
+
+        //Seminar Proposal
+        //Jadwal Seminar
+        Route::get('/dosen/sempro/jadwal', 'DosenController@viewJadwalSempro')->name('datajadwalsemprodosen');
+        Route::get('/dosen/sempro/jadwal/detail/{id}', 'DosenController@viewDetailJadwalSempro')->name('detailjadwalsemprodosen');
+        
+        //Hasil Seminar
+        Route::post('/dosen/sempro/inserthasil', 'DosenController@insertHasilSempro')->name('inserthasilsempro');
+        Route::get('/dosen/sempro/hasil', 'DosenController@viewHasilSempro')->name('datahasilsemprodosen');
+
+        //Print pdf
+        Route::get('/dosen/ujian/berita', 'DosenController@viewBeritaAcara')->name('viewberitaacara');
+        Route::get('/dosen/ujian/berita/cetak', 'DosenController@cetakBeritaAcara')->name('cetakberitaacara');
+
+        //Jadwal Ujian Skripsi
+        Route::get('/dosen/skripsi/jadwal', 'DosenController@viewJadwalUjian')->name('datajadwalujiandosen');
+        Route::get('/dosen/skripsi/jadwal/detail/{id}', 'DosenController@viewDetailJadwalUjian')->name('detailjadwalujiandosen');
+        
+        //Hasil Ujian Skripsi
+        Route::post('/dosen/skripsi/inserthasil', 'DosenController@insertHasilUjian')->name('inserthasilujian');
+        Route::get('/dosen/skripsi/hasil', 'DosenController@viewHasilUjian')->name('datahasilujiandosen');
+
+    });
+
+    //MAHASISWA
+    Route::group(['middleware' => 'mahasiswa'], function () {
+        Route::get('/mahasiswa', 'MahasiswaController@index')->name('mahasiswa');
+
+        //Profil
+        Route::get('/mahasiswa/edit', 'MahasiswaController@formEditProfil')->name('formeditprofil');
+        Route::put('/mahasiswa/{id}', 'MahasiswaController@updateProfil')->name('updateprofilmhs');
+
+        //Pengajuan Proposal
+        Route::get('/mahasiswa/proposal/pengajuan', 'MahasiswaController@viewPengajuanProposal')->name('datapengajuanproposal');
+        Route::get('/mahasiswa/proposal/pengajuan/detail/{id}', 'MahasiswaController@viewDetailProposal')->name('datadetailproposal');
+        Route::get('/mahasiswa/proposal/tambah', 'MahasiswaController@formAddProposal')->name('formaddproposal');
+        Route::post('/mahasiswa/insertproposal', 'MahasiswaController@insertProposal')->name('insertproposal');
+        
+
+        //Pendaftaran Seminar
+        Route::get('/mahasiswa/proposal/daftarsempro', 'MahasiswaController@viewDaftarSempro')->name('datadaftarsempro');
+        Route::get('/mahasiswa/proposal/tambahsempro', 'MahasiswaController@formAddSempro')->name('formaddsempro');
+        Route::post('/mahasiswa/insertsempro', 'MahasiswaController@insertBerkas')->name('insertsempro');
+        
+
+        //Penjadwalan Seminar
+        Route::get('/mahasiswa/proposal/jadwalsempro', 'MahasiswaController@viewJadwalSempro')->name('datajadwalsempro');
+
+        //Hasil Seminar
+        Route::get('/mahasiswa/proposal/hasil', 'MahasiswaController@viewHasilSempro')->name('datahasilsempromhs');
+
+
+        //Skripsi
+        Route::get('/mahasiswa/skripsi/monitoring', 'MahasiswaController@viewSkripsi')->name('dataskripsi');
+
+        //Bimbingan
+        Route::get('/mahasiswa/skripsi/bimbingan', 'MahasiswaController@viewBimbingan')->name('databimbingan');
+        Route::get('/mahasiswa/skripsi/bimbingan/detail/{id}', 'MahasiswaController@viewBimbinganDetail')->name('databimbingandetail');
+        Route::get('/mahasiswa/skripsi/bimbingan/tambah', 'MahasiswaController@formAddBimbingan')->name('formaddbimbingan');
+        Route::post('/mahasiswa/insertbimbingan', 'MahasiswaController@insertBimbingan')->name('insertbimbingan');
+        
+        Route::post('/mahasiswa/balas/pesan', 'MahasiswaController@insertPesan')->name('insertpesan');
+
+        //Pendaftaran Seminar
+        Route::get('/mahasiswa/skripsi/daftarujian', 'MahasiswaController@viewDaftarUjian')->name('datadaftarujian');
+        Route::get('/mahasiswa/skripsi/tambahujian', 'MahasiswaController@formAddUjian')->name('formaddujian');
+        Route::post('/mahasiswa/insertujian', 'MahasiswaController@insertBerkasUjian')->name('insertujian');
+
+        //Penjadwalan Seminar
+        Route::get('/mahasiswa/skripsi/jadwalujian', 'MahasiswaController@viewJadwalUjian')->name('datajadwalujian');
+
+        //Hasil Seminar
+        Route::get('/mahasiswa/skripsi/hasil', 'MahasiswaController@viewHasilUjian')->name('datahasilujianmhs');
+
+        Route::get('/sempro/hasil/cetakmhs/{id}', 'MahasiswaController@cetakDokumenSemproMhs')->name('cetakdokumensempromhs');
+        Route::get('/ujian/hasil/cetakmhs/{id}', 'MahasiswaController@cetakDokumenUjianMhs')->name('cetakdokumenujianmhs');
+
+    });
+ 
+    Route::get('/logout', function() {
+        Auth::logout();
+        redirect('/');
+    })->name('logout');
+ 
+});
