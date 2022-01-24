@@ -24,7 +24,7 @@ class CreateBimbinganTable extends Migration
             $table->unsignedBigInteger('id_plot_dosbing');
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
             $table->string('bimbingan_ke');
-            $table->string('bab');
+            // $table->string('bab');
             $table->string('file');
             $table->string('komentar');
             $table->enum('ket1', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');

@@ -14,6 +14,15 @@
             </div>
         @endif
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
         <form class="user" action="/dosen/{{$data->nidn}}" method="POST" enctype="multipart/form-data">
             <div class="row mt-2">

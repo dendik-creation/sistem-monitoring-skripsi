@@ -227,6 +227,13 @@ class DosenController extends Controller
         return view ('dosen.edit',  compact('data', 'user'));
     }
     public function updateProfil(Request $request, $id){
+        $this->validate($request, [
+			'photo' => 'max:10240',
+		],
+        [
+            'photo.max' => 'File terlalu besar, maksimal 2 mb',
+        ]);
+        
         $nidn = $request->nidn;
         $name = $request->name;
         $email = $request->email;

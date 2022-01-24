@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Response;
+use Illuminate\Support\Facades\Validator;
 
 use App\PlotDosbingModel;
 use App\MahasiswaModel;
@@ -67,6 +68,13 @@ class MahasiswaController extends Controller
         return view ('mahasiswa.edit',  compact('data', 'user'));
     }
     public function updateProfil(Request $request, $id){
+        $this->validate($request, [
+			'photo' => 'max:10240',
+		],
+        [
+            'photo.max' => 'File terlalu besar, maksimal 2 mb',
+        ]);
+        
         $nim = $request->nim;
         $name = $request->name;
         $email = $request->email;
@@ -168,6 +176,13 @@ class MahasiswaController extends Controller
         return view ('mahasiswa.proposal.pengajuan.add', compact('dosen1', 'dosen2', 'data', 'smt', 'user'));
     }
     public function insertProposal(Request $request){
+        $this->validate($request, [
+			'proposal' => 'max:10240',
+		],
+        [
+            'proposal.max' => 'File terlalu besar, maksimal 10 mb',
+        ]);
+        
         $pModel = new ProposalModel;
 
         $pModel->id_semester = $request->smt;
@@ -176,6 +191,7 @@ class MahasiswaController extends Controller
         $pModel->judul = $request->judul;
         $pModel->id_plot_dosbing = $request->id_plot_dosbing;
         $pModel->komentar = $request->komentar;
+
 
 		$file = $request->file('proposal');
 
@@ -247,6 +263,13 @@ class MahasiswaController extends Controller
         return view ('mahasiswa.proposal.pendaftaran.add', compact('dosen1', 'dosen2', 'datamhs', 'datadosbing', 'dataprop', 'user'));
     }
     public function insertBerkas(Request $request){
+        $this->validate($request, [
+			'berkas_sempro' => 'max:10240',
+		],
+        [
+            'berkas_sempro.max' => 'File terlalu besar, maksimal 10 mb',
+        ]);
+
         $bsModel = new BerkasSemproModel;
 
         $bsModel->nim = $request->nim;
@@ -348,7 +371,7 @@ class MahasiswaController extends Controller
         $user = Auth::user();
         $data = DB::table('bimbingan')
         ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
-        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.bab as bab', 'bimbingan.file as file',
+        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
         'bimbingan.komentar as komentar')
         ->where('bimbingan.nim', $user -> no_induk)
         ->get();
@@ -379,6 +402,12 @@ class MahasiswaController extends Controller
         return view ('mahasiswa.skripsi.bimbingan.add', compact('data', 'smt', 'dataprop', 'user'));
     }
     public function insertBimbingan(Request $request){
+        $this->validate($request, [
+			'file_bimbingan' => 'max:10240',
+		],
+        [
+            'file_bimbingan.max' => 'File terlalu besar, maksimal 10 mb',
+        ]);
         $bModel = new BimbinganModel;
 
         $bModel->id_semester = $request->smt;
@@ -386,7 +415,7 @@ class MahasiswaController extends Controller
         $bModel->id_proposal = $request->id_proposal;
         $bModel->id_plot_dosbing = $request->id_plot_dosbing;
         $bModel->bimbingan_ke = $request->bimbingan_ke;
-        $bModel->bab = $request->bab;
+        // $bModel->bab = $request->bab;
         $bModel->komentar = $request->komentar;
 
 		$file = $request->file('file_bimbingan');
@@ -539,6 +568,13 @@ class MahasiswaController extends Controller
         return view ('mahasiswa.skripsi.pendaftaran.add', compact('dosen1', 'dosen2', 'datamhs', 'datapenguji', 'datadosbing', 'dataprop', 'user'));
     }
     public function insertBerkasUjian(Request $request){
+        $this->validate($request, [
+			'berkas_ujian' => 'max:10240',
+		],
+        [
+            'berkas_ujian.max' => 'File terlalu besar, maksimal 10 mb',
+        ]);
+
         $buModel = new BerkasUjianModel;
 
         $buModel->nim = $request->nim;

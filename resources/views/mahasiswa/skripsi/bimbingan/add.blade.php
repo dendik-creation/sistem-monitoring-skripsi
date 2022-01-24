@@ -7,6 +7,15 @@
             <h1 class="h3 mb-2 text-gray-800">Tambah Bimbingan</h1>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
         <form class="user" action="/mahasiswa/insertbimbingan" method="POST" enctype="multipart/form-data">
             <div class="row mt-2">
@@ -26,7 +35,7 @@
                         <label for="" class="small">Bimbingan Ke*</label>
                         <input type="number" class="form-control" name="bimbingan_ke">
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="" class="small">BAB*</label>
                         <select class="form-control" name="bab">
                             <option>Pilih --</option>
@@ -36,7 +45,7 @@
                             <option>4</option>
                             <option>5</option>
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="" class="small">File*</label><br>
                         <input type="file" name="file_bimbingan" placeholder="Masukkan File" required accept=".doc, .docx, .pdf">

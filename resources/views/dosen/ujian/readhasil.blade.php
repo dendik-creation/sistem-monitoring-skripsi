@@ -5,7 +5,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Hasil Seminar Proposal</h1>
+            <h1 class="h3 mb-0 text-gray-800">Hasil Ujian Skripsi</h1>
             {{-- <div class="pull-right">
                 <a href="/mahasiswa/proposal/tambah" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Ajukan

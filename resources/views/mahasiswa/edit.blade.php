@@ -14,6 +14,15 @@
             </div>
         @endif
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
         <form class="user" action="/mahasiswa/{{$data->nim}}" method="POST" enctype="multipart/form-data">
             <div class="row mt-2">
@@ -26,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Nama Lengkap*</label>
-                        <input type="text" class="form-control form-control-user" name="name" placeholder="Masukkan Nama Lengkap" value="{{ $data->name }}" required>
+                        <input type="text" class="form-control form-control-user" name="name" placeholder="Masukkan Nama Lengkap" value="{{ $data->name }}" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Email*</label>

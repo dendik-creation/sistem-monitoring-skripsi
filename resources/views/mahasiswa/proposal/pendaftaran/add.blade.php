@@ -7,6 +7,15 @@
             <h1 class="h3 mb-2 text-gray-800">Pendaftaran Seminar Proposal</h1>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
         <form class="user" action="/mahasiswa/insertsempro" method="POST" enctype="multipart/form-data">
             <div class="row mt-2">
