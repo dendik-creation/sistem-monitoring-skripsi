@@ -23,7 +23,7 @@ class CreateBerkasSemproTable extends Migration
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
             $table->string('berkas_sempro');
             $table->enum('status', ['Menunggu Dijadwalkan', 'Terjadwal'])->default('Menunggu Dijadwalkan');
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

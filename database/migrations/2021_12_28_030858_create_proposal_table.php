@@ -28,7 +28,7 @@ class CreateProposalTable extends Migration
             $table->string('komentar')->nullable();
             $table->string('komentar1')->default('-')->nullable();
             $table->string('komentar2')->default('-')->nullable();
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

@@ -19,7 +19,7 @@ class CreateMahasiswaTable extends Migration
             $table->string('name');
             $table->string('email')->default('-');
             $table->string('hp')->default('-');
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

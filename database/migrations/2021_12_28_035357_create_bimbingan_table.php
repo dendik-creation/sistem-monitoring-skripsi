@@ -29,7 +29,7 @@ class CreateBimbinganTable extends Migration
             $table->string('komentar');
             $table->enum('ket1', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');
             $table->enum('ket2', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

@@ -43,7 +43,7 @@ class CreateHasilUjianTable extends Migration
             $table->string('jumlah3')->nullable();
             $table->string('keterangan3')->nullable();
             $table->text('revisi3')->nullable();
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

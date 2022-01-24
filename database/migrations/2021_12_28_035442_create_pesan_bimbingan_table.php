@@ -21,7 +21,7 @@ class CreatePesanBimbinganTable extends Migration
             $table->foreign('id_user')->references('id')->on('users');
             $table->text('pesan');
             $table->string('file'); //hapus
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

@@ -34,7 +34,7 @@ class CreateHasilSemproTable extends Migration
             $table->string('jumlah2')->nullable();
             $table->string('grade2')->nullable();
             $table->text('revisi2')->nullable();
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

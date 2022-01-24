@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->enum('role', ['admin', 'dosen', 'mahasiswa'])->default('mahasiswa');
             $table->string('photo')->default('undraw_profile.svg');
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

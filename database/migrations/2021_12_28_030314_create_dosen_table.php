@@ -27,7 +27,7 @@ class CreateDosenTable extends Migration
             $table->unsignedBigInteger('id_bidang');
             $table->foreign('id_bidang')->references('id')->on('bidang');
             $table->string('email');
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

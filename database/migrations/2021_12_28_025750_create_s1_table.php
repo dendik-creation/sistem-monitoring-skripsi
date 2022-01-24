@@ -16,7 +16,7 @@ class CreateS1Table extends Migration
         Schema::create('s1', function (Blueprint $table) {
             $table->id();
             $table->string('gelar');
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 
