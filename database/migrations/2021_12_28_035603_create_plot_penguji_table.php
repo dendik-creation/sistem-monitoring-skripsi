@@ -22,8 +22,8 @@ class CreatePlotPengujiTable extends Migration
             $table->foreign('ketua_penguji')->references('nidn')->on('dosen');
             $table->string('anggota_penguji_1');
             $table->foreign('anggota_penguji_1')->references('nidn')->on('dosen');
-            $table->string('anggota_penguji2');
-            $table->foreign('anggota_penguji2')->references('nidn')->on('dosen');
+            $table->string('anggota_penguji_2');
+            $table->foreign('anggota_penguji_2')->references('nidn')->on('dosen');
             $table->timestamps();
         });
     }
