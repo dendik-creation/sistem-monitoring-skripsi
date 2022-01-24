@@ -25,10 +25,10 @@ class CreateProposalTable extends Migration
             $table->enum('ket2', ['Menunggu ACC', 'Disetujui', 'Ditolak', 'Revisi'])->default('Menunggu ACC');
             $table->unsignedBigInteger('id_plot_dosbing');
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
-            $table->string('komentar');
-            $table->string('komentar1');
-            $table->string('komentar2');
-            $table->timestamps();
+            $table->string('komentar')->nullable();
+            $table->string('komentar1')->default('-')->nullable();
+            $table->string('komentar2')->default('-')->nullable();
+            $table->timestamps()->useCurrent();
         });
     }
 

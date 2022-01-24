@@ -23,7 +23,7 @@ class CreateBerkasUjianTable extends Migration
             $table->foreign('id_plot_penguji')->references('id')->on('plot_penguji');
             $table->string('berkas_ujian');
             $table->enum('status', ['Menunggu Dijadwalkan', 'Terjadwal'])->default('Menunggu Dijadwalkan');
-            $table->timestamps();
+            $table->timestamps()->useCurrent();
         });
     }
 

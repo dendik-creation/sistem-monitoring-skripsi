@@ -25,7 +25,7 @@ class CreateJadwalSemproTable extends Migration
             $table->text('ket');
             $table->enum('status1', ['Belum', 'Sudah'])->default('Belum');
             $table->enum('status2', ['Belum', 'Sudah'])->default('Belum');
-            $table->timestamps();
+            $table->timestamps()->useCurrent();
         });
     }
 

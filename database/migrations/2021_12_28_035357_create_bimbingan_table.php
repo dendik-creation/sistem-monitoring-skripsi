@@ -27,9 +27,9 @@ class CreateBimbinganTable extends Migration
             $table->string('bab');
             $table->string('file');
             $table->string('komentar');
-            $table->string('ket1');
-            $table->string('ket2');
-            $table->timestamps();
+            $table->enum('ket1', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');
+            $table->enum('ket2', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');
+            $table->timestamps()->useCurrent();
         });
     }
 

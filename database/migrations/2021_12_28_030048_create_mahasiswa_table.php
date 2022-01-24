@@ -17,9 +17,9 @@ class CreateMahasiswaTable extends Migration
             $table->id();
             $table->string('nim')->unique();
             $table->string('name');
-            $table->string('email');
-            $table->string('hp');
-            $table->timestamps();
+            $table->string('email')->default('-');
+            $table->string('hp')->default('-');
+            $table->timestamps()->useCurrent();
         });
     }
 

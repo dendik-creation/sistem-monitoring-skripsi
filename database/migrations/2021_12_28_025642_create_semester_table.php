@@ -18,7 +18,7 @@ class CreateSemesterTable extends Migration
             $table->string('semester');
             $table->string('tahun');
             $table->string('aktif');
-            $table->timestamps();
+            $table->timestamps()->useCurrent();
         });
     }
 

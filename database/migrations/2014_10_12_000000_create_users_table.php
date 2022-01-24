@@ -18,12 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('no_induk');
             $table->string('name');
             $table->string('username');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->string('role');
-            $table->timestamps();
+            $table->enum('role', ['admin', 'dosen', 'mahasiswa'])->default('mahasiswa');
+            $table->string('photo')->default('undraw_profile.svg');
+            $table->timestamps()->useCurrent();
         });
     }
 

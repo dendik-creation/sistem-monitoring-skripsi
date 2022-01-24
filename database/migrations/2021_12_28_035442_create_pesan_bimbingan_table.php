@@ -20,8 +20,8 @@ class CreatePesanBimbinganTable extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
             $table->text('pesan');
-            $table->string('file');
-            $table->timestamps();
+            $table->string('file'); //hapus
+            $table->timestamps()->useCurrent();
         });
     }
 

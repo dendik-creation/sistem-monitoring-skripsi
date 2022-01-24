@@ -20,14 +20,14 @@ class CreateDosenTable extends Migration
             $table->unsignedBigInteger('gelar1');
             $table->foreign('gelar1')->references('id')->on('s1');
             $table->unsignedBigInteger('gelar2');
-            $table->foreign('gelar2')->references('id')->on('s2');
-            $table->unsignedBigInteger('gelar3');
+            $table->foreign('gelar2')->references('id')->on('s2')->nullable();
+            $table->unsignedBigInteger('gelar3')->nullable();
             $table->foreign('gelar3')->references('id')->on('s3');
-            $table->string('jabatan_fungsional');
+            $table->string('jabatan_fungsional')->nullable();
             $table->unsignedBigInteger('id_bidang');
             $table->foreign('id_bidang')->references('id')->on('bidang');
             $table->string('email');
-            $table->timestamps();
+            $table->timestamps()->useCurrent();
         });
     }
 

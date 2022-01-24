@@ -16,7 +16,7 @@ class CreateS3Table extends Migration
         Schema::create('s3', function (Blueprint $table) {
             $table->id();
             $table->string('gelar');
-            $table->timestamps();
+            $table->timestamps()->useCurrent();
         });
     }
 
