@@ -102,6 +102,33 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/skripsi/penjadwalan', 'AdminController@viewSkripsiPenjadwalan')->name('dataskripsipenjadwalan');
         Route::get('/admin/skripsi/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalUjian')->name('datadetailjadwalujian');
         
+        //s1
+        Route::get('/admin/dosen/s1', 'AdminController@viewS1')->name('datas1');
+        Route::get('/admin/dosen/s1/tambah', 'AdminController@formAddS1')->name('formadds1');
+        Route::post('/admin/inserts1dosen', 'AdminController@insertS1')->name('inserts1');
+        Route::get('/admin/dosen/s1/edit/{id}', 'AdminController@formEditS1')->name('formedits1');
+        Route::put('/admin/dosen/s1/{id}', 'AdminController@updateS1')->name('updates1');
+
+        //s2
+        Route::get('/admin/dosen/s2', 'AdminController@viewS2')->name('datas2');
+        Route::get('/admin/dosen/s2/tambah', 'AdminController@formAddS2')->name('formadds2');
+        Route::post('/admin/inserts2dosen', 'AdminController@insertS2')->name('inserts2');
+        Route::get('/admin/dosen/s2/edit/{id}', 'AdminController@formEditS2')->name('formedits2');
+        Route::put('/admin/dosen/s2/{id}', 'AdminController@updateS2')->name('updates2');
+
+        //s3
+        Route::get('/admin/dosen/s3', 'AdminController@viewS3')->name('datas3');
+        Route::get('/admin/dosen/s3/tambah', 'AdminController@formAddS3')->name('formadds3');
+        Route::post('/admin/inserts3dosen', 'AdminController@insertS3')->name('inserts3');
+        Route::get('/admin/dosen/s3/edit/{id}', 'AdminController@formEditS3')->name('formedits3');
+        Route::put('/admin/dosen/s3/{id}', 'AdminController@updateS3')->name('updates3');
+
+        //bidang
+        Route::get('/admin/dosen/bidang', 'AdminController@viewBidang')->name('databidang');
+        Route::get('/admin/dosen/bidang/tambah', 'AdminController@formAddBidang')->name('formaddbidang');
+        Route::post('/admin/insertbidangdosen', 'AdminController@insertBidang')->name('insertbidang');
+        Route::get('/admin/dosen/bidang/edit/{id}', 'AdminController@formEditBidang')->name('formeditbidang');
+        Route::put('/admin/dosen/bidang/{id}', 'AdminController@updateBidang')->name('updatebidang');
     });
  
     //DOSEN

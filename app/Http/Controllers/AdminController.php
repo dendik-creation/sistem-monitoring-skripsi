@@ -25,6 +25,10 @@ use App\JadwalSemproModel;
 use App\HasilSemproModel;
 use App\JadwalUjianModel;
 use App\HasilUjianModel;
+use App\S1Model;
+use App\S2Model;
+use App\S3Model;
+use App\BidangModel;
 
 class AdminController extends Controller
 {
@@ -840,5 +844,165 @@ class AdminController extends Controller
         ->where('hasil_ujian.nim', $data[0]->nim)
         ->first();
         return view('admin.skripsi.penjadwalan.detail', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2', 'hasil_ujian'));
+    }
+
+
+    //S1
+    public function viewS1(){
+        $user = Auth::user();
+        $data = S1Model::all();
+        return view('admin.dosen.s1.read', compact('data', 'user'));
+    }
+    public function formAddS1(){
+        $user = Auth::user();
+        
+        return view ('admin.dosen.s1.add', compact('user'));
+    }
+    public function insertS1(Request $request){
+        $s1Model = new S1Model;
+
+        $s1Model->gelar = $request->gelar;
+                
+        $s1Model->save();
+
+        return redirect('admin/dosen/s1')->with(['success' => 'Berhasil']);
+    }
+    public function formEditS1($id){
+        $user = Auth::user();
+        $data = DB::table('s1')
+        ->where('s1.id', $id)->first();
+        return view ('admin.dosen.s1.edit',  compact('data', 'user'));
+    }
+    public function updateS1(Request $request, $id){
+        $gelar = $request->gelar;
+        
+        
+        $data = DB::table('s1')
+        ->where('id', $id)
+        ->update(
+        ['gelar' => $gelar]
+        );
+
+        return redirect('admin/dosen/s1')->with(['success' => 'Berhasil']);
+    }
+
+
+    //S2
+    public function viewS2(){
+        $user = Auth::user();
+        $data = S2Model::all();
+        return view('admin.dosen.s2.read', compact('data', 'user'));
+    }
+    public function formAddS2(){
+        $user = Auth::user();
+        
+        return view ('admin.dosen.s2.add', compact('user'));
+    }
+    public function insertS2(Request $request){
+        $s2Model = new S2Model;
+
+        $s2Model->gelar = $request->gelar;
+                
+        $s2Model->save();
+
+        return redirect('admin/dosen/s2')->with(['success' => 'Berhasil']);
+    }
+    public function formEditS2($id){
+        $user = Auth::user();
+        $data = DB::table('s2')
+        ->where('s2.id', $id)->first();
+        return view ('admin.dosen.s2.edit',  compact('data', 'user'));
+    }
+    public function updateS2(Request $request, $id){
+        $gelar = $request->gelar;
+        
+        
+        $data = DB::table('s2')
+        ->where('id', $id)
+        ->update(
+        ['gelar' => $gelar]
+        );
+
+        return redirect('admin/dosen/s2')->with(['success' => 'Berhasil']);
+    }
+
+
+    //S3
+    public function viewS3(){
+        $user = Auth::user();
+        $data = S3Model::all();
+        return view('admin.dosen.s3.read', compact('data', 'user'));
+    }
+    public function formAddS3(){
+        $user = Auth::user();
+        
+        return view ('admin.dosen.s3.add', compact('user'));
+    }
+    public function insertS3(Request $request){
+        $s3Model = new S3Model;
+
+        $s3Model->gelar = $request->gelar;
+                
+        $s3Model->save();
+
+        return redirect('admin/dosen/s3')->with(['success' => 'Berhasil']);
+    }
+    public function formEditS3($id){
+        $user = Auth::user();
+        $data = DB::table('s3')
+        ->where('s3.id', $id)->first();
+        return view ('admin.dosen.s3.edit',  compact('data', 'user'));
+    }
+    public function updateS3(Request $request, $id){
+        $gelar = $request->gelar;
+        
+        
+        $data = DB::table('s3')
+        ->where('id', $id)
+        ->update(
+        ['gelar' => $gelar]
+        );
+
+        return redirect('admin/dosen/s3')->with(['success' => 'Berhasil']);
+    }
+    
+
+    //Bidang
+    public function viewBidang(){
+        $user = Auth::user();
+        $data = BidangModel::all();
+        return view('admin.dosen.bidang.read', compact('data', 'user'));
+    }
+    public function formAddBidang(){
+        $user = Auth::user();
+        
+        return view ('admin.dosen.bidang.add', compact('user'));
+    }
+    public function insertBidang(Request $request){
+        $bidangModel = new BidangModel;
+
+        $bidangModel->nama_bidang = $request->nama_bidang;
+                
+        $bidangModel->save();
+
+        return redirect('admin/dosen/bidang')->with(['success' => 'Berhasil']);
+    }
+    public function formEditBidang($id){
+        $user = Auth::user();
+        $data = DB::table('bidang')
+        ->where('bidang.id', $id)->first();
+        return view ('admin.dosen.bidang.edit',  compact('data', 'user'));
+    }
+    public function updateBidang(Request $request, $id){
+        $nama_bidang = $request->nama_bidang;
+        
+        
+        $data = DB::table('bidang')
+        ->where('id', $id)
+        ->update(
+        ['nama_bidang' => $nama_bidang]
+        );
+
+        return redirect('admin/dosen/bidang')->with(['success' => 'Berhasil']);
     }
 }

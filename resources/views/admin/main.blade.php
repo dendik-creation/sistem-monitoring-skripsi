@@ -65,10 +65,21 @@
                     <span>Semester</span></a>
             </li>
 
-            <li class="nav-item {{ Request::is('admin/dosen') ||  Request::is('admin/dosen/*') ? 'active' : ''}}">
-                <a class="nav-link" href="{{ route('datadosen') }}">
+            <li class="nav-item {{ Request::is('admin/dosen/*') ? 'active' : ''}}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-user"></i>
-                    <span>Dosen</span></a>
+                    <span>Dosen</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('datadosen') }}">Data Dosen</a>
+                        <a class="collapse-item" href="{{ route('datas1') }}">Gelar S1</a>
+                        <a class="collapse-item" href="{{ route('datas2') }}">Gelar S2</a>
+                        <a class="collapse-item" href="{{ route('datas3') }}">Gelar S3</a>
+                        <a class="collapse-item" href="{{ route('databidang') }}">Data Bidang</a>
+                    </div>
+                </div>
             </li>
 
             <li class="nav-item {{ Request::is('admin/mahasiswa') ||  Request::is('admin/mahasiswa/*') ? 'active' : ''}}">
