@@ -294,7 +294,7 @@
                         }else if(element.ket2 == 'Ditolak'){
                             var ket = `<td><p style="pointer-events: none;" class="btn btn-sm btn-danger">${element.ket2}</td>`
                         }else if(element.ket2 == 'Menunggu ACC'){
-                            var ket = `<td><p style="pointer-events: none;" class="btn btn-sm btn-secondary">${element.ket1}</td>`
+                            var ket = `<td><p style="pointer-events: none;" class="btn btn-sm btn-secondary">${element.ket2}</td>`
                         }else{
                             var ket = `<td><p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket2}</td>`
                         }
