@@ -600,7 +600,7 @@ class AdminController extends Controller
 		// import data
 		Excel::import(new PlotPengujiImport, public_path('/file_excel/'.$nama_file));
  
-		return redirect('admin/penguji/plotting')->with(['success' => 'Berhasil']);
+		return redirect('admin/skripsi/plotting')->with(['success' => 'Berhasil']);
 	}
 
     public function formPengujiAddSatuMahasiswa(){
