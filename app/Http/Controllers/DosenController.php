@@ -33,8 +33,18 @@ class DosenController extends Controller
         ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
         'semester.semester as semester', 'semester.tahun as tahun', 'status_skripsi.status_skripsi as status_skripsi', 'status_skripsi.status_ujian as status_ujian',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
-        ->where('plot_dosbing.dosbing1', $dosen)
-        ->orWhere('plot_dosbing.dosbing2', $dosen)
+        ->where(function ($query) {
+            $user = Auth::user();
+            $dosen = $user -> no_induk;
+            $query ->where('plot_dosbing.dosbing1', $dosen)
+                    ->where('status_skripsi.status_skripsi', 'Sedang Dikerjakan');
+        })
+        ->orWhere(function ($query) {
+            $user = Auth::user();
+            $dosen = $user -> no_induk;
+            $query->where('status_skripsi.status_skripsi', 'Sedang Dikerjakan')
+                    ->where('plot_dosbing.dosbing2', $dosen);
+        })
         ->count();
         
         $propwaitacc = DB::table('proposal')
