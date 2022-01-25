@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label for="" class="small">Semester*</label>
                         <select class="form-control" name="semester">
-                            <option>Pilih Topik --</option>
+                            <option>Pilih Semester --</option>
                             <option <?=$data->semester == "GASAL" ? 'selected' : ''?>>GASAL</option>
                             <option <?=$data->semester == "GENAP" ? 'selected' : ''?>>GENAP</option>
                         </select>
