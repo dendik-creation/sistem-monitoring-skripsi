@@ -569,9 +569,9 @@ class AdminController extends Controller
         ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
         ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        ->join('s1 as s13', 'dos1.gelar1', '=', 's13.id')
-        ->leftJoin('s2 as s23', 'dos1.gelar2', '=', 's23.id')
-        ->leftJoin('s3 as s33', 'dos1.gelar3', '=', 's33.id')
+        ->join('s1 as s13', 'dos3.gelar1', '=', 's13.id')
+        ->leftJoin('s2 as s23', 'dos3.gelar2', '=', 's23.id')
+        ->leftJoin('s3 as s33', 'dos3.gelar3', '=', 's33.id')
 
         ->select('plot_penguji.id as id', 'plot_penguji.smt as smt', 'plot_penguji.nim as nim', 'plot_penguji.name as name', 
         'dos1.name as dosen1', 'dos2.name as dosen2', 'dos3.name as dosen3', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
