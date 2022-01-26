@@ -264,10 +264,10 @@ class MahasiswaController extends Controller
     }
     public function insertBerkas(Request $request){
         $this->validate($request, [
-			'berkas_sempro' => 'max:10240',
+			'berkas_sempro' => 'max:20480',
 		],
         [
-            'berkas_sempro.max' => 'File terlalu besar, maksimal 10 mb',
+            'berkas_sempro.max' => 'File terlalu besar, maksimal 20 mb',
         ]);
 
         $bsModel = new BerkasSemproModel;
@@ -569,10 +569,10 @@ class MahasiswaController extends Controller
     }
     public function insertBerkasUjian(Request $request){
         $this->validate($request, [
-			'berkas_ujian' => 'max:10240',
+			'berkas_ujian' => 'max:30720',
 		],
         [
-            'berkas_ujian.max' => 'File terlalu besar, maksimal 10 mb',
+            'berkas_ujian.max' => 'File terlalu besar, maksimal 30 mb',
         ]);
 
         $buModel = new BerkasUjianModel;

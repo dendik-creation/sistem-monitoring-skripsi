@@ -50,6 +50,11 @@
                   <th>{{ $item->judul }}</th>
                 </tr>
                 <tr>
+                  <td>Berkas Ujian</td>
+                  <td>:</td>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}">{{$item->berkas_ujian}}</a></th>
+                </tr>
+                <tr>
                   <td>Dosen Pembimbing Utama</td>
                   <td>:</td>
                   <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</th>

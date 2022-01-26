@@ -49,7 +49,7 @@
                   <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</th>
                 </tr>
                 <tr>
-                  <td>Berkas Seminar</td>
+                  <td>Berkas Ujian</td>
                   <td>:</td>
                   <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}">{{$item->berkas_ujian}}</a></th>
                 </tr>
