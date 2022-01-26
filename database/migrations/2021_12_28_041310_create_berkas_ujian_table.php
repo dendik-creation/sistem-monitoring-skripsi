@@ -15,7 +15,7 @@ class CreateBerkasUjianTable extends Migration
     {
         Schema::create('berkas_ujian', function (Blueprint $table) {
             $table->id();
-            $table->string('nim');
+            $table->string('nim', 15);
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_proposal');
             $table->foreign('id_proposal')->references('id')->on('proposal');

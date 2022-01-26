@@ -17,17 +17,17 @@ class CreateProposalTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_semester');
             $table->foreign('id_semester')->references('id')->on('semester');
-            $table->string('nim');
-            $table->string('topik');
+            $table->string('nim', 15);
+            $table->string('topik', 50);
             $table->string('judul');
             $table->string('proposal');
             $table->enum('ket1', ['Menunggu ACC', 'Disetujui', 'Ditolak', 'Revisi'])->default('Menunggu ACC');
             $table->enum('ket2', ['Menunggu ACC', 'Disetujui', 'Ditolak', 'Revisi'])->default('Menunggu ACC');
             $table->unsignedBigInteger('id_plot_dosbing');
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
-            $table->string('komentar')->nullable();
-            $table->string('komentar1')->default('-')->nullable();
-            $table->string('komentar2')->default('-')->nullable();
+            $table->text('komentar')->nullable();
+            $table->text('komentar1')->default('-')->nullable();
+            $table->text('komentar2')->default('-')->nullable();
             $table->timestamps();
         });
     }

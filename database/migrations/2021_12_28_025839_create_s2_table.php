@@ -15,7 +15,7 @@ class CreateS2Table extends Migration
     {
         Schema::create('s2', function (Blueprint $table) {
             $table->id();
-            $table->string('gelar');
+            $table->string('gelar', 15);
             $table->timestamps();
         });
     }

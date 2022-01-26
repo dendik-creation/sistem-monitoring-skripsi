@@ -15,7 +15,7 @@ class CreateDosenTable extends Migration
     {
         Schema::create('dosen', function (Blueprint $table) {
             $table->id();
-            $table->string('nidn')->unique();
+            $table->string('nidn', 15)->unique();
             $table->string('name');
             $table->unsignedBigInteger('gelar1');
             $table->foreign('gelar1')->references('id')->on('s1');
@@ -26,7 +26,7 @@ class CreateDosenTable extends Migration
             $table->string('jabatan_fungsional')->nullable();
             $table->unsignedBigInteger('id_bidang');
             $table->foreign('id_bidang')->references('id')->on('bidang');
-            $table->string('email');
+            $table->string('email', 50);
             $table->timestamps();
         });
     }

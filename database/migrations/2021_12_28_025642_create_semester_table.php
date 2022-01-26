@@ -15,9 +15,9 @@ class CreateSemesterTable extends Migration
     {
         Schema::create('semester', function (Blueprint $table) {
             $table->id();
-            $table->string('semester');
-            $table->string('tahun');
-            $table->string('aktif');
+            $table->string('semester', 10);
+            $table->string('tahun', 50);
+            $table->enum('aktif', ['Y','N']);
             $table->timestamps();
         });
     }

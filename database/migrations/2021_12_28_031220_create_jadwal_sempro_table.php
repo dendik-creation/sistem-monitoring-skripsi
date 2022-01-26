@@ -15,7 +15,7 @@ class CreateJadwalSemproTable extends Migration
     {
         Schema::create('jadwal_sempro', function (Blueprint $table) {
             $table->id();
-            $table->string('nim');
+            $table->string('nim', 15);
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_berkas_sempro');
             $table->foreign('id_berkas_sempro')->references('id')->on('berkas_sempro');

@@ -15,7 +15,7 @@ class CreateJadwalUjianTable extends Migration
     {
         Schema::create('jadwal_ujian', function (Blueprint $table) {
             $table->id();
-            $table->string('nim');
+            $table->string('nim', 15);
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_berkas_ujian');
             $table->foreign('id_berkas_ujian')->references('id')->on('berkas_ujian');
