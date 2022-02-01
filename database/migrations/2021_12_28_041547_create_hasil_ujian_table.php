@@ -21,7 +21,7 @@ class CreateHasilUjianTable extends Migration
             $table->foreign('id_proposal')->references('id')->on('proposal');
             $table->unsignedBigInteger('id_jadwal_ujian')->nullable();
             $table->foreign('id_jadwal_ujian')->references('id')->on('jadwal_ujian');
-            $table->enum('berita_acara', ['Lulus', 'Tidak Lulus'])->default('Menunggu keputusan');
+            $table->enum('berita_acara', ['Menunggu keputusan', 'Lulus', 'Tidak Lulus'])->default('Menunggu keputusan');
             $table->string('sikap1', 5)->nullable();
             $table->string('presentasi1', 5)->nullable();
             $table->string('teori1', 5)->nullable();
