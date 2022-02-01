@@ -29,10 +29,10 @@
                     <div class="form-group">
                         <label for="" class="small">Topik*</label>
                         <select class="form-control" name="topik" required>
-                            <option>Pilih Topik --</option>
-                            <option>Website</option>
-                            <option>Android</option>
-                            <option>Jaringan</option>
+                            <option value="">Pilih Topik --</option>
+                            @foreach ($bidang as $item)
+                                <option value="{{ $item->nama_bidang }}">{{ $item->nama_bidang }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
@@ -66,11 +66,19 @@
                     <div class="form-group">
                         <label for="" class="small">Dosen Pembimbing Utama*</label>
                         <input type="hidden" value="{{ $data->id }}" name="id_plot_dosbing">
-                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing Utama" value="{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}" required readonly>
+                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing Utama" value="@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Dosen Pembimbing Pembantu*</label>
-                        <input type="text" class="form-control" name="dosbing2" placeholder="Masukkan Dosen Pembimbing Pembantu" value="{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}" required readonly>
+                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif" required readonly>
                     </div>
                 </div>
             </div>

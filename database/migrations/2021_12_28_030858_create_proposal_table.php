@@ -28,6 +28,8 @@ class CreateProposalTable extends Migration
             $table->text('komentar')->nullable();
             $table->text('komentar1')->default('-')->nullable();
             $table->text('komentar2')->default('-')->nullable();
+            $table->string('file1')->nullable();
+            $table->string('file2')->nullable();
             $table->timestamps();
         });
     }

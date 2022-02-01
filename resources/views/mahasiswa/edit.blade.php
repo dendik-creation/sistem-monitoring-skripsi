@@ -37,10 +37,6 @@
                         <label for="" class="small">Nama Lengkap*</label>
                         <input type="text" class="form-control form-control-user" name="name" placeholder="Masukkan Nama Lengkap" value="{{ $data->name }}" required readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="" class="small">Email*</label>
-                        <input type="email" class="form-control form-control-user" name="email" placeholder="Masukkan Email" value="{{ $data->email }}" required>
-                    </div>
                     <div class="form-group mt-4">
                         <button type="submit" class="btn btn-primary btn-user mr-2">
                             Simpan
@@ -54,9 +50,13 @@
                         <input type="text" class="form-control form-control-user" name="hp" placeholder="Masukkan No. Hp/WA" value="{{ $data->hp }}" required>
                     </div>
                     <div class="form-group">
+                        <label for="" class="small">Email*</label>
+                        <input type="email" class="form-control form-control-user" name="email" placeholder="Masukkan Email" value="{{ $data->email }}" required>
+                    </div>
+                    {{-- <div class="form-group">
                         <label for="" class="small">Foto</label><br>
                         <input type="file" name="photo" accept="image/*">
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </form>

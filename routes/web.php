@@ -25,6 +25,11 @@ Route::get('/download/{nim}/proposal/{id}', 'MahasiswaController@downloadProposa
 Route::get('/download/{nim}/berkas_sempro/{id}', 'MahasiswaController@downloadBerkasSempro')->name('downloadberkassempro');
 Route::get('/download/{nim}/berkas_ujian/{id}', 'MahasiswaController@downloadBerkasUjian')->name('downloadberkasujian');
 Route::get('/download/{nim}/bimbingan/{id}', 'MahasiswaController@downloadSkripsi')->name('downloadbimbingan');
+
+Route::get('/download/{nim}/revisiproposal/{id}', 'MahasiswaController@downloadRevisiProposal')->name('downloadrevisiproposal');
+Route::get('/download/{nim}/revisibimbingan/{id}', 'MahasiswaController@downloadRevisiBimbingan')->name('downloadrevisibimbingan');
+Route::get('/download/{nim}/revisiujian/{id}', 'MahasiswaController@downloadRevisiUjian')->name('downloadrevisiujian');
+
 Route::get('/download/format/plotting/dosbing', 'MahasiswaController@downloadFormatPlottingDosbing')->name('downloadformatplottingdosbing');
 Route::get('/download/format/plotting/penguji', 'MahasiswaController@downloadFormatPlottingPenguji')->name('downloadformatplottingpenguji');
 
@@ -79,10 +84,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/proposal/pendaftar', 'AdminController@viewProposalPendaftar')->name('dataproposalpendaftar');
         Route::get('/admin/proposal/pendaftar/detail/{id}', 'AdminController@viewProposalPendaftarDetail')->name('dataproposalpendaftardetail');
         Route::post('/admin/proposal/insertjadwalsempro', 'AdminController@insertJadwalSempro')->name('insertjadwalsempro');
+        //berkas ok
+        Route::put('/admin/berkas/sempro/ok/{id}', 'AdminController@berkasSemproOk')->name('berkassemprook');
+        //berkas kurang lengkap
+        Route::put('/admin/berkas/sempro/kurang/{id}', 'AdminController@berkasSemproKurang')->name('berkassemprokurang');
 
         //Proposal Penjadwalan
         Route::get('/admin/proposal/penjadwalan', 'AdminController@viewProposalPenjadwalan')->name('dataproposalpenjadwalan');
         Route::get('/admin/proposal/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalSempro')->name('datadetailjadwalsempro');
+        //download excel ok
+        Route::get('/admin/berkas/sempro/exportexcel', 'AdminController@exportBerkasSempro');
+        Route::post('/admin/proposal/penjadwalan/importexcel', 'AdminController@penjadwalanSemproImportExcel')->name('penjadwalansemproimportexcel');
 
         //Skripsi Monitoring
         Route::get('/admin/skripsi/monitoring', 'AdminController@viewSkripsiMonitoring')->name('dataskripsimonitoring');
@@ -97,11 +109,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/skripsi/pendaftar', 'AdminController@viewSkripsiPendaftar')->name('dataskripsipendaftar');
         Route::get('/admin/skripsi/pendaftar/detail/{id}', 'AdminController@viewSkripsiPendaftarDetail')->name('dataskripsipendaftardetail');
         Route::post('/admin/skripsi/insertjadwalujian', 'AdminController@insertJadwalUjian')->name('insertjadwalujian');
+        //berkas ok
+        Route::put('/admin/berkas/ujian/ok/{id}', 'AdminController@berkasUjianOk')->name('berkasujianok');
+        //berkas kurang lengkap
+        Route::put('/admin/berkas/ujian/kurang/{id}', 'AdminController@berkasUjianKurang')->name('berkasujiankurang');
 
         //Ujian Skripsi Penjadwalan
         Route::get('/admin/skripsi/penjadwalan', 'AdminController@viewSkripsiPenjadwalan')->name('dataskripsipenjadwalan');
         Route::get('/admin/skripsi/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalUjian')->name('datadetailjadwalujian');
-        
+        //download excel ok
+        Route::get('/admin/berkas/ujian/exportexcel', 'AdminController@exportBerkasUjian');
+        Route::post('/admin/ujian/penjadwalan/importexcel', 'AdminController@penjadwalanUjianImportExcel')->name('penjadwalanujianimportexcel');
+
         //s1
         Route::get('/admin/dosen/s1', 'AdminController@viewS1')->name('datas1');
         Route::get('/admin/dosen/s1/tambah', 'AdminController@formAddS1')->name('formadds1');
@@ -174,6 +193,7 @@ Route::middleware(['auth'])->group(function () {
         //Hasil Seminar
         Route::post('/dosen/sempro/inserthasil', 'DosenController@insertHasilSempro')->name('inserthasilsempro');
         Route::get('/dosen/sempro/hasil', 'DosenController@viewHasilSempro')->name('datahasilsemprodosen');
+        Route::get('/dosen/sempro/hasil/detail/{id}', 'DosenController@viewDetailHasilSempro')->name('detailhasilsemprodosen');
 
         //Print pdf
         Route::get('/dosen/ujian/berita', 'DosenController@viewBeritaAcara')->name('viewberitaacara');
@@ -186,6 +206,7 @@ Route::middleware(['auth'])->group(function () {
         //Hasil Ujian Skripsi
         Route::post('/dosen/skripsi/inserthasil', 'DosenController@insertHasilUjian')->name('inserthasilujian');
         Route::get('/dosen/skripsi/hasil', 'DosenController@viewHasilUjian')->name('datahasilujiandosen');
+        Route::get('/dosen/skripsi/hasil/detail/{id}', 'DosenController@viewDetailHasilUjian')->name('detailhasilujiandosen');
 
     });
 
@@ -211,10 +232,11 @@ Route::middleware(['auth'])->group(function () {
         
 
         //Penjadwalan Seminar
-        Route::get('/mahasiswa/proposal/jadwalsempro', 'MahasiswaController@viewJadwalSempro')->name('datajadwalsempro');
+        Route::get('/mahasiswa/proposal/jadwalsempro/{id}', 'MahasiswaController@viewJadwalSempro')->name('datajadwalsempro');
 
         //Hasil Seminar
         Route::get('/mahasiswa/proposal/hasil', 'MahasiswaController@viewHasilSempro')->name('datahasilsempromhs');
+        Route::get('/mahasiswa/proposal/hasil/detail/{id}', 'MahasiswaController@viewDetailHasilSempro')->name('detailhasilsempromhs');
 
 
         //Skripsi
@@ -228,16 +250,17 @@ Route::middleware(['auth'])->group(function () {
         
         Route::post('/mahasiswa/balas/pesan', 'MahasiswaController@insertPesan')->name('insertpesan');
 
-        //Pendaftaran Seminar
+        //Pendaftaran Ujian
         Route::get('/mahasiswa/skripsi/daftarujian', 'MahasiswaController@viewDaftarUjian')->name('datadaftarujian');
         Route::get('/mahasiswa/skripsi/tambahujian', 'MahasiswaController@formAddUjian')->name('formaddujian');
         Route::post('/mahasiswa/insertujian', 'MahasiswaController@insertBerkasUjian')->name('insertujian');
 
-        //Penjadwalan Seminar
-        Route::get('/mahasiswa/skripsi/jadwalujian', 'MahasiswaController@viewJadwalUjian')->name('datajadwalujian');
+        //Penjadwalan Ujian
+        Route::get('/mahasiswa/skripsi/jadwalujian/{id}', 'MahasiswaController@viewJadwalUjian')->name('datajadwalujian');
 
-        //Hasil Seminar
+        //Hasil Ujian
         Route::get('/mahasiswa/skripsi/hasil', 'MahasiswaController@viewHasilUjian')->name('datahasilujianmhs');
+        Route::get('/mahasiswa/skripsi/hasil/detail/{id}', 'MahasiswaController@viewDetailHasilUjian')->name('detailhasilujianmhs');
 
         Route::get('/sempro/hasil/cetakmhs/{id}', 'MahasiswaController@cetakDokumenSemproMhs')->name('cetakdokumensempromhs');
         Route::get('/ujian/hasil/cetakmhs/{id}', 'MahasiswaController@cetakDokumenUjianMhs')->name('cetakdokumenujianmhs');

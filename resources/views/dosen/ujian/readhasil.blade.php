@@ -39,6 +39,7 @@
                                 <th>Nama</th>
                                 <th>Judul</th>
                                 <th>Tanggal</th>
+                                <th>Status</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -51,9 +52,9 @@
                                     <td>{{ $item -> nama}}</td>
                                     <td>{{ $item -> judul}}</td>
                                     <td>{{ tgl_indo($item->tanggal, true)}}</td>
-                                    {{-- <td><p style="pointer-events: none;" class="btn btn-sm <?=//$item -> status == 'Lulus' ? 'btn-success' : 'btn-danger'?>">{{ $item -> status }}</td> --}}
-                                    <td><a href="/ujian/hasil/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm <?=$item->status1 == "Sudah" && $item->status2 == "Sudah" && $item->status3 == 
-                                    "Sudah" ? '' : 'disabled'?>">Cetak Dokumen</a></td>
+                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=($ba->berita_acara == "Lulus" ? 'btn-success' : ($ba->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</td>
+                                    {{-- <td><a href="/ujian/hasil/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td> --}}
+                                    <td><a href="/dosen/skripsi/hasil/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Detail</a></td>
                                 </tr>
                            @endforeach
                         </tbody>

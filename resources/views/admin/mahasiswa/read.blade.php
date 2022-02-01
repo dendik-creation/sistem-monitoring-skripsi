@@ -46,6 +46,11 @@
                                 <th>Nama Mahasiswa</th>
                                 <th>Email</th>
                                 <th>No. Hp/WA</th>
+                                <th>Proposal</th>
+                                <th>Sempro</th>
+                                <th>Bimbingan</th>
+                                <th>Skripsi</th>
+                                <th>Ujian</th>
                                 {{-- <th>Edit</th> --}}
                                 {{-- <th>Hapus</th> --}}
                                 <th>Reset</th>
@@ -60,6 +65,11 @@
                                     <td>{{ $item -> name }}</td>
                                     <td>{{ $item -> email }}</td>
                                     <td>{{ $item -> hp }}</td>
+                                    <td class="<?=$item -> status_proposal == "Belum mengajukan proposal" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_proposal }}</td>
+                                    <td class="<?=$item -> status_sempro == "Belum seminar proposal" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_sempro }}</td>
+                                    <td class="<?=$item -> status_bimbingan == "Belum melakukan bimbingan" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_bimbingan }}</td>
+                                    <td class="<?=($item -> status_skripsi == "Belum mengerjakan" ? 'text-danger' : ($item -> status_skripsi == "Sedang dikerjakan" ? 'text-warning' : 'text-success'))?>"><strong>{{ $item -> status_skripsi }}</td>
+                                    <td class="<?=$item -> status_ujian == "Lulus" ? 'text-success' : 'text-danger'?>"><strong>{{ $item -> status_ujian }}</td>
                                     {{-- <td>
                                         <a href="/admin/mahasiswa/edit/{{$item->nim}}" class="btn btn-primary btn-sm">Edit</a>
                                     </td> --}}

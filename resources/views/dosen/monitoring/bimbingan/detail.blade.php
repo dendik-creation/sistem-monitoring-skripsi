@@ -14,15 +14,19 @@
                   {{csrf_field()}}
                   {{method_field('PUT')}}
                   
-                  @if ($data -> dosbing1 == $user -> name)
-                    @if ($data -> ket1 == 'Ok')
-                      <button type="submit" value="Ok" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
+                  @if ($data -> dosbing1 == $user -> no_induk)
+                    @if ($data -> ket1 == 'Ok' || $data -> ket1 == 'Selesai Bimbingan')
+                      <button type="submit" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
+                    @elseif ($data -> ket1 == 'Selesai Bimbingan')
+                    <button type="submit" class="btn btn-success ml-2" disabled>Selesai Bimbingan</button>
                     @else
                       <button type="submit" value="Ok" class="btn btn-success ml-2">Ok</button>
                     @endif
                   @else
                   @if ($data -> ket2 == 'Ok')
-                      <button type="submit" value="Ok" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
+                      <button type="submit" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
+                    @elseif ($data -> ket2 == 'Selesai Bimbingan')
+                    <button type="submit" class="btn btn-success ml-2" disabled>Selesai Bimbingan</button>
                     @else
                       <button type="submit" value="Ok" class="btn btn-success ml-2">Ok</button>
                     @endif
@@ -69,12 +73,20 @@
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</th>
+                        <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif - {{ $data->ket1 }}</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</th>
+                        <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif - {{ $data->ket2 }}</th>
                       </tr>
                     </tbody>
                   </table>
@@ -93,7 +105,7 @@
                       <tr>
                         <td>File</td>
                         <td>:</td>
-                        <th><a href="/download/{{$data->nim}}/bimbingan/{{$data->file}}">{{$data->file}}</a></th>
+                        <th><a href="/download/{{$data->nim}}/bimbingan/{{$data->file}}"><?=$data->file == null ? '' : 'Download file'?></a></th>
                       </tr>
                       <tr>
                         <td>Keterangan</td>
@@ -126,20 +138,21 @@
                       <span aria-hidden="true">&times;</span>
                   </button>
                   </div>
-                  <form action="/dosen/balas/pesan" method="post">
+                  <form action="/dosen/balas/pesan" method="post" enctype="multipart/form-data">
                       {{csrf_field()}}
                       {{method_field('POST')}}
                       <div class="modal-body">
-                        {{-- <div class="form-group">
-                          <label for="" class="small">File*</label><br>
-                          <input type="file" name="file" placeholder="Masukkan File" required>
-                        </div> --}}
                         <div class="form-group">
-                            <label for="" class="small">Pesan</label><br>
-                            <input type="hidden" name="id_bimbingan" value="{{ $data->id }}">
-                            <input type="hidden" name="id_user" value="{{ $user->id }}">
-                            <textarea class="form-control" name="pesan" placeholder="Masukkan Pesan"></textarea>
-                        </div>
+                          <label for="" class="small">Pesan*</label><br>
+                          <textarea class="form-control" name="pesan" placeholder="Masukkan Pesan" required></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="" class="small">File Pendukung</label><br>
+                        <input type="file" name="file_pendukung" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf">
+                      </div>
+                      <input type="hidden" name="nim" value="{{$data->nim}}" id="">
+                      <input type="hidden" name="id_bimbingan" value="{{ $data->id }}">
+                      <input type="hidden" name="id_user" value="{{ $user->id }}">
                       </div>
                       <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -160,7 +173,10 @@
               <p class="float-right small"><?=tgl_indo(substr($item->waktu, 0, 10), false);?> <?=substr($item->waktu, 11, 5)?> WIB</p>
             </div>
             <div class="card-body">
-              <p class="card-text">{{ $item->pesan }}</p>
+              <p class="card-text">
+                {{ $item->pesan }}<br> <br>
+                <a href="/download/{{ $data->nim }}/revisibimbingan/{{$item->file_pendukung}}"><?=$item->file_pendukung == null ? '' : 'Download file'?></a>
+              </p>
             </div>
           </div>
           @endforeach
@@ -170,9 +186,26 @@
           {{csrf_field()}}
           {{method_field('PUT')}}
         <div class="row-mt-5 mb-5 float-right">
-          <button type="submit" class="btn btn-success btn-flat" onclick="return confirm('Yakin?');">
+          
+          @if ($data -> dosbing1 == $user -> no_induk)
+                    @if ($data -> ket1 == 'Selesai Bimbingan')
+                      <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa sudah selesai bimbingan</button>
+                    @else
+                      <button type="submit" class="btn btn-success btn-flat" onclick="return confirm('Yakin?');">
+                        Selesai Semua Bimbingan
+                      </button>
+                    @endif
+                  {{-- @else
+                  @if ($data -> ket2 == 'Selesai Bimbingan')
+                      <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa sudah selesai bimbingan</button>
+                    @else
+                      <button type="submit" class="btn btn-success btn-flat" onclick="return confirm('Yakin?');">
             Selesai Semua Bimbingan
-          </a>
+          </button>
+                    @endif --}}
+                  @endif
+
+          
         </div>
         </form>
 

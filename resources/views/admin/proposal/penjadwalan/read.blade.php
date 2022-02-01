@@ -58,9 +58,13 @@
                                     </td>
                                     <td>
                                         @if ($item -> status1 == 'Belum' && $item -> status2 == 'Belum')
-                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum melakukan seminar</p>
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum melakukan seminar</p> 
                                         @else
-                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar</p>
+                                        @php
+                                            $ba = DB::table('hasil_sempro')->where('id_jadwal_sempro', $item->id)->first();
+                                            // dd($ba);
+                                        @endphp
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar</p> - <p style="pointer-events: none;" class="btn btn-sm <?=$ba->berita_acara == "Diterima" ? 'btn-success' : 'btn-danger'?>">{{ $ba->berita_acara }}</p>
                                         @endif
                                     </td>
                                     <td><a href="/admin/proposal/penjadwalan/detail/{{$item->id}}" class="btn btn-sm btn-primary">Lihat Detail</td>

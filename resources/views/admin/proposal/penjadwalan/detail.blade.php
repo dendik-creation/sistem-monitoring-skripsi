@@ -34,12 +34,24 @@
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}</th>
+                        <th>
+                          @if ($item -> depan1 == "Y")
+                              {{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
+                          @else
+                              {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
+                          @endif
+                        </th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $item -> gelar32 }} {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}</th>
+                        <th>
+                          @if ($item -> depan2 == "Y")
+                              {{ $item -> gelar32 }} {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
+                          @else
+                              {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
+                          @endif
+                        </th>
                       </tr>
                     </tbody>
                   </table>

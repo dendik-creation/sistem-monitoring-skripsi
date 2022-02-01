@@ -5,7 +5,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Monitoring Skripsi</h1>
+            <h1 class="h3 mb-0 text-gray-800">Status Skripsi</h1>
             {{-- <div class="pull-right">
                 <select class="custom-select" id="filterdosen">
                     <option value="3" id="3">All</option>
@@ -55,8 +55,8 @@
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item-> judul }}</td>
-                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=$item -> status_skripsi == 'Sedang Dikerjakan' ? 'btn-warning' : 'btn-success'?>">{{ $item -> status_skripsi }}</td>
-                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=($item -> status_ujian == 'Belum Ujian' ? 'btn-warning' : ($item -> status_ujian == 'Lulus' ? 'btn-success' : 'btn-danger'))?>">{{ $item -> status_ujian }}</td>
+                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=$item -> status_skripsi == 'Sedang dikerjakan' ? 'btn-warning' : 'btn-success'?>">{{ $item -> status_skripsi }}</td>
+                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=($item -> status_ujian == 'Belum ujian' ? 'btn-danger' : ($item -> status_ujian == 'Lulus' ? 'btn-success' : 'btn-danger'))?>">{{ $item -> status_ujian }}</td>
                                 </tr>
                            @endforeach
                         </tbody>

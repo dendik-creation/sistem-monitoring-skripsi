@@ -73,11 +73,19 @@
                     <div class="form-group">
                         <label for="" class="small">Dosen Pembimbing 1*</label>
                         <input type="hidden" value="{{ $data->id }}" name="id_plot_dosbing">
-                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="{{ $data -> gelar31 }} {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}" required readonly>
+                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($data -> depan1 == "Y")
+                              {{ $data -> gelar31 }} {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}
+                          @else
+                              {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}, {{ $data -> gelar31 }}
+                          @endif" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Dosen Pembimbing 2*</label>
-                        <input type="text" class="form-control" name="dosbing2" placeholder="Masukkan Dosen Pembimbing 2" value="{{ $data -> gelar32 }} {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}" required readonly>
+                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($data -> depan2 == "Y")
+                              {{ $data -> gelar32 }} {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}
+                          @else
+                              {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}, {{ $data -> gelar32 }}
+                          @endif" required readonly>
                     </div>
                 </div>
             </div>

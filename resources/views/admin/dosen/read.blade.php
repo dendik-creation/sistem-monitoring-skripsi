@@ -51,7 +51,13 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item -> nidn }}</td>
-                                    <td>{{ $item -> gelar3 }} {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}</td>
+                                    <td>
+                                        @if ($item -> depan == "Y")
+                                            {{ $item -> gelar3 }} {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}
+                                        @else
+                                            {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}, {{ $item -> gelar3 }}
+                                        @endif
+                                    </td>
                                     <td>{{ $item -> jabatan }}</td>
                                     <td>{{ $item -> bidang }}</td>
                                     <td>{{ $item -> email }}</td>

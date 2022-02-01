@@ -27,6 +27,7 @@ class CreateDosenTable extends Migration
             $table->unsignedBigInteger('id_bidang');
             $table->foreign('id_bidang')->references('id')->on('bidang');
             $table->string('email', 50);
+            $table->string('ttd')->nullable();
             $table->timestamps();
         });
     }

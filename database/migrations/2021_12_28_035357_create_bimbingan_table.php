@@ -26,7 +26,7 @@ class CreateBimbinganTable extends Migration
             $table->string('bimbingan_ke', 5);
             // $table->string('bab');
             $table->string('file');
-            $table->text('komentar');
+            $table->text('komentar')->nullable();
             $table->enum('ket1', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');
             $table->enum('ket2', ['Review', 'Ok', 'Selesai Bimbingan'])->default('Review');
             $table->timestamps();

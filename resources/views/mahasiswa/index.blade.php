@@ -54,40 +54,37 @@
                                 </div>
                                 <div class="col mr-2 align-items-center">
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Pengajuan Proposal</div>
+                                    {{-- hhhh --}}
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4"> 
-                                        @if ($pengajuan == 0)
-                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum Mengajukan Proposal</h5>
+                                        @if ($mhs -> status_proposal == "Belum mengajukan proposal")
+                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum mengajukan proposal</h5>
                                         @else
-                                            <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah Mengajukan Proposal</h5>
+                                            <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah mengajukan proposal</h5>
                                         @endif
                                     </div>
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Seminar Proposal</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4">
-                                        @if ($sempro == null)
-                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum Mendaftar Seminar Proposal</h5>
-                                        @elseif($sempro->status1 == 'Sudah' && $sempro->status2 == 'Sudah')
-                                            <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah Seminar Proposal</h5>
+                                        @if ($mhs -> status_sempro == "Belum seminar proposal")
+                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum seminar proposal</h5>
                                         @else
-                                            <h5 style="pointer-events: none;" class="text-warning font-weight-bold">Belum Seminar Proposal</h5>
+                                            <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah seminar proposal</h5>
                                         @endif
                                     </div>
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Bimbingan Skripsi</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4">
-                                        @if ($bimbingan == null)
-                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum Melakukan Bimbingan</h5>
+                                        @if ($mhs -> status_bimbingan == "Belum melakukan bimbingan")
+                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum melakukan bimbingan</h5>
                                         @else
-                                            <h5 class="h5 mb-0 font-weight-bold text-gray-800">Bimbingan Ke-{{ $bimbingan->bimbingan_ke }}</h5>
+                                            <h5 class="h5 mb-0 font-weight-bold text-success">{{ $mhs->status_bimbingan }}</h5>
                                         @endif
                                     </div>
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Ujian Skripsi</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4">
-                                        @if ($status == null)
-                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum Ujian Skripsi</h5>
-                                        @elseif($status->status_ujian == 'Belum Ujian')
-                                            <h5 style="pointer-events: none;" class="text-warning font-weight-bold">Belum Ujian</h5>
-                                        @elseif($status->status_ujian == 'Lulus')
+                                        @if ($mhs -> status_ujian == "Lulus")
                                             <h5 style="pointer-events: none;" class="text-success font-weight-bold">Lulus</h5>
-                                        @else
+                                        @elseif($mhs -> status_ujian == 'Belum ujian')
+                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum ujian</h5>
+                                        @elseif($mhs->status_ujian == 'Tidak Lulus')
                                             <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Tidak Lulus</h5>
                                         @endif
                                     </div>
@@ -114,7 +111,11 @@
                                 <div class="col mr-2 ml-4">
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">
                                         Dosen Pembimbing Utama</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif</div>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +136,11 @@
                                 <div class="col mr-2 ml-4">
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">
                                         Dosen Pembimbing Pembantu</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif</div>
                                 </div>
                             </div>
                         </div>

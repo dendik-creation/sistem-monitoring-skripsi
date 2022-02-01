@@ -16,6 +16,14 @@
                         <label for="" class="small">Gelar*</label>
                         <input type="text" class="form-control" name="gelar" placeholder="Masukkan Gelar" required>
                     </div>
+                    <div class="form-group">
+                        <label for="" class="small">Jenis Gelar*</label>
+                        <select class="form-control" name="depan">
+                            <option value="">Pilih Gelar --</option>
+                            <option value="Y">Gelar Depan</option>
+                            <option value="N">Gelar Belakang</option>
+                        </select>
+                    </div>
                     <div class="form-group mt-4">
                         <button type="submit" class="btn btn-primary mr-2">
                             Simpan

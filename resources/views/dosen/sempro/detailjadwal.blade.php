@@ -10,8 +10,17 @@
             </div>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
-        <form class="user" action="/dosen/sempro/inserthasil" method="POST">
+        <form class="user" action="/dosen/sempro/inserthasil" method="POST" enctype="multipart/form-data">
           {{csrf_field()}}
         <div class="row mt-5">
           @foreach($data as $item)
@@ -36,17 +45,25 @@
                       <tr>
                         <td>Berkas Seminar</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}">{{$item->berkas_sempro}}</a></th>
+                        <th><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}"><?=$item->berkas_sempro == null ? '' : 'Download file'?></a></th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</th>
+                        <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</th>
+                        <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif</th>
                       </tr>
                       <tr>
                         <td>Jadwal Seminar</td>
@@ -100,17 +117,17 @@
                     <tr>
                       <td>Nilai Sikap(20%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="sikap1" placeholder="Masukkan Nilai Sikap" required <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="sikap1" placeholder="Masukkan Nilai Sikap" <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Presentasi(30%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="presentasi1" placeholder="Masukkan Nilai Presentasi" required <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="presentasi1" placeholder="Masukkan Nilai Presentasi" <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Penguasaan Teori(50%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="penguasaan1" placeholder="Masukkan Nilai Penguasaan Teori" required <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="penguasaan1" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Jumlah</td>
@@ -145,6 +162,11 @@
                       <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
                     </tr>
                     <tr>
+                      <td>File Pendukung</td>
+                      <td>:</td>
+                      <th><input type="file" name="file_pendukung1" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
+                    </tr>
+                    <tr>
                       <td></td>
                       <td></td>
                       <td>
@@ -167,17 +189,17 @@
                   <tr>
                     <td>Nilai Sikap(20%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="sikap2" placeholder="Masukkan Nilai Sikap" required <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="sikap2" placeholder="Masukkan Nilai Sikap" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Nilai Presentasi(30%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="presentasi2" placeholder="Masukkan Nilai Presentasi" required <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="presentasi2" placeholder="Masukkan Nilai Presentasi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Nilai Penguasaan Teori(50%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="penguasaan2" placeholder="Masukkan Nilai Penguasaan Teori" required <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="penguasaan2" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Jumlah</td>
@@ -210,6 +232,11 @@
                     <td>Revisi</td>
                     <td>:</td>
                     <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                  </tr>
+                  <tr>
+                    <td>File Pendukung</td>
+                    <td>:</td>
+                    <th><input type="file" name="file_pendukung2" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
                   </tr>
                   <tr>
                     <td></td>

@@ -49,12 +49,20 @@
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }} - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket1 }}</th>
+                        <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket1 }}</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }} - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket2 }}</th>
+                        <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket2 }}</th>
                       </tr>
                     </tbody>
                   </table>
@@ -73,7 +81,7 @@
                       <tr>
                         <td>File</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $data->nim }}/berkas_sempro/{{$data->file}}">{{$data->file}}</th>
+                        <th><a href="/download/{{ $data->nim }}/berkas_sempro/{{$data->file}}"><?=$data->file == null ? '' : 'Download file'?></th>
                       </tr>
                       <tr>
                         <td>Keterangan</td>
@@ -140,7 +148,8 @@
               <p class="float-right small"><?=tgl_indo(substr($item->waktu, 0, 10), false);?> <?=substr($item->waktu, 11, 5)?> WIB</p>
             </div>
             <div class="card-body">
-              <p class="card-text">{{ $item->pesan }}</p>
+              {{ $item->pesan }}<br> <br>
+              <a href="/download/{{ $data->nim }}/revisibimbingan/{{$item->file_pendukung}}"><?=$item->file_pendukung == null ? '' : 'Download file'?></a>
             </div>
           </div>
           @endforeach

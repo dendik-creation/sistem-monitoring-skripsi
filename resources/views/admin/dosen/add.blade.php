@@ -7,8 +7,24 @@
             <h1 class="h3 mb-2 text-gray-800">Tambah Dosen</h1>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
+        @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif
+
         {{-- Form --}}
-        <form class="user" action="/admin/insertdosen" method="POST">
+        <form class="user" action="/admin/insertdosen" method="POST" enctype="multipart/form-data">
             {{csrf_field()}}
         <div class="row mt-2">
             <div class="col-md-6">
@@ -21,8 +37,8 @@
                         <input type="text" class="form-control" name="name" placeholder="Masukkan Nama Lengkap" required>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="" class="small">Gelar 1*</label>
+                        <div class="form-group col-md-6">
+                            <label for="" class="small">Gelar S1*</label>
                             <select class="form-control" name="gelar1">
                                 <option value="">Pilih Gelar --</option>
                                 @foreach ($gelar1 as $item)
@@ -30,8 +46,8 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="" class="small">Gelar 2*</label>
+                        <div class="form-group col-md-6">
+                            <label for="" class="small">Gelar S2</label>
                             <select class="form-control" name="gelar2">
                                 <option value="">Pilih Gelar --</option>
                                 @foreach ($gelar2 as $item)
@@ -39,11 +55,22 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="" class="small">Gelar 3*</label>
-                            <select class="form-control" name="gelar3">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="" class="small">Gelar S3 Depan</label>
+                            <select class="form-control" name="gelar3d">
                                 <option value="">Pilih Gelar --</option>
-                                @foreach ($gelar3 as $item)
+                                @foreach ($gelar3depan as $item)
+                                    <option value="{{ $item->id }}">{{ $item->gelar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="" class="small">Gelar S3 Belakang</label>
+                            <select class="form-control" name="gelar3b">
+                                <option value="">Pilih Gelar --</option>
+                                @foreach ($gelar3belakang as $item)
                                     <option value="{{ $item->id }}">{{ $item->gelar }}</option>
                                 @endforeach
                             </select>
@@ -59,11 +86,17 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="small">Jabatan Fungsional*</label>
-                        <input type="text" class="form-control" name="jabatan" placeholder="Masukkan Jabatan Fungsional" required>
+                        <select class="form-control" name="jabatan">
+                            <option value="">Pilih Jabatan Fungsional --</option>
+                            <option value="Asisten Ahli">Asisten Ahli</option>
+                            <option value="Lektor">Lektor</option>
+                            <option value="Lektor Kepala">Lektor Kepala</option>
+                            <option value="Guru Besar">Guru Besar</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Bidang*</label>
-                        <select class="form-control" name="id_bidang">
+                        <select class="form-control" name="id_bidang" required>
                             <option value="">Pilih Bidang --</option>
                             @foreach ($bidang as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama_bidang }}</option>
@@ -73,6 +106,10 @@
                     <div class="form-group">
                         <label for="" class="small">Email*</label>
                         <input type="email" class="form-control" name="email" placeholder="Masukkan Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="small">Scan Tanda Tangan</label><br>
+                        <input type="file" name="ttd" placeholder="Masukkan Scan Tanda Tangan" required accept=".png, .jpg, .jpeg">
                     </div>
                 </div>
             </div>

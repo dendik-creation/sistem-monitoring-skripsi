@@ -10,6 +10,15 @@
             </div>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
         <div class="row mt-5">
           @foreach($data as $item)
@@ -27,6 +36,11 @@
                         <th>{{ $item->name }}</th>
                       </tr>
                       <tr>
+                        <td>Topik</td>
+                        <td>:</td>
+                        <th>{{ $item->topik }}</th>
+                      </tr>
+                      <tr>
                         <td>Judul</td>
                         <td>:</td>
                         <th>{{ $item->judul }}</th>
@@ -34,7 +48,7 @@
                       <tr>
                         <td>File</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $item->nim }}/proposal/{{$item->proposal}}">{{$item->proposal}}</a></th>
+                        <th><a href="/download/{{ $item->nim }}/proposal/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download file'?></a></th>
                       </tr>
                       <tr>
                         <td>Keterangan</td>
@@ -67,11 +81,19 @@
                               <span aria-hidden="true">&times;</span>
                           </button>
                           </div>
-                          <form action="/dosen/monitoring/proposal/revisi/{{$item->id}}" method="post">
+                          <form action="/dosen/monitoring/proposal/revisi/{{$item->id}}" method="post" enctype="multipart/form-data">
                               {{csrf_field()}}
                               {{method_field('PUT')}}
                               <div class="modal-body">
-                                  <textarea class="form-control" name="komentar" placeholder="Masukkan Komentar"></textarea>
+                                <div class="form-group">
+                                    <label for="" class="small">Komentar Revisi*</label><br>
+                                    <textarea class="form-control" name="komentar" placeholder="Masukkan Komentar" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                  <label for="" class="small">File Pendukung</label><br>
+                                  <input type="file" name="file_pendukung" placeholder="Masukkan File Pendukung" required accept=".doc, .docx, .pdf">
+                                </div>
+                                <input type="hidden" name="nim" value="{{$item->nim}}" id="">
                               </div>
                               <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -89,22 +111,30 @@
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }} - <p style="pointer-events: none;" class="btn btn-sm mt-2 <?=($item -> ket1 == 'Disetujui' ? 'btn-success' : ($item -> ket1 == 'Revisi' ? 'btn-warning' : ($item -> ket1 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket1 }}</th>
+                        <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif - <p style="pointer-events: none;" class="btn btn-sm mt-2 <?=($item -> ket1 == 'Disetujui' ? 'btn-success' : ($item -> ket1 == 'Revisi' ? 'btn-warning' : ($item -> ket1 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket1 }}</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }} - <p style="pointer-events: none;" class="btn btn-sm mt-2 <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}</th>
+                        <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif - <p style="pointer-events: none;" class="btn btn-sm mt-2 <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}</th>
                       </tr>
                       <tr>
                         <td>Revisi Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $item->komentar1 }}</th>
+                        <th>{{ $item->komentar1 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file1}}"><?=$item->file1 == null ? '' : 'Download file'?></a></th>
                       </tr>
                       <tr>
                         <td>Revisi Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $item->komentar2 }}</th>
+                        <th>{{ $item->komentar2 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file2}}"><?=$item->file2 == null ? '' : 'Download file'?></th>
                       </tr>
                     </tbody>
                   </table>

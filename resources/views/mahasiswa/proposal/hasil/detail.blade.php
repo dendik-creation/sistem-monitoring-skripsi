@@ -4,7 +4,7 @@
     <div class="container-fluid mt-4">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-2 text-gray-800">Jadwal Seminar Proposal</h1>
+            <h1 class="h3 mb-2 text-gray-800">Detail Hasil Seminar Proposal</h1>
         </div>
 
         {{-- Form --}}
@@ -46,10 +46,16 @@
                               {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif</th>
                       </tr>
+                      <tr>
+                        <td>Status</td>
+                        <td>:</td>
+                        <th class="<?=$item->berita_acara == "Diterima" ? 'text-success' : 'text-danger' ?>">{{ $item->berita_acara }}</th>
+                      </tr>
                     </tbody>
                   </table>
                 <div class="ml-2 mt-4">
-                    <a href="{{ route('datadaftarsempro')}}" class="btn btn-secondary">Kembali</a>
+                    <a href="/sempro/hasil/cetakmhs/{{ $item->id }}" target="_blank" class="btn btn-primary <?=$item->status1 == "Sudah" && $item->status2 == "Sudah" ? '' : 'disabled'?>">Lihat Nilai</a>
+                    <a href="{{ route('datahasilsempromhs')}}" class="btn btn-secondary ml-1">Kembali</a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -80,6 +86,60 @@
             </div>
             @endforeach
         </div>
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+            <h1 class="h3 mb-2 text-gray-800">Revisi Dosen Pembimbing Utama</h1>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12">
+            <table class="table table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>Revisi</td>
+                        <td>:</td>
+                        <th><textarea rows="10" class="form-control">{{ $item->revisi1 }}</textarea></th>
+                      </tr>
+                      <tr>
+                        <td>File Pendukung</td>
+                        <td>:</td>
+                        <th><a href="/download/{{$item->nim}}/proposal/revisi dari dosen/{{$item->file1}}"><?=$item->file1 == null ? '-' : 'Download file'?></a></th>
+                      </tr>
+                      <tr>
+                        <td><hr class="sidebar-divider"></td>
+                        <td></td>
+                        <td><hr class="sidebar-divider"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+          <h1 class="h3 mb-2 text-gray-800">Revisi Dosen Pembimbing Pembantu</h1>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>Revisi</td>
+                      <td>:</td>
+                      <th><textarea rows="10" class="form-control">{{ $item->revisi2 }}</textarea></th>
+                    </tr>
+                    <tr>
+                      <td>File Pendukung</td>
+                      <td>:</td>
+                      <th><a href="/download/{{$item->nim}}/proposal/revisi dari dosen/{{$item->file2}}"><?=$item->file2 == null ? '-' : 'Download file'?></a></th>
+                    </tr>
+                    <tr>
+                      <td><hr class="sidebar-divider"></td>
+                      <td></td>
+                      <td><hr class="sidebar-divider"></td>
+                    </tr>
+                  </tbody>
+                </table>
+          </div>
+      </div>
 
     </div>
 @endsection

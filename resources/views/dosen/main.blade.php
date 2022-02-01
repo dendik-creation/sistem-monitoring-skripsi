@@ -50,7 +50,7 @@
                     <span>Dashboard</span></a>
             </li>
 
-            <li class="nav-item {{ Request::is('dosen/mahasiswa') ? 'active' : ''}}">
+            <li class="nav-item {{ Request::is('dosen/mahasiswa') || Request::is('dosen/mahasiswa/*') ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('datamhsbimbingan') }}">
                     <i class="fas fa-fw fa-user-circle"></i>
                     <span>Mahasiswa</span></a>
@@ -59,19 +59,19 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item {{ Request::is('dosen/monitoring/proposal') ? 'active' : ''}}">
+            <li class="nav-item {{ Request::is('dosen/monitoring/proposal') || Request::is('dosen/monitoring/proposal/*') ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('dataproposalmahasiswa') }}">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Monitoring Proposal</span></a>
             </li>
 
-            <li class="nav-item {{ Request::is('dosen/monitoring/skripsi') ? 'active' : ''}}">
+            <li class="nav-item {{ Request::is('dosen/monitoring/skripsi') || Request::is('dosen/monitoring/skripsi/*') ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('dataskripsimahasiswa') }}">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Monitoring Skripsi</span></a>
             </li>
 
-            <li class="nav-item {{ Request::is('dosen/monitoring/bimbingan') ? 'active' : ''}}">
+            <li class="nav-item {{ Request::is('dosen/monitoring/bimbingan') || Request::is('dosen/monitoring/bimbingan/*') ? 'active' : ''}}">
                 <a class="nav-link"  href="{{ route('databimbinganmahasiswa') }}">
                     <i class="fas fa-fw fa-pen"></i>
                     <span>Monitoring Bimbingan</span></a>
@@ -80,7 +80,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item {{ Request::is('dosen/sempro/*') ? 'active' : ''}}">
+            <li class="nav-item {{ Request::is('dosen/sempro') || Request::is('dosen/sempro/*') ? 'active' : ''}}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-file"></i>
@@ -95,7 +95,7 @@
             </li>
 
             <!-- Nav Item -->
-            <li class="nav-item {{ Request::is('dosen/skripsi/*') ? 'active' : ''}}">
+            <li class="nav-item {{ Request::is('dosen/skripsi') || Request::is('dosen/skripsi/*') ? 'active' : ''}}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-book"></i>
@@ -430,7 +430,40 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     var dosen = {!! json_encode($user->no_induk) !!};
+
+                    // console.log(dosen);
+
+                    if(element.status_proposal == 'Belum mengajukan proposal'){
+                        var status_proposal = `<td class="text-danger"><strong>${element.status_proposal}</td>`
+                    }else{
+                        var status_proposal = `<td class="text-success"><strong>${element.status_proposal}</td>`
+                    }
+
+                    if(element.status_sempro == 'Belum seminar proposal'){
+                        var status_sempro = `<td class="text-danger"><strong>${element.status_sempro}</td>`
+                    }else{
+                        var status_sempro = `<td class="text-success"><strong>${element.status_sempro}</td>`
+                    }
+
+                    if(element.status_bimbingan == 'Belum melakukan bimbingan'){
+                        var status_bimbingan = `<td class="text-danger"><strong>${element.status_bimbingan}</td>`
+                    }else{
+                        var status_bimbingan = `<td class="text-success"><strong>${element.status_bimbingan}</td>`
+                    }
+
+                    if(element.status_skripsi == 'Belum mengerjakan'){
+                        var status_skripsi = `<td class="text-danger"><strong>${element.status_skripsi}</td>`
+                    }else if(element.status_skripsi == 'Sedang dikerjakan'){
+                        var status_skripsi = `<td class="text-warning"><strong>${element.status_skripsi}</td>`
+                    }else{
+                        var status_skripsi = `<td class="text-success"><strong>${element.status_skripsi}</td>`
+                    }
                 
+                    if(element.status_ujian == 'Lulus'){
+                        var status_ujian = `<td class="text-success"><strong>${element.status_ujian}</td>`
+                    }else{
+                        var status_ujian = `<td class="text-danger"><strong>${element.status_ujian}</td>`
+                    }
 
                     $('#datatabel').append(`
                         <tr>
@@ -438,6 +471,11 @@
                             <td>${element.smt}</td>
                             <td>${element.nim}</td>
                             <td>${element.name}</td>
+                            ${status_proposal}
+                            ${status_sempro}
+                            ${status_bimbingan}
+                            ${status_skripsi}
+                            ${status_ujian}
                             <td>
                                 <a href="/dosen/mahasiswa/detail/${element.nim}" class="btn btn-sm btn-primary">Lihat Detail</a>
                             </td>

@@ -28,5 +28,25 @@ class UserSeeder extends Seeder
             'tahun' => '2021/2022',
             'aktif' => 'Y',
         ]);
+        DB::table('bidang')->insert([
+            'nama_bidang' => 'Jaringan Komputer',
+            'created_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('bidang')->insert([
+            'nama_bidang' => 'Bisnis Cerdas & Visi Komputer',
+            'created_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('bidang')->insert([
+            'nama_bidang' => 'Komputer Grafis',
+            'created_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('bidang')->insert([
+            'nama_bidang' => 'Komputasi Terapan',
+            'created_at' => \Carbon\Carbon::now(),
+        ]);
+        DB::table('bidang')->insert([
+            'nama_bidang' => 'Rekayasa Perangkat Lunak',
+            'created_at' => \Carbon\Carbon::now(),
+        ]);
     }
 }

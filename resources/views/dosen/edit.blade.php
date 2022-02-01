@@ -49,10 +49,10 @@
                         <label for="" class="small">Email*</label>
                         <input type="email" class="form-control form-control-user" name="email" placeholder="Masukkan Email" value="{{ $data->email }}" required>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="" class="small">Foto</label><br>
                         <input type="file" name="photo" accept="image/*">
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </form>

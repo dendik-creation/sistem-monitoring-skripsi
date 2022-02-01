@@ -43,41 +43,73 @@ hr.new4 {
   <div style="position: absolute; left: 200px; top: 333px" class="cls_005"><span class="cls_005">:</span></div>
   <div style="position: absolute; left: 208px; top: 333px" class="cls_005"><span class="cls_005">{{ $data->judul }}</span></div>
   <div style="position: absolute; left: 40px; top: 374px" class="cls_005"><span class="cls_005">Pembimbing Utama</span></div>
-  <div style="position: absolute; left: 200px; top: 374px" class="cls_005"><span class="cls_005">: {{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</span></div>
+  <div style="position: absolute; left: 200px; top: 374px" class="cls_005"><span class="cls_005">: @if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif</span></div>
   <div style="position: absolute; left: 40px; top: 405px" class="cls_005"><span class="cls_005">Pembimbing Pembantu</span></div>
-  <div style="position: absolute; left: 200px; top: 405px" class="cls_005"><span class="cls_005">: {{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</span></div>
+  <div style="position: absolute; left: 200px; top: 405px" class="cls_005"><span class="cls_005">: @if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif</span></div>
   <div style="position: absolute; left: 40px; top: 438px" class="cls_005"><span class="cls_005">Ketua Penguji</span></div>
-  <div style="position: absolute; left: 200px; top: 438px" class="cls_005"><span class="cls_005">: {{ $ketua->gelar3 }} {{ $ketua->name }}, {{ $ketua->gelar1 }}, {{ $ketua->gelar2 }}</span></div>
+  <div style="position: absolute; left: 200px; top: 438px" class="cls_005"><span class="cls_005">: @if ($ketua -> depan == "Y")
+                        {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                    @else
+                        {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @endif</span></div>
   <div style="position: absolute; left: 40px; top: 471px" class="cls_005"><span class="cls_005">Anggota Penguji 1</span></div>
-<div style="position: absolute; left: 200px; top: 471px" class="cls_005"><span class="cls_005">: {{ $anggota1->gelar3 }} {{ $anggota1->name }}, {{ $anggota1->gelar1 }}, {{ $anggota1->gelar2 }}</span></div>
+<div style="position: absolute; left: 200px; top: 471px" class="cls_005"><span class="cls_005">: @if ($anggota1 -> depan == "Y")
+                        {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                    @else
+                        {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @endif</span></div>
     <div style="position: absolute; left: 40px; top: 504px" class="cls_005"><span class="cls_005">Anggota Penguji 2</span></div>
-  <div style="position: absolute; left: 200px; top: 504px" class="cls_005"><span class="cls_005">: {{  $anggota2->gelar3  }} {{ $anggota2->name }}, {{ $anggota2->gelar1 }}, {{ $anggota2->gelar2 }}</span></div>
+  <div style="position: absolute; left: 200px; top: 504px" class="cls_005"><span class="cls_005">: @if ($anggota2 -> depan == "Y")
+                        {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                    @else
+                        {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @endif</span></div>
   <div style="position: absolute; left: 39px; top: 555px;" class="cls_005"><span class="cls_005">Berdasarkan hasil pengujian pada Sidang Skripsi, maka mahasiswa yang bernama <strong>{{ $data->nama }}</strong> nim <strong>{{ $data->nim }} </strong>dinyatakan <strong>{{ $data -> berita_acara }}</strong></span></div>
   <div style="position: absolute; left: 38px; top: 218px; width: 542px;"><span class="cls_005">Pada hari {{ tgl_indo($data->tanggal, true)}} Jam {{ $data -> jam }} WIB di {{ $data -> tempat }} telah dilaksanakan Sidang Skripsi</span></div>
   
     
-  <table style="position: absolute; left: 42px; top: 623px; width: 538px; height: 310px; border-collapse: collapse;"200" border="1">
+  <table style="position: absolute; left: 35px; top: 623px; width: 560px; height: 310px; border-collapse: collapse;"200" border="1">
     <tbody>
       <tr>
         <td width="261" height="30" style="border-bottom:none; text-align: center; vertical-align:text-bottom; padding-top:10px">Anggota Penguji 1</td>
         <td width="261" style="border-bottom:none; text-align: center; vertical-align:text-bottom;">Anggota Penguji 2</td>
       </tr>
       <tr>
-        <td height="70" style="border-top:none; border-bottom:none; text-align: center; ">&nbsp;</td>
-        <td style="border-top:none; border-bottom:none; text-align: center; ">&nbsp;</td>
+        <td height="100" style="border-top:none; border-bottom:none; text-align: center; "><img src="{{ url('ttd/'.$anggota1->nidn.'/'.$anggota1->ttd) }}" alt="" srcset="" height="80" width="auto"></td>
+        <td style="border-top:none; border-bottom:none; text-align: center; "><img src="{{ url('ttd/'.$anggota2->nidn.'/'.$anggota2->ttd) }}" alt="" srcset="" height="80" width="auto"></td>
       </tr>
       <tr>
-        <td height="43" style="border-top:none; text-align: center; ">{{ $anggota1->gelar3 }} {{ $anggota1->name }}, {{ $anggota1->gelar1 }}, {{ $anggota1->gelar2 }} </td>
-        <td style="border-top:none; text-align: center; ">{{ $anggota2->gelar3 }} {{ $anggota2->name }}, {{ $anggota2->gelar1 }}, {{ $anggota2->gelar2 }}</td>
+        <td height="43" style="border-top:none; text-align: center; ">@if ($anggota1 -> depan == "Y")
+                        {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                    @else
+                        {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @endif </td>
+        <td style="border-top:none; text-align: center; ">@if ($anggota2 -> depan == "Y")
+                        {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                    @else
+                        {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @endif</td>
       </tr>
       <tr>
         <td height="35" colspan="2" style="border-bottom:none; text-align: center; vertical-align:text-bottom; padding-top:10px">Ketua Penguji</td>
       </tr>
       <tr>
-        <td height="80" colspan="2" style="border-top:none; border-bottom:none; text-align: center; ">&nbsp;</td>
+        <td height="100" colspan="2" style="border-top:none; border-bottom:none; text-align: center; "><img src="{{ url('ttd/'.$ketua->nidn.'/'.$ketua->ttd) }}" alt="" srcset="" height="80" width="auto"></td>
       </tr>
       <tr>
-        <td colspan="2" style="border-top:none; text-align: center; padding-bottom:15px">{{ $ketua->gelar3 }} {{ $ketua->name }}, {{ $ketua->gelar1 }}, {{ $ketua->gelar2 }}</td>
+        <td colspan="2" style="border-top:none; text-align: center; padding-bottom:15px">@if ($ketua -> depan == "Y")
+                        {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                    @else
+                        {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @endif</td>
       </tr>
     </tbody>
   </table>
@@ -94,7 +126,11 @@ hr.new4 {
   <div style="position: absolute; left: 195px; top: 156px" class="cls_005"><span class="cls_005">:</span></div>
   <div style="position: absolute; left: 204px; top: 156px" class="cls_005"><span class="cls_005">{{ $data->judul }}</span></div>
   <div style="position: absolute; left: 35px; top: 190px;" class="cls_005"><span class="cls_005">Ketua Penguji</span></div>
-  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: {{ $ketua->gelar3 }} {{ $ketua->name }}, {{ $ketua->gelar1 }}, {{ $ketua->gelar2 }}</span></div>
+  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: @if ($ketua -> depan == "Y")
+                        {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                    @else
+                        {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @endif</span></div>
   <table style="position: absolute; left: 36px; top: 215px; width: 543px; height: 38px; border-collapse: collapse;"200" border="1">
     <tbody>
       <tr style="line-height: 17px;">
@@ -145,7 +181,11 @@ hr.new4 {
   <div style="position: absolute; left: 195px; top: 156px" class="cls_005"><span class="cls_005">:</span></div>
   <div style="position: absolute; left: 204px; top: 156px" class="cls_005"><span class="cls_005">{{ $data->judul }}</span></div>
   <div style="position: absolute; left: 35px; top: 190px;" class="cls_005"><span class="cls_005">Anggota Penguji 1</span></div>
-  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: {{ $anggota1->gelar3 }} {{ $anggota1->name }}, {{ $anggota1->gelar1 }}, {{ $anggota1->gelar2 }}</span></div>
+  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: @if ($anggota1 -> depan == "Y")
+                        {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                    @else
+                        {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @endif</span></div>
   <table style="position: absolute; left: 36px; top: 215px; width: 543px; height: 38px; border-collapse: collapse;"200" border="1">
     <tbody>
       <tr style="line-height: 17px;">
@@ -196,7 +236,11 @@ hr.new4 {
   <div style="position: absolute; left: 195px; top: 156px" class="cls_005"><span class="cls_005">:</span></div>
   <div style="position: absolute; left: 204px; top: 156px" class="cls_005"><span class="cls_005">{{ $data->judul }}</span></div>
   <div style="position: absolute; left: 35px; top: 190px;" class="cls_005"><span class="cls_005">Anggota Penguji 2</span></div>
-  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: {{ $anggota2->gelar3 }} {{ $anggota2->name }}, {{ $anggota2->gelar1 }}, {{ $anggota2->gelar2 }}</span></div>
+  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: @if ($anggota2 -> depan == "Y")
+                        {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                    @else
+                        {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @endif</span></div>
   <table style="position: absolute; left: 36px; top: 215px; width: 543px; height: 38px; border-collapse: collapse;"200" border="1">
     <tbody>
       <tr style="line-height: 17px;">
@@ -268,10 +312,14 @@ hr.new4 {
         <td style="text-align: center" height="30"><span class="cls_005">Ketua Penguji</span></td>
       </tr>
       <tr>
-        <td height="70">&nbsp;</td>
+        <td height="70" style="text-align: center"><img src="{{ url('ttd/'.$ketua->nidn.'/'.$ketua->ttd) }}" alt="" srcset="" height="80" width="auto"></td>
       </tr>
       <tr>
-        <td style="text-align: center"><span class="cls_005"><b>({{ $ketua->gelar3 }} {{ $ketua->name }}, {{ $ketua->gelar1 }}, {{ $ketua->gelar2 }})</b></span></td>
+        <td style="text-align: center"><span class="cls_005"><b>(@if ($ketua -> depan == "Y")
+                        {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                    @else
+                        {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @endif)</b></span></td>
       </tr>
     </tbody>
   </table>
@@ -307,10 +355,14 @@ hr.new4 {
         <td style="text-align: center" height="30"><span class="cls_005">Anggota Penguji 1</span></td>
       </tr>
       <tr>
-        <td height="70">&nbsp;</td>
+        <td height="70" style="text-align: center"><img src="{{ url('ttd/'.$anggota1->nidn.'/'.$anggota1->ttd) }}" alt="" srcset="" height="80" width="auto"></td>
       </tr>
       <tr>
-        <td style="text-align: center"><span class="cls_005"><b>({{ $anggota1->gelar3 }} {{ $anggota1->name }}, {{ $anggota1->gelar1 }}, {{ $anggota1->gelar2 }})</b></span></td>
+        <td style="text-align: center"><span class="cls_005"><b>(@if ($anggota1 -> depan == "Y")
+                        {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                    @else
+                        {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @endif)</b></span></td>
       </tr>
     </tbody>
   </table>
@@ -345,10 +397,14 @@ hr.new4 {
         <td style="text-align: center" height="30"><span class="cls_005">Anggota Penguji 2</span></td>
       </tr>
       <tr>
-        <td height="70">&nbsp;</td>
+        <td height="70" style="text-align: center"><img src="{{ url('ttd/'.$anggota2->nidn.'/'.$anggota2->ttd) }}" alt="" srcset="" height="80" width="auto"></td>
       </tr>
       <tr>
-        <td style="text-align: center"><span class="cls_005"><b>({{ $anggota2->gelar3 }} {{ $anggota2->name }}, {{ $anggota2->gelar1 }}, {{ $anggota2->gelar2 }})</b></span></td>
+        <td style="text-align: center"><span class="cls_005"><b>(@if ($anggota2 -> depan == "Y")
+                        {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                    @else
+                        {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @endif)</b></span></td>
       </tr>
     </tbody>
   </table>

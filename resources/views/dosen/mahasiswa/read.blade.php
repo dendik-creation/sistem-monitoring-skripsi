@@ -40,11 +40,12 @@
                                 <th>Semester</th>
                                 <th>NIM</th>
                                 <th>Nama</th>
-                                <th>Progress</th>
-                                {{-- <th>Sempro</th>
-                                <th>Skripsi</th> --}}
-                                {{-- <th>Edit</th>
-                                <th>Hapus</th> --}}
+                                <th>Proposal</th>
+                                <th>Sempro</th>
+                                <th>Bimbingan</th>
+                                <th>Skripsi</th>
+                                <th>Ujian</th>
+                                <th>Detail</th>
                             </tr>
                         </thead>
                         <tbody id="datatabel">
@@ -55,6 +56,11 @@
                                     <td>{{ $item -> smt }}</td>
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> name }}</td>
+                                    <td class="<?=$item -> status_proposal == "Belum mengajukan proposal" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_proposal }}</td>
+                                    <td class="<?=$item -> status_sempro == "Belum seminar proposal" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_sempro }}</td>
+                                    <td class="<?=$item -> status_bimbingan == "Belum melakukan bimbingan" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_bimbingan }}</td>
+                                    <td class="<?=($item -> status_skripsi == "Belum mengerjakan" ? 'text-danger' : ($item -> status_skripsi == "Sedang dikerjakan" ? 'text-warning' : 'text-success'))?>"><strong>{{ $item -> status_skripsi }}</td>
+                                    <td class="<?=$item -> status_ujian == "Lulus" ? 'text-success' : 'text-danger'?>"><strong>{{ $item -> status_ujian }}</td>
                                     {{-- <td>Sudah Seminar</td>
                                     <td>Bimbingan Ke-2</td> --}}
                                     <td><a href="/dosen/mahasiswa/detail/{{ $item->nim }}" class="btn btn-sm btn-primary">Lihat Detail</a></td>

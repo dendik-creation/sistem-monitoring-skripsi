@@ -21,7 +21,7 @@ class CreateHasilSemproTable extends Migration
             $table->foreign('id_proposal')->references('id')->on('proposal');
             $table->unsignedBigInteger('id_jadwal_sempro')->nullable();
             $table->foreign('id_jadwal_sempro')->references('id')->on('jadwal_sempro');
-            $table->enum('berita_acara', ['Diterima', 'Ditolak'])->default('Diterima');
+            $table->enum('berita_acara', ['Diterima', 'Ditolak'])->default('Menunggu keputusan');
             $table->string('sikap1', 5)->nullable();
             $table->string('presentasi1', 5)->nullable();
             $table->string('penguasaan1', 5)->nullable();
@@ -34,6 +34,8 @@ class CreateHasilSemproTable extends Migration
             $table->string('jumlah2', 5)->nullable();
             $table->string('grade2', 5)->nullable();
             $table->text('revisi2')->nullable();
+            $table->string('file1')->nullable();
+            $table->string('file2')->nullable();
             $table->timestamps();
         });
     }

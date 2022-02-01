@@ -10,8 +10,17 @@
             </div>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
-        <form class="user" action="/dosen/skripsi/inserthasil" method="POST">
+        <form class="user" action="/dosen/skripsi/inserthasil" method="POST" enctype="multipart/form-data">
         {{csrf_field()}}
 
         <div class="row mt-5">
@@ -52,17 +61,25 @@
                 <tr>
                   <td>Berkas Ujian</td>
                   <td>:</td>
-                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}">{{$item->berkas_ujian}}</a></th>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download file'?></a></th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Utama</td>
                   <td>:</td>
-                  <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</th>
+                  <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif</th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Pembantu</td>
                   <td>:</td>
-                  <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</th>
+                  <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif</th>
                 </tr>
                 <tr>
                   <td><hr class="sidebar-divider"></td>
@@ -72,17 +89,35 @@
                 <tr>
                   <td>Ketua Penguji</td>
                   <td>:</td>
-                  <th>{{ $ketua->gelar3 }} {{ $ketua->name }}, {{ $ketua->gelar1 }}, {{ $ketua->gelar2 }}</th>
+                  <th>
+                    @if ($ketua -> depan == "Y")
+                        {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                    @else
+                        {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @endif
+                  </th>
                 </tr>
                 <tr>
                   <td>Anggota Penguji 1</td>
                   <td>:</td>
-                  <th>{{ $anggota1->gelar3 }} {{ $anggota1->name }}, {{ $anggota1->gelar1 }}, {{ $anggota1->gelar2 }}</th>
+                  <th>
+                    @if ($anggota1 -> depan == "Y")
+                        {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                    @else
+                        {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @endif
+                  </th>
                 </tr>
                 <tr>
                   <td>Anggota Penguji 2</td>
                   <td>:</td>
-                  <th>{{ $anggota2->gelar3 }} {{ $anggota2->name }}, {{ $anggota2->gelar1 }}, {{ $anggota2->gelar2 }}</th>
+                  <th>
+                    @if ($anggota2 -> depan == "Y")
+                        {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                    @else
+                        {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @endif
+                  </th>
                 </tr>
                 <tr>
                   <td><hr class="sidebar-divider"></td>
@@ -90,7 +125,7 @@
                   <td><hr class="sidebar-divider"></td>
                 </tr>
                 <tr>
-                  <td>Jadwal Seminar</td>
+                  <td>Jadwal Ujian Skripsi</td>
                   <td>:</td>
                   <th>{{ tgl_indo($item->tanggal, true)}}</th>
                 </tr>
@@ -149,22 +184,22 @@
                     <tr>
                       <td>Nilai Sikap(10%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="sikap1" placeholder="Masukkan Nilai Sikap" required <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="sikap1" placeholder="Masukkan Nilai Sikap" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Presentasi(10%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="presentasi1" placeholder="Masukkan Nilai Presentasi" required <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="presentasi1" placeholder="Masukkan Nilai Presentasi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Penguasaan Teori(40%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="teori1" placeholder="Masukkan Nilai Penguasaan Teori" required <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="teori1" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Penguasaan Program(40%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="program1" placeholder="Masukkan Nilai Penguasaan Program" required <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="program1" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Jumlah</td>
@@ -193,6 +228,11 @@
                       <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></textarea></th>
                     </tr>
                     <tr>
+                      <td>File Pendukung</td>
+                      <td>:</td>
+                      <th><input type="file" name="file_pendukung1" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
+                    </tr>
+                    <tr>
                       <td></td>
                       <td></td>
                       <td>
@@ -216,22 +256,22 @@
                     <tr>
                       <td>Nilai Sikap(10%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="sikap2" placeholder="Masukkan Nilai Sikap" required <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="sikap2" placeholder="Masukkan Nilai Sikap" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Presentasi(10%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="presentasi2" placeholder="Masukkan Nilai Presentasi" required <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="presentasi2" placeholder="Masukkan Nilai Presentasi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Penguasaan Teori(40%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="teori2" placeholder="Masukkan Nilai Penguasaan Teori" required <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="teori2" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Nilai Penguasaan Program(40%)</td>
                       <td>:</td>
-                      <th><input type="text" class="form-control" name="program2" placeholder="Masukkan Nilai Penguasaan Program" required <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                      <th><input type="text" class="form-control" name="program2" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
                     </tr>
                     <tr>
                       <td>Jumlah</td>
@@ -260,6 +300,11 @@
                       <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
                     </tr>
                     <tr>
+                      <td>File Pendukung</td>
+                      <td>:</td>
+                      <th><input type="file" name="file_pendukung2" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
+                    </tr>
+                    <tr>
                       <td></td>
                       <td></td>
                       <td>
@@ -283,22 +328,22 @@
                   <tr>
                     <td>Nilai Sikap(10%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="sikap3" placeholder="Masukkan Nilai Sikap" required <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="sikap3" placeholder="Masukkan Nilai Sikap" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Nilai Presentasi(10%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="presentasi3" placeholder="Masukkan Nilai Presentasi" required <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="presentasi3" placeholder="Masukkan Nilai Presentasi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Nilai Penguasaan Teori(40%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="teori3" placeholder="Masukkan Nilai Penguasaan Teori" required <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="teori3" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Nilai Penguasaan Program(40%)</td>
                     <td>:</td>
-                    <th><input type="text" class="form-control" name="program3" placeholder="Masukkan Nilai Penguasaan Program" required <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                    <th><input type="text" class="form-control" name="program3" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
                   </tr>
                   <tr>
                     <td>Jumlah</td>
@@ -325,6 +370,11 @@
                     <td>Revisi</td>
                     <td>:</td>
                     <th><textarea class="form-control" name="revisi3" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                  </tr>
+                  <tr>
+                    <td>File Pendukung</td>
+                    <td>:</td>
+                    <th><input type="file" name="file_pendukung3" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
                   </tr>
                   <tr>
                     <td></td>

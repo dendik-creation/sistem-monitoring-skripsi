@@ -7,6 +7,22 @@
             <h1 class="h3 mb-2 text-gray-800">Tambah Satu Mahasiswa</h1>
         </div>
 
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
+        @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif
+
         {{-- Form --}}
         <form class="user" action="/admin/proposal/plotting/insert" method="POST">
         {{csrf_field()}}
@@ -37,7 +53,11 @@
                     <select class="form-control" name="dosbing1">
                         <option>Dosen Pembimbing 1 --</option>
                         @foreach($dosen1 as $item)
-                            <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                            @if ($item->depan == "Y")
+                                <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                            @else
+                                <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -46,7 +66,11 @@
                     <select class="form-control" name="dosbing2">
                         <option>Dosen Pembimbing 2 --</option>
                         @foreach($dosen2 as $item)
-                            <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                            @if ($item->depan == "Y")
+                                <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                            @else
+                                <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

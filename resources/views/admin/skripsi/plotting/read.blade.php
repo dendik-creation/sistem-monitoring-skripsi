@@ -92,9 +92,25 @@
                                     <td>{{ $item -> smt }}</td>
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> name }}</td>
-                                    <td>{{ $item -> gelar31 }} {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}</td>
-                                    <td>{{ $item -> gelar32 }} {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}</td>
-                                    <td>{{ $item -> gelar33 }} {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}</td>
+                                    <td>
+                                        @if ($item -> depan1 == "Y")
+                                            {{ $item -> gelar31 }} {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
+                                        @else
+                                            {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
+                                        @endif
+                                    <td>
+                                        @if ($item -> depan2 == "Y")
+                                            {{ $item -> gelar32 }} {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
+                                        @else
+                                            {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($item -> depan3 == "Y")
+                                            {{ $item -> gelar33 }} {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}
+                                        @else
+                                            {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}, {{ $item -> gelar33 }}
+                                        @endif
                                     {{-- <td>Sudah Seminar</td>
                                     <td>Bimbingan Ke-2</td> --}}
                                     {{-- <td>

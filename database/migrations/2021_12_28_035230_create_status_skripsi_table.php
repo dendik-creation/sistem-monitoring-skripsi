@@ -19,8 +19,8 @@ class CreateStatusSkripsiTable extends Migration
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_proposal');
             $table->foreign('id_proposal')->references('id')->on('proposal');
-            $table->enum('status_skripsi', ['Sedang Dikerjakan', 'Selesai'])->default('Sedang Dikerjakan');
-            $table->enum('status_ujian', ['Belum Ujian', 'Lulus', 'Tidak Lulus'])->default('Belum Ujian');
+            $table->enum('status_skripsi', ['Sedang dikerjakan', 'Selesai'])->default('Sedang dikerjakan');
+            $table->enum('status_ujian', ['Belum ujian', 'Lulus', 'Tidak Lulus'])->default('Belum ujian');
             $table->timestamps();
         });
     }

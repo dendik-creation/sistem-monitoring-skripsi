@@ -22,7 +22,8 @@ class CreateBerkasSemproTable extends Migration
             $table->unsignedBigInteger('id_plot_dosbing');
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
             $table->string('berkas_sempro');
-            $table->enum('status', ['Menunggu Dijadwalkan', 'Terjadwal'])->default('Menunggu Dijadwalkan');
+            $table->enum('status', ['Menunggu Dijadwalkan', 'Berkas OK', 'Gagal Dijadwalkan', 'Terjadwal'])->default('Menunggu Dijadwalkan');
+            $table->string('komentar_admin');
             $table->timestamps();
         });
     }

@@ -34,12 +34,20 @@
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</th>
+                        <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</th>
+                        <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif</th>
                       </tr>
                     </tbody>
                   </table>
@@ -50,57 +58,49 @@
                       <tr>
                         <td>Pengajuan Proposal</td>
                         <td>:</td>
-                          @if ($pengajuan == 0)
-                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum Mengajukan Proposal</th>
+                          @if ($mhs -> status_proposal == "Belum mengajukan proposal")
+                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum mengajukan proposal</th>
                           @else
-                            <th style="pointer-events: none;" class="btn btn-sm btn-success">Sudah Mengajukan Proposal</th>
+                            <th style="pointer-events: none;" class="btn btn-sm btn-success">Sudah mengajukan proposal</th>
                           @endif
                       </tr>
                       <tr>
                         <td>Seminar Proposal</td>
                         <td>:</td>
-                          @if ($sempro == null)
-                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum Mendaftar Seminar Proposal</th>
-                          @elseif($sempro->status1 == 'Sudah' && $sempro->status2 == 'Sudah')
-                            <th style="pointer-events: none;" class="btn btn-sm btn-success">Sudah Seminar Proposal</th>
+                          @if ($mhs -> status_sempro == "Belum seminar proposal")
+                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum seminar proposal</th>
                           @else
-                            <th style="pointer-events: none;" class="btn btn-sm btn-warning">Belum Seminar Proposal</th>
-                          @endif
-                      </tr>
-                      <tr>
-                        <td>Status Skripsi</td>
-                        <td>:</td>
-                          @if ($status == null)
-                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum Mengerjakan Skripsi</th>
-                          @elseif($status->status_skripsi == 'Sedang Dikerjakan')
-                            <th style="pointer-events: none;" class="btn btn-sm btn-warning">Sedang Dikerjakan</th>
-                          @else
-                            <th style="pointer-events: none;" class="btn btn-sm btn-success">Selesai</th>
+                            <th style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</th>
                           @endif
                       </tr>
                       <tr>
                         <td>Bimbingan Skripsi</td>
                         <td>:</td>
-                          @if ($bimbingan == null)
-                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum Melakukan Bimbingan</th>
+                          @if ($mhs -> status_bimbingan == "Belum melakukan bimbingan")
+                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum melakukan bimbingan</th>
                           @else
-                            @if ($dosen1->nidn == $user->no_induk)
-                              <th>Bimbingan Ke-{{ $bimbingan->bimbingan_ke }} - {{ $bimbingan->ket1 }}</th>
-                            @else
-                              <th>Bimbingan Ke-{{ $bimbingan->bimbingan_ke }} - {{ $bimbingan->ket2 }}</th>
-                            @endif
+                            <th style="pointer-events: none;" class="btn btn-sm btn-success">{{ $mhs->status_bimbingan }}</th>
+                          @endif
+                      </tr>
+                      <tr>
+                        <td>Status Skripsi</td>
+                        <td>:</td>
+                          @if ($mhs -> status_skripsi == "Belum mengerjakan")
+                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum mengerjakan</th>
+                          @elseif($mhs -> status_skripsi == 'Sedang dikerjakan')
+                            <th style="pointer-events: none;" class="btn btn-sm btn-warning">Sedang dikerjakan</th>
+                          @else
+                            <th style="pointer-events: none;" class="btn btn-sm btn-success">Selesai</th>
                           @endif
                       </tr>
                       <tr>
                         <td>Status Ujian</td>
                         <td>:</td>
-                          @if ($status == null)
-                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum Ujian Skripsi</th>
-                          @elseif($status->status_ujian == 'Belum Ujian')
-                            <th style="pointer-events: none;" class="btn btn-sm btn-warning">Belum Ujian</th>
-                          @elseif($status->status_ujian == 'Lulus')
+                          @if ($mhs -> status_ujian == "Lulus")
                             <th style="pointer-events: none;" class="btn btn-sm btn-success">Lulus</th>
-                          @else
+                          @elseif($mhs->status_ujian == 'Belum ujian')
+                            <th style="pointer-events: none;" class="btn btn-sm btn-danger">Belum ujian</th>
+                          @elseif($mhs->status_ujian == 'Tidak Lulus')
                             <th style="pointer-events: none;" class="btn btn-sm btn-danger">Tidak Lulus</th>
                           @endif
                       </tr>

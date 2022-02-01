@@ -60,7 +60,11 @@
                                         @if ($item -> status1 == 'Belum' && $item -> status2 == 'Belum')
                                         <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum ujian skripsi</p>
                                         @else
-                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian skripsi</p>
+                                        @php
+                                            $ba = DB::table('hasil_ujian')->where('id_jadwal_ujian', $item->id)->first();
+                                            // dd($ba);
+                                        @endphp
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian skripsi</p>  - <p style="pointer-events: none;" class="btn btn-sm <?=$ba->berita_acara == "Lulus" ? 'btn-success' : 'btn-danger'?>">{{ $ba->berita_acara }}</p>
                                         @endif
                                     </td>
                                     <td><a href="/admin/skripsi/penjadwalan/detail/{{$item->id}}" class="btn btn-sm btn-primary">Lihat Detail</td>

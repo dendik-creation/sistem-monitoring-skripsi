@@ -22,7 +22,8 @@ class CreateBerkasUjianTable extends Migration
             $table->unsignedBigInteger('id_plot_penguji');
             $table->foreign('id_plot_penguji')->references('id')->on('plot_penguji');
             $table->string('berkas_ujian');
-            $table->enum('status', ['Menunggu Dijadwalkan', 'Terjadwal'])->default('Menunggu Dijadwalkan');
+            $table->enum('status', ['Menunggu Dijadwalkan', 'Berkas OK', 'Gagal Dijadwalkan', 'Terjadwal'])->default('Menunggu Dijadwalkan');
+            $table->string('komentar_admin');
             $table->timestamps();
         });
     }

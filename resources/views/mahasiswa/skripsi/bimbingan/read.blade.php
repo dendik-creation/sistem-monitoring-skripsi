@@ -7,7 +7,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Bimbingan Skripsi</h1>
             <div class="pull-right">
-                <a href="/mahasiswa/skripsi/bimbingan/tambah" class="btn btn-success btn-flat">
+                <a href="/mahasiswa/skripsi/bimbingan/tambah" class="btn btn-success btn-flat <?=$cekbimbinganselesai != null ? 'disabled' : '' ?>">
                     <i class="fa fa-plus"></i> Tambah
                 </a>
             </div>
@@ -38,6 +38,7 @@
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Bimbingan Ke</th>
+                                <th>Status</th>
                                 <th>Detail</th>
                             </tr>
                         </thead>
@@ -49,6 +50,11 @@
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> bimbingan_ke }}</td>
+                                    <td>
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Selesai Bimbingan' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}</p>
+                                         - 
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Selesai Bimbingan' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}</p>
+                                    </td>
                                     <td><a href="/mahasiswa/skripsi/bimbingan/detail/{{ $item->bimbingan_ke  }}" class="btn btn-sm btn-primary">Lihat Detail</a></td>
                                 </tr>
                                 @endforeach

@@ -44,12 +44,20 @@
                 <tr>
                   <td>Dosen Pembimbing Utama</td>
                   <td>:</td>
-                  <th>{{ $dosen1->gelar3 }} {{ $dosen1->name }}, {{ $dosen1->gelar1 }}, {{ $dosen1->gelar2 }}</th>
+                  <th>@if ($dosen1 -> depan == "Y")
+                              {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif</th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Pembantu</td>
                   <td>:</td>
-                  <th>{{ $dosen2->gelar3 }} {{ $dosen2->name }}, {{ $dosen2->gelar1 }}, {{ $dosen2->gelar2 }}</th>
+                  <th>@if ($dosen2 -> depan == "Y")
+                              {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif</th>
                 </tr>
               </tbody>
             </table>
@@ -63,17 +71,29 @@
                       <tr>
                         <td>Ketua Penguji</td>
                         <td>:</td>
-                        <th>{{ $ketua->gelar3 }} {{ $ketua->name }}, {{ $ketua->gelar1 }}, {{ $ketua->gelar2 }}</th>
+                        <th>@if ($ketua -> depan == "Y")
+                          {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                      @else
+                          {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                      @endif</th>
                       </tr>
                       <tr>
                         <td>Anggota Penguji 1</td>
                         <td>:</td>
-                        <th>{{ $anggota1->gelar3 }} {{ $anggota1->name }}, {{ $anggota1->gelar1 }}, {{ $anggota1->gelar2 }}</th>
+                        <th>@if ($anggota1 -> depan == "Y")
+                          {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                      @else
+                          {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                      @endif</th>
                       </tr>
                       <tr>
                         <td>Anggota Penguji 2</td>
                         <td>:</td>
-                        <th>{{ $anggota2->gelar3 }} {{ $anggota2->name }}, {{ $anggota2->gelar1 }}, {{ $anggota2->gelar2 }}</th>
+                        <th>@if ($anggota2 -> depan == "Y")
+                          {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                      @else
+                          {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                      @endif</th>
                       </tr>
                     </tbody>
                   </table>

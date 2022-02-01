@@ -36,6 +36,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Gelar</th>
+                                <th>Keterangan</th>
                                 <th>Edit</th>
                                 {{-- <th>Hapus</th> --}}
                             </tr>
@@ -46,6 +47,13 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item -> gelar }}</td>
+                                    <td>
+                                        @if ($item->depan == "Y")
+                                            Gelar Depan
+                                        @else
+                                            Gelar Belakang
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="/admin/dosen/s3/edit/{{$item->id}}" class="btn btn-primary btn-sm">Edit</a>
                                     </td>
