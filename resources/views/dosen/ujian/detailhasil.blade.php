@@ -76,7 +76,7 @@
                       <tr>
                         <td>Status</td>
                         <td>:</td>
-                        <th class="<?=$item->berita_acara == "Lulus" ? 'text-success' : 'text-danger' ?>">{{ $item->berita_acara }}</th>
+                        <th class="<?=($item->berita_acara == "Sudah ujian - Lulus" ? 'text-success' : ( $item->berita_acara == "Sudah ujian - Tidak Lulus" ? 'text-danger' : 'text-warning')) ?>">{{ $item->berita_acara }}</th>
                       </tr>
                     </tbody>
                   </table>
@@ -196,6 +196,33 @@
               </table>
         </div>
     </div>
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+      <h1 class="h3 mb-2 text-gray-800">Revisi Dosen Pembimbing Pembantu</h1>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td>Revisi</td>
+                  <td>:</td>
+                  <th><textarea rows="10" class="form-control">{{ $item->revisi4 }}</textarea></th>
+                </tr>
+                <tr>
+                  <td>File Pendukung</td>
+                  <td>:</td>
+                  <th><a href="/download/{{$item->nim}}/proposal/revisi dari dosen/{{$item->file4}}"><?=$item->file4 == null ? '-' : 'Download file'?></a></th>
+                </tr>
+                <tr>
+                  <td><hr class="sidebar-divider"></td>
+                  <td></td>
+                  <td><hr class="sidebar-divider"></td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+  </div>
 
     </div>
 @endsection

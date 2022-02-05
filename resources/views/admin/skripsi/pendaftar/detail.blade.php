@@ -133,7 +133,7 @@
                   </table>
                   <div class="mt-4 mb-4">
                       <button type="submit" class="btn btn-primary mr-2">Jadwalkan</button>
-                      <a href="{{ route('dataskripsipendaftar')}}" class="btn btn-secondary">Batal</a>
+                      <a href="{{ route('dataskripsipenjadwalan')}}" class="btn btn-secondary">Batal</a>
                     </form>
                   </div>
             </div>

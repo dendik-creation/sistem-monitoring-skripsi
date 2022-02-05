@@ -64,7 +64,7 @@
                           @endif" required readonly>
                     </div>
                     <div class="form-group">
-                        <label for="" class="small">Berkas (ZIP)*</label><br>
+                        <label for="" class="small">Berkas* (ZIP) (Max 20MB)</label><br>
                         <input type="file" name="berkas_sempro" placeholder="Masukkan Berkas Seminar" required  accept=".zip,.rar,.7zip">
                     </div>
                 </div>

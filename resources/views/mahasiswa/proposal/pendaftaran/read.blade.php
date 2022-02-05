@@ -10,16 +10,32 @@
                 @php
                     $tgl = date('Y-m-d');
                     // echo $tgl;
+
+                    $cek = DB::table('berkas_sempro')
+                    ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
+                    ->select('berkas_sempro.*', 'mahasiswa.*')
+                    ->where('berkas_sempro.nim', $user->no_induk)
+                    ->orderByRaw('berkas_sempro.id DESC')
+                    ->first();
+                    // dd($data);
                 @endphp
                 {{-- @if ($dataprop === null || $tgl != "2022-01-31") --}}
                 @if ($dataprop === null)
                     <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat disabled">
                         <i class="fa fa-plus"></i> Daftar
                     </a>
-                @else
+                @elseif($cek == null)
                     <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat">
                         <i class="fa fa-plus"></i> Daftar
                     </a>
+                @elseif($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
+                    <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat disabled">
+                        <i class="fa fa-plus"></i> Daftar
+                    </a>
+                @else
+                <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat">
+                    <i class="fa fa-plus"></i> Daftar
+                </a>
                 @endif
             </div>
         </div>
@@ -51,6 +67,7 @@
                                 <th>Judul</th>
                                 <th>Berkas</th>
                                 <th>Status</th>
+                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,7 +78,7 @@
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> judul }}</td>
-                                    <td><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}"><?=$item->berkas_sempro == null ? '' : 'Download file'?></td>
+                                    <td><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}"><?=$item->berkas_sempro == null ? '' : 'Download berkas sempro'?></td>
                                     <td>
                                         @php
                                             $jadwal = DB::table('jadwal_sempro')
@@ -69,31 +86,80 @@
                                             ->select('jadwal_sempro.id as id', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2')
                                             ->where('berkas_sempro.id', $item->id)
                                             ->first();
+                                            // dd($jadwal);
                                         @endphp
                                         @if (($jadwal === null && $item->status == "Menunggu Dijadwalkan") || ($jadwal === null && $item->status == "Berkas OK"))
                                             <p style="pointer-events: none;" class="btn btn-sm btn-warning">Menunggu Dijadwalkan
                                         @else
 
-                                            @if ($jadwal === null || $item->status == "Gagal Dijadwalkan")
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-danger">Gagal dijadwalkan - {{ $item->komentar }}</p>
-                                            
+                                            @if ($jadwal === null && $item->status == "Berkas tidak lengkap")
+                                            <p style="pointer-events: none;" class="btn btn-sm btn-danger">Berkas tidak lengkap - {{ $item->komentar }}</p>
+                                            {{-- @elseif($item->status == "Terjadwal")
+                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Berkas tidak lengkap - {{ $item->komentar }}</p> --}}
                                             @else
-                                            @if ($jadwal->status1 == "Sudah" && $jadwal->status2 == "Sudah")
-                                            @php
-                                            $ba = DB::table('hasil_sempro')
-                                            ->join('jadwal_sempro', 'hasil_sempro.id_jadwal_sempro', '=', 'jadwal_sempro.id')
+                                                @if ($jadwal->status1 == "Sudah" && $jadwal->status2 == "Sudah")
+                                                @php
+                                                $ba = DB::table('hasil_sempro')
+                                                ->join('jadwal_sempro', 'hasil_sempro.id_jadwal_sempro', '=', 'jadwal_sempro.id')
+                                                ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
+                                                ->where('id_berkas_sempro', $item->id)->first();
+                                                // dd($ba);
+                                                @endphp
+                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</p> - <p style="pointer-events: none;" class="btn btn-sm <?=($ba->berita_acara == "Diterima" ? 'btn-success' : ($ba->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p>
+                                                {{-- <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
+                                                <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a> --}}
+                                                @else
+                                                <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum seminar proposal</p> 
+                                                @endif
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @php
+                                            $jadwal = DB::table('jadwal_sempro')
                                             ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
-                                            ->where('id_berkas_sempro', $item->id)->first();
-                                            // dd($ba);
-                                            @endphp
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</p> - <p style="pointer-events: none;" class="btn btn-sm <?=($ba->berita_acara == "Diterima" ? 'btn-success' : ($ba->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p>
-                                            {{-- <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
-                                            <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a> --}}
-                                            @else
-                                            <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
-                                            <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a>  
-                                            @endif
-                                            @endif
+                                            ->select('jadwal_sempro.id as id', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2')
+                                            ->where('berkas_sempro.id', $item->id)
+                                            ->first();
+                                            // dd($jadwal);
+                                        @endphp
+
+                                        @if ($jadwal === null && $item->status == "Berkas tidak lengkap")
+                                        <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalberkas{{$item->id}}">
+                                            Upload perbaikan berkas
+                                          </button>
+                                        <div class="modal fade" id="modalberkas{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Upload Perbaikan Berkas Sempro</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <form action="/mahasiswa/editsempro/{{$item->id}}" method="post" enctype="multipart/form-data">
+                                                    {{csrf_field()}}
+                                                    {{method_field('PUT')}}
+                                                    <div class="modal-body">
+                                                      <div class="form-group">
+                                                        <label for="" class="small">Berkas* (ZIP) (Max 20MB)</label><br>
+                                                        <input type="file" name="berkas_sempro" placeholder="Masukkan File" accept=".zip,.rar,.7zip">
+                                                      </div>
+                                                      <input type="hidden" name="nim" value="{{$item->nim}}" id="">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" name="submit" class="btn btn-primary">Upload</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK")
+                                        -
+                                        @else
+                                        <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
+                                        <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a>
                                         @endif
                                     </td>
                                 </tr>

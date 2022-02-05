@@ -49,7 +49,7 @@
                       <tr>
                         <td>Status</td>
                         <td>:</td>
-                        <th class="<?=$item->berita_acara == "Diterima" ? 'text-success' : 'text-danger' ?>">{{ $item->berita_acara }}</th>
+                        <th class="<?=($item->berita_acara == "Sudah seminar - Diterima" ? 'text-success' : ( $item->berita_acara == "Sudah seminar - Ditolak" ? 'text-danger' : 'text-warning')) ?>">{{ $item->berita_acara }}</th>
                       </tr>
                     </tbody>
                   </table>

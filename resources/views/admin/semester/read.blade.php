@@ -56,7 +56,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="/admin/semester/edit/{{$item->id}}" class="btn btn-primary btn-sm">Ganti Status</a>
+                                        <a href="/admin/semester/edit/{{$item->id}}" class="btn btn-primary btn-sm">Ganti status</a>
                                     </td>
                                 </tr>
                            @endforeach

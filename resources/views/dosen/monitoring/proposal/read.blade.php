@@ -45,7 +45,7 @@
                                 {{-- <th>Proposal</th>
                                 <th>Ket Mhs</th> --}}
                                 <th>Status</th>
-                                <th>Detail</th>
+                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody id="datatabel">
@@ -68,7 +68,7 @@
                                         <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}
                                         @endif
                                     </td>
-                                    <td><a href="/dosen/monitoring/proposal/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Detail</a></td>
+                                    <td><a href="/dosen/monitoring/proposal/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Lihat detail</a></td>
                                 </tr>
                            @endforeach
                         </tbody>

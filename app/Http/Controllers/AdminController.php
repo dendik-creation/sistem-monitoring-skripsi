@@ -575,7 +575,7 @@ class AdminController extends Controller
         $data = DB::table('berkas_sempro')
             ->where('id', $id)
             ->update(
-            ['status' => 'Gagal Dijadwalkan',
+            ['status' => 'Berkas tidak lengkap',
             'komentar_admin' => $request->komentar_admin]);
 
             return back();
@@ -674,32 +674,34 @@ class AdminController extends Controller
     //Proposal Data Penjadwalan
     public function viewProposalPenjadwalan(){
         $user = Auth::user();
-        $data = DB::table('jadwal_sempro')
-        ->join('mahasiswa', 'jadwal_sempro.nim', '=', 'mahasiswa.nim')
-        ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
-        ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
-        ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-        // ->join('hasil_sempro', 'hasil_sempro.id', '=', 'jadwal_sempro.id')
+        // $data = DB::table('jadwal_sempro')
+        // ->join('mahasiswa', 'jadwal_sempro.nim', '=', 'mahasiswa.nim')
+        // ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
+        // ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
+        // ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
+        // ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+        // // ->join('hasil_sempro', 'hasil_sempro.id', '=', 'jadwal_sempro.id')
 
-        ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
-        ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+        // ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+        // ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
         
-        ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
-        ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
-        ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+        // ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+        // ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+        // ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
-        ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
-        ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
-        ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+        // ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+        // ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+        // ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'proposal.judul as judul', 
-        'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal', 'semester.semester as semester', 'semester.tahun as tahun',
-        'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2',
-        'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
-        's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
-        ->orderByRaw('jadwal_sempro.id DESC')
-        ->get();
+        // ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'proposal.judul as judul', 
+        // 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal', 'semester.semester as semester', 'semester.tahun as tahun',
+        // 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2',
+        // 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+        // 's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+        // // ->where('status', 'Berkas OK')
+        // // ->orWhere('status', 'Terjadwal')
+        // ->orderByRaw('jadwal_sempro.id DESC')
+        // ->get();
 
         // $data = DB::table('hasil_sempro')
         // ->join('mahasiswa', 'hasil_sempro.nim', '=', 'mahasiswa.nim')
@@ -711,7 +713,124 @@ class AdminController extends Controller
         // 'jadwal_sempro.tanggal as tanggal', 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket',)
         // ->get();
 
+        $data = DB::table('berkas_sempro')
+                ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
+                ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_sempro.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Berkas OK')
+                ->orWhere('status', 'Terjadwal')
+                ->orderByRaw('berkas_sempro.id DESC')
+                ->get();
+                // dd($data);
+
+                // $ba = DB::table('jadwal_sempro')->where('id_berkas_sempro', $data->id)->first();
+
         return view('admin.proposal.penjadwalan.read', compact('data', 'user'));
+    }
+
+    //filtering
+    public function viewProposalPenjadwalanFilter($id){
+        $user = Auth::user();
+
+        if($id==1){
+            $data = DB::table('berkas_sempro')
+                ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
+                ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_sempro.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Berkas OK')
+                ->orderByRaw('berkas_sempro.id DESC')
+                ->get();
+        }else if($id==2){
+            $data = DB::table('berkas_sempro')
+                ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
+                ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_sempro.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->orWhere('status', 'Terjadwal')
+                ->orderByRaw('berkas_sempro.id DESC')
+                ->get();
+        }else if($id==3){
+            $data = DB::table('berkas_sempro')
+                ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
+                ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_sempro.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Berkas OK')
+                ->orWhere('status', 'Terjadwal')
+                ->orderByRaw('berkas_sempro.id DESC')
+                ->get();
+        }
+        return $data;
     }
 
     public function viewDetailJadwalSempro($id){
@@ -738,7 +857,7 @@ class AdminController extends Controller
         'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2',
         'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's31.depan as depan1', 's32.depan as depan2')
-        ->where('jadwal_sempro.id', $id)
+        ->where('jadwal_sempro.id_berkas_sempro', $id)
         ->get();
 
         $hasil_sempro = DB::table('hasil_sempro')
@@ -897,7 +1016,7 @@ class AdminController extends Controller
         $data = DB::table('berkas_ujian')
             ->where('id', $id)
             ->update(
-            ['status' => 'Gagal Dijadwalkan',
+            ['status' => 'Berkas tidak lengkap',
             'komentar_admin' => $request->komentar_admin]);
 
             return back();
@@ -1020,52 +1139,52 @@ class AdminController extends Controller
     //Ujian Skripsi Data Penjadwalan
     public function viewSkripsiPenjadwalan(){
         $user = Auth::user();
-        $data = DB::table('jadwal_ujian')
-        ->join('mahasiswa', 'jadwal_ujian.nim', '=', 'mahasiswa.nim')
-        ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
-        ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
-        ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
-        ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+        // $data = DB::table('jadwal_ujian')
+        // ->join('mahasiswa', 'jadwal_ujian.nim', '=', 'mahasiswa.nim')
+        // ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
+        // ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
+        // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+        // ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+        // ->join('semester', 'proposal.id_semester', '=', 'semester.id')
 
-        ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
-        ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+        // ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+        // ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
 
-        ->join('dosen as dos3', 'plot_penguji.ketua_penguji', '=', 'dos3.nidn')
-        ->join('dosen as dos4', 'plot_penguji.anggota_penguji_1', '=', 'dos4.nidn')
-        ->join('dosen as dos5', 'plot_penguji.anggota_penguji_2', '=', 'dos5.nidn')
+        // ->join('dosen as dos3', 'plot_penguji.ketua_penguji', '=', 'dos3.nidn')
+        // ->join('dosen as dos4', 'plot_penguji.anggota_penguji_1', '=', 'dos4.nidn')
+        // ->join('dosen as dos5', 'plot_penguji.anggota_penguji_2', '=', 'dos5.nidn')
         
-        ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
-        ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
-        ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+        // ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+        // ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+        // ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
-        ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
-        ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
-        ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+        // ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+        // ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+        // ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        ->join('s1 as s13', 'dos3.gelar1', '=', 's13.id')
-        ->leftJoin('s2 as s23', 'dos3.gelar2', '=', 's23.id')
-        ->leftJoin('s3 as s33', 'dos3.gelar3', '=', 's33.id')
+        // ->join('s1 as s13', 'dos3.gelar1', '=', 's13.id')
+        // ->leftJoin('s2 as s23', 'dos3.gelar2', '=', 's23.id')
+        // ->leftJoin('s3 as s33', 'dos3.gelar3', '=', 's33.id')
 
-        ->join('s1 as s14', 'dos4.gelar1', '=', 's14.id')
-        ->leftJoin('s2 as s24', 'dos4.gelar2', '=', 's24.id')
-        ->leftJoin('s3 as s34', 'dos4.gelar3', '=', 's34.id')
+        // ->join('s1 as s14', 'dos4.gelar1', '=', 's14.id')
+        // ->leftJoin('s2 as s24', 'dos4.gelar2', '=', 's24.id')
+        // ->leftJoin('s3 as s34', 'dos4.gelar3', '=', 's34.id')
 
-        ->join('s1 as s15', 'dos5.gelar1', '=', 's15.id')
-        ->leftJoin('s2 as s25', 'dos5.gelar2', '=', 's25.id')
-        ->leftJoin('s3 as s35', 'dos5.gelar3', '=', 's35.id')
+        // ->join('s1 as s15', 'dos5.gelar1', '=', 's15.id')
+        // ->leftJoin('s2 as s25', 'dos5.gelar2', '=', 's25.id')
+        // ->leftJoin('s3 as s35', 'dos5.gelar3', '=', 's35.id')
 
-        ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'proposal.judul as judul', 
-        'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_ujian.tanggal as tanggal', 'semester.semester as semester', 'semester.tahun as tahun',
-        'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2',
-        'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
-        's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32',
-        'dos3.name as ketua', 'dos4.name as anggota1', 'dos5.name as anggota2',
-        's11.gelar as gelar13', 's21.gelar as gelar23', 's31.gelar as gelar33',
-        's11.gelar as gelar14', 's21.gelar as gelar24', 's31.gelar as gelar34',
-        's11.gelar as gelar15', 's21.gelar as gelar25', 's31.gelar as gelar35')
-        ->orderByRaw('jadwal_ujian.id DESC')
-        ->get();
+        // ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'proposal.judul as judul', 
+        // 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_ujian.tanggal as tanggal', 'semester.semester as semester', 'semester.tahun as tahun',
+        // 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2',
+        // 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+        // 's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32',
+        // 'dos3.name as ketua', 'dos4.name as anggota1', 'dos5.name as anggota2',
+        // 's11.gelar as gelar13', 's21.gelar as gelar23', 's31.gelar as gelar33',
+        // 's11.gelar as gelar14', 's21.gelar as gelar24', 's31.gelar as gelar34',
+        // 's11.gelar as gelar15', 's21.gelar as gelar25', 's31.gelar as gelar35')
+        // ->orderByRaw('jadwal_ujian.id DESC')
+        // ->get();
 
         // $data = DB::table('hasil_ujian')
         // ->join('mahasiswa', 'hasil_ujian.nim', '=', 'mahasiswa.nim')
@@ -1078,7 +1197,125 @@ class AdminController extends Controller
         // ->select('jadwal_ujian.id as id', 'hasil_ujian.nim as nim','semester.semester as semester', 'semester.tahun as tahun', 'mahasiswa.name as nama', 'proposal.judul as judul', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'hasil_ujian.berita_acara as berita_acara',
         // 'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket',)
         // ->get();
+
+        $data = DB::table('berkas_ujian')
+                ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
+                ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+                ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_ujian.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Berkas OK')
+                ->orWhere('status', 'Terjadwal')
+                ->orderByRaw('berkas_ujian.id DESC')
+                ->get();
         return view('admin.skripsi.penjadwalan.read', compact('data', 'user'));
+    }
+
+    //filtering
+    public function viewSkripsiPenjadwalanFilter($id){
+        $user = Auth::user();
+
+        if($id==1){
+            $data = DB::table('berkas_ujian')
+                ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
+                ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+                ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_ujian.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Berkas OK')
+                ->orderByRaw('berkas_ujian.id DESC')
+                ->get();
+        }else if($id==2){
+            $data = DB::table('berkas_ujian')
+                ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
+                ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+                ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_ujian.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Terjadwal')
+                ->orderByRaw('berkas_ujian.id DESC')
+                ->get();
+        }else if($id==3){
+            $data = DB::table('berkas_ujian')
+                ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
+                ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
+                ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+                ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+                ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+
+                ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                
+                ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+                ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+                ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+                ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+                ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+                ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
+                'berkas_ujian.status as status',
+                'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+                's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', )
+                ->where('status', 'Berkas OK')
+                ->orWhere('status', 'Terjadwal')
+                ->orderByRaw('berkas_ujian.id DESC')
+                ->get();
+        }
+        return $data;
     }
 
     public function viewDetailJadwalUjian($id){
@@ -1256,7 +1493,8 @@ class AdminController extends Controller
         $data = DB::table('s3')
         ->where('id', $id)
         ->update(
-        ['gelar' => $gelar]
+        ['gelar' => $gelar,
+        'depan' => $request->depan]
         );
 
         return redirect('admin/dosen/s3')->with(['success' => 'Berhasil']);

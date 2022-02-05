@@ -36,7 +36,7 @@
                       <tr>
                         <td>File</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $item->nim }}/proposal/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download file'?></a></th>
+                        <th><a href="/download/{{ $item->nim }}/proposal/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download file proposal mahasiswa'?></a></th>
                       </tr>
                       <tr>
                         <td>Keterangan</td>
@@ -46,9 +46,53 @@
                     </tbody>
                   </table>
                 <div class="ml-2 mt-4">
+                  @if ($item->ket1 =="Ditolak" || $item->ket2 =="Ditolak")
+                  <a class="btn btn-danger mr-2" style="pointer-events: none">
+                    Proposal ditolak, silahkan ajukan proposal baru
+                  </a>
+                  @elseif($item->ket1 =="Revisi" && $item->ket2 =="Revisi")
+                  <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modalrev{{$item->id}}">
+                    Upload Revisi Proposal
+                  </button>
+                  @elseif($item->ket1 =="Revisi" || $item->ket2 =="Revisi")
+                  <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modalrev{{$item->id}}">
+                    Upload Revisi Proposal
+                  </button>
+                  @endif
                     <a href="{{ route('datapengajuanproposal')}}" class="btn btn-secondary">Kembali</a>
                 </div>
             </div>
+            <div class="modal fade" id="modalrev{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Upload Revisi Proposal</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <form action="/mahasiswa/proposal/revisi/{{$item->id}}" method="post" enctype="multipart/form-data">
+                      {{csrf_field()}}
+                      {{method_field('PUT')}}
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="" class="small">Revisi Proposal* (DOCX, DOC, PDF) (Max 10MB)</label><br>
+                          <input type="file" name="proposal" placeholder="Masukkan File" accept=".doc, .docx, .pdf">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="small">Keterangan(Optional)</label><br>
+                            <textarea class="form-control" name="komentar" placeholder="Masukkan Keterangan"></textarea>
+                        </div>
+                        <input type="hidden" name="nim" value="{{$item->nim}}" id="">
+                      </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" name="submit" class="btn btn-primary">Upload</button>
+                      </div>
+                  </form>
+              </div>
+              </div>
+          </div>
             <div class="col-md-6">
                 <table class="table table-borderless">
                     <tbody>
@@ -71,14 +115,26 @@
                           @endif - <p style="pointer-events: none;" class="btn btn-sm mt-2 <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}</th>
                       </tr>
                       <tr>
-                        <td>Revisi Dosen Pembimbing Utama</td>
+                        <td>Keterangan Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $item->komentar1 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file1}}"><?=$item->file1 == null ? '' : 'Download file'?></a></th>
+                        <th>
+                          @if ($item->file1 == null)
+                          {{ $item->komentar1 }}
+                          @else
+                          {{ $item->komentar1 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file1}}">Download file revisi proposal</a></th>
+                          @endif
+                        </th>
                       </tr>
                       <tr>
-                        <td>Revisi Dosen Pembimbing Pembantu</td>
+                        <td>Keterangan Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $item->komentar2 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file2}}"><?=$item->file2 == null ? '' : 'Download file'?></th>
+                        <th>
+                          @if ($item->file2 == null)
+                          {{ $item->komentar2 }}
+                          @else
+                          {{ $item->komentar2 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file2}}">Download file revisi proposal</a></th>
+                          @endif
+                        </th>
                       </tr>
                     </tbody>
                   </table>

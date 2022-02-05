@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
 
         //Proposal Penjadwalan
         Route::get('/admin/proposal/penjadwalan', 'AdminController@viewProposalPenjadwalan')->name('dataproposalpenjadwalan');
+        Route::get('/admin/proposal/penjadwalan/{id}', 'AdminController@viewProposalPenjadwalanFilter')->name('dataproposalpenjadwalanfilter');
         Route::get('/admin/proposal/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalSempro')->name('datadetailjadwalsempro');
         //download excel ok
         Route::get('/admin/berkas/sempro/exportexcel', 'AdminController@exportBerkasSempro');
@@ -116,6 +117,7 @@ Route::middleware(['auth'])->group(function () {
 
         //Ujian Skripsi Penjadwalan
         Route::get('/admin/skripsi/penjadwalan', 'AdminController@viewSkripsiPenjadwalan')->name('dataskripsipenjadwalan');
+        Route::get('/admin/skripsi/penjadwalan/{id}', 'AdminController@viewSkripsiPenjadwalanFilter')->name('dataskripsipenjadwalanfilter');
         Route::get('/admin/skripsi/penjadwalan/detail/{id}', 'AdminController@viewDetailJadwalUjian')->name('datadetailjadwalujian');
         //download excel ok
         Route::get('/admin/berkas/ujian/exportexcel', 'AdminController@exportBerkasUjian');
@@ -223,12 +225,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mahasiswa/proposal/pengajuan/detail/{id}', 'MahasiswaController@viewDetailProposal')->name('datadetailproposal');
         Route::get('/mahasiswa/proposal/tambah', 'MahasiswaController@formAddProposal')->name('formaddproposal');
         Route::post('/mahasiswa/insertproposal', 'MahasiswaController@insertProposal')->name('insertproposal');
+        Route::put('/mahasiswa/proposal/revisi/{id}', 'MahasiswaController@editProposal')->name('updatepropmhs');
         
 
         //Pendaftaran Seminar
         Route::get('/mahasiswa/proposal/daftarsempro', 'MahasiswaController@viewDaftarSempro')->name('datadaftarsempro');
         Route::get('/mahasiswa/proposal/tambahsempro', 'MahasiswaController@formAddSempro')->name('formaddsempro');
         Route::post('/mahasiswa/insertsempro', 'MahasiswaController@insertBerkas')->name('insertsempro');
+        Route::put('/mahasiswa/editsempro/{id}', 'MahasiswaController@editBerkas')->name('editsempro');
         
 
         //Penjadwalan Seminar
@@ -254,6 +258,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mahasiswa/skripsi/daftarujian', 'MahasiswaController@viewDaftarUjian')->name('datadaftarujian');
         Route::get('/mahasiswa/skripsi/tambahujian', 'MahasiswaController@formAddUjian')->name('formaddujian');
         Route::post('/mahasiswa/insertujian', 'MahasiswaController@insertBerkasUjian')->name('insertujian');
+        Route::put('/mahasiswa/editujian/{id}', 'MahasiswaController@editBerkasUjian')->name('editujian');
 
         //Penjadwalan Ujian
         Route::get('/mahasiswa/skripsi/jadwalujian/{id}', 'MahasiswaController@viewJadwalUjian')->name('datajadwalujian');

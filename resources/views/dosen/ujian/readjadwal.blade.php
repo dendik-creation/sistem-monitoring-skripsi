@@ -105,9 +105,14 @@
                                             </div>
                                         </div> --}}
 
-                                        <a href="/dosen/skripsi/jadwal/detail/{{ $item->id }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                                        <a href="/dosen/skripsi/jadwal/detail/{{ $item->id }}" class="btn btn-primary btn-sm">Lihat detail</a>
 
+                                        @if ($item->dosbing2==$user->no_induk)
+                                        
+                                        @else
                                         <a href="/ujian/jadwal/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a>
+                                        @endif
+
                                     </td>
                                 </tr>
                            @endforeach

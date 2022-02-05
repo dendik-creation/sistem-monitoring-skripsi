@@ -16,6 +16,13 @@
             @endforeach
         @endif
 
+        @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif
+
         {{-- Form --}}
         <form class="user" action="/mahasiswa/insertproposal" method="POST" enctype="multipart/form-data">
             <div class="row mt-2">
@@ -40,7 +47,7 @@
                         <input type="text" class="form-control" name="judul" placeholder="Masukkan Judul Skripsi" required>
                     </div>
                     <div class="form-group">
-                        <label for="" class="small">Proposal*</label><br>
+                        <label for="" class="small">Proposal* (DOCX, DOC, PDF) (Max 10MB)</label><br>
                         <input type="file" name="proposal" placeholder="Masukkan Berkas Proposal" required accept=".doc, .docx, .pdf">
                     </div>
                     <div class="form-group">

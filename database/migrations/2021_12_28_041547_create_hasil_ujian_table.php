@@ -21,7 +21,7 @@ class CreateHasilUjianTable extends Migration
             $table->foreign('id_proposal')->references('id')->on('proposal');
             $table->unsignedBigInteger('id_jadwal_ujian')->nullable();
             $table->foreign('id_jadwal_ujian')->references('id')->on('jadwal_ujian');
-            $table->enum('berita_acara', ['Menunggu keputusan', 'Lulus', 'Tidak Lulus'])->default('Menunggu keputusan');
+            $table->enum('berita_acara', ['Menunggu hasil', 'Lulus', 'Tidak Lulus'])->default('Menunggu hasil');
             $table->string('sikap1', 5)->nullable();
             $table->string('presentasi1', 5)->nullable();
             $table->string('teori1', 5)->nullable();
@@ -43,9 +43,17 @@ class CreateHasilUjianTable extends Migration
             $table->string('jumlah3', 5)->nullable();
             $table->string('keterangan3', 5)->nullable();
             $table->text('revisi3')->nullable();
+            $table->string('sikap4', 5)->nullable();
+            $table->string('presentasi4', 5)->nullable();
+            $table->string('teori4', 5)->nullable();
+            $table->string('program4', 5)->nullable();
+            $table->string('jumlah4', 5)->nullable();
+            $table->string('keterangan4', 5)->nullable();
+            $table->text('revisi4')->nullable();
             $table->string('file1')->nullable();
             $table->string('file2')->nullable();
             $table->string('file3')->nullable();
+            $table->string('file4')->nullable();
             $table->timestamps();
         });
     }

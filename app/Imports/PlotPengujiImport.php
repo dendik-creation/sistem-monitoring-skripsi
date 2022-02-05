@@ -24,12 +24,12 @@ class PlotPengujiImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new PlotPengujiModel([
-            'smt' => $row[1],
-            'nim' => $row[2],
-            'name' => $row[3],
-            'ketua_penguji' => $row[4],
-            'anggota_penguji_1' => $row[5],
-            'anggota_penguji_2' => $row[6],
+            'smt' => $row['semester'],
+            'nim' => $row['nim'],
+            'name' => $row['nama'],
+            'ketua_penguji' => $row['nidn_ketua_penguji'],
+            'anggota_penguji_1' => $row['nidn_anggota_penguji_1'],
+            'anggota_penguji_2' => $row['nidn_anggota_penguji_2'],
         ]);
     }
 

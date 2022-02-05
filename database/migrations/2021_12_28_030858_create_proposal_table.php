@@ -18,6 +18,7 @@ class CreateProposalTable extends Migration
             $table->unsignedBigInteger('id_semester');
             $table->foreign('id_semester')->references('id')->on('semester');
             $table->string('nim', 15);
+            $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->string('topik', 50);
             $table->string('judul');
             $table->string('proposal');

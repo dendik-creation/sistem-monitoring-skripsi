@@ -66,8 +66,10 @@
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4">
                                         @if ($mhs -> status_sempro == "Belum seminar proposal")
                                             <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum seminar proposal</h5>
-                                        @else
-                                            <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah seminar proposal</h5>
+                                        @elseif($mhs -> status_sempro == "Sudah seminar proposal - Ditolak")
+                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Sudah seminar proposal - Ditolak</h5>
+                                        @elseif($mhs -> status_sempro == "Sudah seminar proposal - Diterima")
+                                        <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah seminar proposal - Diterima</h5>
                                         @endif
                                     </div>
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Bimbingan Skripsi</div>
@@ -80,12 +82,13 @@
                                     </div>
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Ujian Skripsi</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4">
-                                        @if ($mhs -> status_ujian == "Lulus")
-                                            <h5 style="pointer-events: none;" class="text-success font-weight-bold">Lulus</h5>
-                                        @elseif($mhs -> status_ujian == 'Belum ujian')
+                                        
+                                        @if($mhs -> status_ujian == 'Belum ujian')
                                             <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum ujian</h5>
-                                        @elseif($mhs->status_ujian == 'Tidak Lulus')
-                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Tidak Lulus</h5>
+                                        @elseif($mhs -> status_ujian == "Sudah ujian - Tidak Lulus")
+                                        <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Sudah ujian - Tidak Lulus</h5>
+                                        @elseif($mhs -> status_ujian == "Sudah ujian - Lulus")
+                                        <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah ujian - Lulus</h5>
                                         @endif
                                     </div>
                                 </div>

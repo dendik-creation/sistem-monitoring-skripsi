@@ -52,6 +52,12 @@
                                     <td>{{ $item -> nama}}</td>
                                     <td>{{ $item -> judul}}</td>
                                     <td>{{ tgl_indo($item->tanggal, true)}}</td>
+                                    @php
+                                    $ba = DB::table('hasil_ujian')
+                                    ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
+                                    ->where('id_jadwal_ujian', $item->id)->first();
+                                    // dd($ba);
+                                    @endphp
                                     <td><p style="pointer-events: none;" class="btn btn-sm <?=($ba->berita_acara == "Lulus" ? 'btn-success' : ($ba->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</td>
                                     {{-- <td><a href="/ujian/hasil/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td> --}}
                                     <td><a href="/dosen/skripsi/hasil/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Detail</a></td>

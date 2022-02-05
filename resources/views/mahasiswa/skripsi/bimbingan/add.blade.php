@@ -33,7 +33,7 @@
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Bimbingan Ke*</label>
-                        <input type="number" class="form-control" name="bimbingan_ke">
+                        <input type="number" class="form-control" name="bimbingan_ke" value="AUTO">
                     </div>
                     {{-- <div class="form-group">
                         <label for="" class="small">BAB*</label>
@@ -47,7 +47,7 @@
                         </select>
                     </div> --}}
                     <div class="form-group">
-                        <label for="" class="small">File*</label><br>
+                        <label for="" class="small">File* (DOCX, DOC, PDF) (Max 30MB)</label><br>
                         <input type="file" name="file_bimbingan" placeholder="Masukkan File" required accept=".doc, .docx, .pdf">
                     </div>
                     <div class="form-group">

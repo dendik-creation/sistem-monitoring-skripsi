@@ -66,7 +66,7 @@
                   <form class="user" action="/admin/proposal/insertjadwalsempro" method="POST">
                     {{csrf_field()}}
                     <button type="submit" class="btn btn-primary mr-2">Jadwalkan</button>
-                    <a href="{{ route('dataproposalpendaftar')}}" class="btn btn-secondary">Batal</a>
+                    <a href="{{ route('dataproposalpenjadwalan')}}" class="btn btn-secondary">Batal</a>
                 </div>
             </div>
             <div class="col-md-5 ml-4">

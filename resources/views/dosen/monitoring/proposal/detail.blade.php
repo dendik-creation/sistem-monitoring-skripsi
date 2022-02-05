@@ -48,7 +48,7 @@
                       <tr>
                         <td>File</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $item->nim }}/proposal/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download file'?></a></th>
+                        <th><a href="/download/{{ $item->nim }}/proposal/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download file proposal mahasiswa'?></a></th>
                       </tr>
                       <tr>
                         <td>Keterangan</td>
@@ -63,16 +63,41 @@
                       {{method_field('PUT')}}
                       <button type="submit" value="acc" class="btn btn-success mr-2" <?=($item->dosbing1 == $user->no_induk && $item->ket1 == 'Menunggu ACC' ? '' : 'disabled') ? ($item->dosbing2 == $user->no_induk && $item->ket2 == 'Menunggu ACC' ? '' :'disabled') : ''?>>ACC</button>
                   </form>
-                  <form action="/dosen/monitoring/proposal/tolak/{{$item->id}}" method="post">
-                      {{csrf_field()}}
-                      {{method_field('PUT')}}
-                      <button type="submit" value="tolak" class="btn btn-danger mr-2" <?=($item->dosbing1 == $user -> no_induk && $item->ket1 == 'Menunggu ACC' ? '' : 'disabled') ? ($item->dosbing2 == $user -> no_induk && $item->ket2 == 'Menunggu ACC' ? '' :'disabled') : ''?>>Tolak</button>
-                  </form>
-                  <button type="button" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modal{{$item->id}}" <?=($item->dosbing1 == $user -> no_induk && $item->ket1 == 'Menunggu ACC' ? '' : 'disabled') ? ($item->dosbing2 == $user -> no_induk && $item->ket2 == 'Menunggu ACC' ? '' :'disabled') : ''?>>
+                  <button type="button" class="btn btn-danger mr-2" data-toggle="modal" data-target="#modaltolak{{$item->id}}" <?=($item->dosbing1 == $user -> no_induk && $item->ket1 == 'Menunggu ACC' ? '' : 'disabled') ? ($item->dosbing2 == $user -> no_induk && $item->ket2 == 'Menunggu ACC' ? '' :'disabled') : ''?>>
+                    Tolak
+                  </button>
+                  <button type="button" class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalrev{{$item->id}}" <?=($item->dosbing1 == $user -> no_induk && $item->ket1 == 'Menunggu ACC' ? '' : 'disabled') ? ($item->dosbing2 == $user -> no_induk && $item->ket2 == 'Menunggu ACC' ? '' :'disabled') : ''?>>
                       Revisi
                   </button>
                   <!-- Modal -->
-                  <div class="modal fade" id="modal{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="modaltolak{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Komentar Penolakan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <form action="/dosen/monitoring/proposal/tolak/{{$item->id}}" method="post">
+                            {{csrf_field()}}
+                            {{method_field('PUT')}}
+                            <div class="modal-body">
+                              <div class="form-group">
+                                  <label for="" class="small">Komentar Penolakan*</label><br>
+                                  <textarea class="form-control" name="komentar" placeholder="Masukkan Komentar" required></textarea>
+                              </div>
+                              <input type="hidden" name="nim" value="{{$item->nim}}" id="">
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" name="submit" class="btn btn-primary">Kirim</button>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+                  <div class="modal fade" id="modalrev{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                       <div class="modal-content">
                           <div class="modal-header">
@@ -91,7 +116,7 @@
                                 </div>
                                 <div class="form-group">
                                   <label for="" class="small">File Pendukung</label><br>
-                                  <input type="file" name="file_pendukung" placeholder="Masukkan File Pendukung" required accept=".doc, .docx, .pdf">
+                                  <input type="file" name="file_pendukung" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf">
                                 </div>
                                 <input type="hidden" name="nim" value="{{$item->nim}}" id="">
                               </div>
@@ -127,14 +152,25 @@
                           @endif - <p style="pointer-events: none;" class="btn btn-sm mt-2 <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}</th>
                       </tr>
                       <tr>
-                        <td>Revisi Dosen Pembimbing Utama</td>
+                        <td>Komentar Dosen Pembimbing Utama</td>
                         <td>:</td>
-                        <th>{{ $item->komentar1 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file1}}"><?=$item->file1 == null ? '' : 'Download file'?></a></th>
+                        <th>
+                          @if ($item->file1 == null)
+                          {{ $item->komentar1 }}
+                          @else
+                          {{ $item->komentar1 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file1}}">Download file revisi proposal</a></th>
+                          @endif
                       </tr>
                       <tr>
-                        <td>Revisi Dosen Pembimbing Pembantu</td>
+                        <td>Komentar Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>{{ $item->komentar2 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file2}}"><?=$item->file2 == null ? '' : 'Download file'?></th>
+                        <th>
+                          @if ($item->file2 == null)
+                          {{ $item->komentar2 }}
+                          @else
+                          {{ $item->komentar2 }} - <a href="/download/{{ $item->nim }}/revisiproposal/{{$item->file2}}">Download file revisi proposal</a></th>
+                          @endif
+                        </th>
                       </tr>
                     </tbody>
                   </table>

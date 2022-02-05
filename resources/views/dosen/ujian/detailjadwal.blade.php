@@ -61,7 +61,7 @@
                 <tr>
                   <td>Berkas Ujian</td>
                   <td>:</td>
-                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download file'?></a></th>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas ujian'?></a></th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Utama</td>
@@ -228,9 +228,9 @@
                       <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></textarea></th>
                     </tr>
                     <tr>
-                      <td>File Pendukung</td>
+                      <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
                       <td>:</td>
-                      <th><input type="file" name="file_pendukung1" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
+                      <th><input type="file" name="file_pendukung1" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
                     </tr>
                     <tr>
                       <td></td>
@@ -247,7 +247,7 @@
 
     {{-- Anggota Penguji 1 --}}
       <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-          <h1 class="h3 mb-2 text-gray-800">Anggota Penguji 1</h1>
+          <h1 class="h3 mb-2 text-gray-800">Anggota Penguji 1 / Dosen Pembimbing Utama</h1>
       </div>
       <div class="row mt-5">
         <div class="col-md-12">
@@ -300,9 +300,9 @@
                       <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
                     </tr>
                     <tr>
-                      <td>File Pendukung</td>
+                      <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
                       <td>:</td>
-                      <th><input type="file" name="file_pendukung2" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
+                      <th><input type="file" name="file_pendukung2" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
                     </tr>
                     <tr>
                       <td></td>
@@ -372,9 +372,9 @@
                     <th><textarea class="form-control" name="revisi3" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
                   </tr>
                   <tr>
-                    <td>File Pendukung</td>
+                    <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
                     <td>:</td>
-                    <th><input type="file" name="file_pendukung3" placeholder="Masukkan File Pendukung" accept=".doc, .docx, .pdf"></th>
+                    <th><input type="file" name="file_pendukung3" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
                   </tr>
                   <tr>
                     <td></td>
@@ -388,6 +388,78 @@
               </table>
         </div>
     </div>
+
+    {{-- Dosbing 2 --}}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+      <h1 class="h3 mb-2 text-gray-800">Dosen Pembimbing Pembantu</h1>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td>Nilai Sikap(10%)</td>
+                  <td>:</td>
+                  <th><input type="text" class="form-control" name="sikap4" placeholder="Masukkan Nilai Sikap" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                </tr>
+                <tr>
+                  <td>Nilai Presentasi(10%)</td>
+                  <td>:</td>
+                  <th><input type="text" class="form-control" name="presentasi4" placeholder="Masukkan Nilai Presentasi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                </tr>
+                <tr>
+                  <td>Nilai Penguasaan Teori(40%)</td>
+                  <td>:</td>
+                  <th><input type="text" class="form-control" name="teori4" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                </tr>
+                <tr>
+                  <td>Nilai Penguasaan Program(40%)</td>
+                  <td>:</td>
+                  <th><input type="text" class="form-control" name="program4" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                </tr>
+                <tr>
+                  <td>Jumlah</td>
+                  <td>:</td>
+                  <th><input type="text" class="form-control" name="jumlah4" placeholder="Masukkan Jumlah" required <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                </tr>
+                <tr>
+                  <td>Keterangan</td>
+                  <td>:</td>
+                  <th>
+                    <select class="form-control" name="keterangan4" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>>
+                      <option>Pilih Keterangan --</option>
+                      <option>Lulus</option>
+                      <option>Tidak Lulus</option>
+                  </select>
+                </th>
+                </tr>
+                <tr>
+                  <td><hr class="sidebar-divider"></td>
+                  <td></td>
+                  <td><hr class="sidebar-divider"></td>
+                </tr>
+                <tr>
+                  <td>Revisi</td>
+                  <td>:</td>
+                  <th><textarea class="form-control" name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                </tr>
+                <tr>
+                  <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
+                  <td>:</td>
+                  <th><input type="file" name="file_pendukung4" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <button class="btn btn-primary" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
+                    <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->dosbing2==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+  </div>
 
       
       @endforeach

@@ -11,7 +11,50 @@
                     <i class="fa fa-plus"></i> Ajukan
                 </a>
             </div> --}}
+            <div class="pull-right">
+                <div class="row">
+                    <a href="/admin/berkas/sempro/exportexcel" class="btn btn-outline-success btn-flat mr-1">
+                        <i class="fa fa-download"></i> Download data pendaftar sudah ok
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#importExcel" class="btn btn-success btn-flat">
+                        <i class="fa fa-calendar"></i> Import jadwal dari excel
+                    </a>
+                </div>
+                <div class="row mt-2">
+                    <select class="custom-select" id="filterjadwal">
+                        <option value="3" id="3">All</option>
+                        <option value="1" id="1">Belum dijadwalkan</option>
+                        <option value="2" id="2">Sudah dijadwalkan</option>
+                    </select>
+                </div>
+            </div>
         </div>
+
+        <div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form method="post" action="/admin/proposal/penjadwalan/importexcel" enctype="multipart/form-data">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+						</div>
+						<div class="modal-body">
+ 
+							{{ csrf_field() }}
+ 
+							<label for="" class="small">Pilih File Excel*</label>
+							<div class="form-group">
+								<input type="file" name="file" required>
+							</div>
+ 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Import</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
@@ -39,12 +82,11 @@
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
-                                <th>Tanggal</th>
                                 <th>Status</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="datatabel">
                             <?php $no=1?>
                               @foreach($data as $item)
                                 <tr>
@@ -54,10 +96,7 @@
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> judul }}</td>
                                     <td>
-                                        {{ tgl_indo($item->tanggal, true)}}
-                                    </td>
-                                    <td>
-                                        @if ($item -> status1 == 'Belum' && $item -> status2 == 'Belum')
+                                        {{-- @if ($item -> status1 == 'Belum' && $item -> status2 == 'Belum')
                                         <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum melakukan seminar</p> 
                                         @else
                                         @php
@@ -65,9 +104,20 @@
                                             // dd($ba);
                                         @endphp
                                         <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar</p> - <p style="pointer-events: none;" class="btn btn-sm <?=$ba->berita_acara == "Diterima" ? 'btn-success' : 'btn-danger'?>">{{ $ba->berita_acara }}</p>
+                                        @endif --}}
+                                        @if ($item -> status == 'Berkas OK')
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan</p> 
+                                        @elseif($item -> status == 'Terjadwal')
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah dijadwalkan</p> 
                                         @endif
                                     </td>
-                                    <td><a href="/admin/proposal/penjadwalan/detail/{{$item->id}}" class="btn btn-sm btn-primary">Lihat Detail</td>
+                                    <td>
+                                        @if ($item -> status == 'Berkas OK')
+                                        <a href="/admin/proposal/pendaftar/detail/{{$item->id}}" class="btn btn-sm btn-primary">Jadwalkan manual
+                                        @elseif($item -> status == 'Terjadwal')
+                                        <a href="/admin/proposal/penjadwalan/detail/{{$item->id}}" class="btn btn-sm btn-primary">Lihat detail
+                                        @endif
+                                    </td>
                                 </tr>
                            @endforeach
                         </tbody>

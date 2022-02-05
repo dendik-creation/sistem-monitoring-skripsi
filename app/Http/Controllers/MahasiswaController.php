@@ -185,28 +185,34 @@ class MahasiswaController extends Controller
         [
             'proposal.max' => 'File terlalu besar, maksimal 10 mb',
         ]);
+
+        $cek = ProposalModel::where('judul', $request->judul)->first();
         
-        $pModel = new ProposalModel;
+        if($cek){
+            return back()->with('error','Judul sama dengan proposal dari nim '.$cek->nim.', silahkan cari judul yang lain');
+        }else{
+            $pModel = new ProposalModel;
 
-        $pModel->id_semester = $request->smt;
-        $pModel->nim = $request->nim;
-        $pModel->topik = $request->topik;
-        $pModel->judul = $request->judul;
-        $pModel->id_plot_dosbing = $request->id_plot_dosbing;
-        $pModel->komentar = $request->komentar;
+            $pModel->id_semester = $request->smt;
+            $pModel->nim = $request->nim;
+            $pModel->topik = $request->topik;
+            $pModel->judul = $request->judul;
+            $pModel->id_plot_dosbing = $request->id_plot_dosbing;
+            $pModel->komentar = $request->komentar;
 
 
-		$file = $request->file('proposal');
+            $file = $request->file('proposal');
 
-        $tujuan_upload = 'filemhs/'.$request->nim.'/proposal';
+            $tujuan_upload = 'filemhs/'.$request->nim.'/proposal';
 
-        $namafile = rand().$file->getClientOriginalName();
+            $namafile = rand().$file->getClientOriginalName();
 
-        $file->move($tujuan_upload,$namafile);
+            $file->move($tujuan_upload,$namafile);
 
-        $pModel->proposal = $namafile;
+            $pModel->proposal = $namafile;
 
-        $pModel->save();
+            $pModel->save();
+        }
 
         return redirect('mahasiswa/proposal/pengajuan')->with(['success' => 'Berhasil']);
     }
@@ -214,6 +220,62 @@ class MahasiswaController extends Controller
     {
         $filepath = public_path('filemhs/'.$nim.'/proposal'.'/'.$id);
         return Response::download($filepath); 
+    }
+
+    public function editProposal(Request $request, $id){
+        $this->validate($request, [
+			'proposal' => 'max:10240',
+		],
+        [
+            'proposal.max' => 'File terlalu besar, maksimal 10 mb',
+        ]);
+            
+        $komentar = $request->komentar;
+
+        $file = $request->file('proposal');
+
+        $tujuan_upload = 'filemhs/'.$request->nim.'/proposal';
+
+        $namafile = rand().$file->getClientOriginalName();
+
+        $file->move($tujuan_upload,$namafile);
+
+        $cek = DB::table('proposal')
+                    ->where('proposal.id', $id)
+                    ->orderByRaw('proposal.id DESC')
+                    ->first();
+        
+        // dd($cek);
+
+        if($cek->ket1 == "Disetujui" && $cek->ket2 == "Revisi"){
+            $data = DB::table('proposal')
+                ->where('id', $id)
+                ->update(
+                ['proposal' => $namafile,
+                'komentar' => $komentar,
+                'ket1' => 'Disetujui',
+                'ket2' => 'Menunggu ACC']
+                );
+        }else if($cek->ket2 == "Disetujui" && $cek->ket1 == "Revisi"){
+            $data = DB::table('proposal')
+                ->where('id', $id)
+                ->update(
+                ['proposal' => $namafile,
+                'komentar' => $komentar,
+                'ket2' => 'Disetujui',
+                'ket1' => 'Menunggu ACC']
+                );
+        }else if($cek->ket2 == "Revisi" && $cek->ket1 == "Revisi"){
+            $data = DB::table('proposal')
+            ->where('id', $id)
+            ->update(
+            ['proposal' => $namafile,
+            'komentar' => $komentar,
+            'ket2' => 'Menunggu ACC',
+            'ket1' => 'Menunggu ACC']
+            );
+        }
+            return redirect('mahasiswa/proposal/pengajuan')->with(['success' => 'Berhasil']);
     }
 
 
@@ -293,6 +355,31 @@ class MahasiswaController extends Controller
         return Response::download($filepath); 
     }
 
+    //editberkas
+    public function editBerkas(Request $request, $id){
+
+        $delberkaslama = DB::table('berkas_sempro')
+                    ->where('berkas_sempro.id', $id)
+                    ->first();
+
+        unlink('filemhs/'.$request->nim.'/berkas_sempro'.'/'.$delberkaslama->berkas_sempro);
+
+        $file = $request->file('berkas_sempro');
+
+        $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_sempro';
+
+        $namafile = rand().$file->getClientOriginalName();
+
+        $file->move($tujuan_upload,$namafile);
+
+        $data = DB::table('berkas_sempro')
+            ->where('id', $id)
+            ->update(
+            ['berkas_sempro' => $namafile,
+            'status' => 'Menunggu Dijadwalkan']);
+        
+        return redirect('mahasiswa/proposal/daftarsempro')->with(['success' => 'Berhasil']);
+    }
 
     //Jadwal Sempro
     public function viewJadwalSempro($id){
@@ -656,6 +743,32 @@ class MahasiswaController extends Controller
     {
         $filepath = public_path('filemhs/'.$nim.'/berkas_ujian'.'/'.$id);
         return Response::download($filepath); 
+    }
+
+    //editberkasujian
+    public function editBerkasUjian(Request $request, $id){
+
+        $delberkaslama = DB::table('berkas_ujian')
+                    ->where('berkas_ujian.id', $id)
+                    ->first();
+
+        unlink('filemhs/'.$request->nim.'/berkas_ujian'.'/'.$delberkaslama->berkas_ujian);
+
+        $file = $request->file('berkas_ujian');
+
+        $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_ujian';
+
+        $namafile = rand().$file->getClientOriginalName();
+
+        $file->move($tujuan_upload,$namafile);
+
+        $data = DB::table('berkas_ujian')
+            ->where('id', $id)
+            ->update(
+            ['berkas_ujian' => $namafile,
+            'status' => 'Menunggu Dijadwalkan']);
+        
+        return redirect('mahasiswa/skripsi/daftarujian')->with(['success' => 'Berhasil']);
     }
 
 

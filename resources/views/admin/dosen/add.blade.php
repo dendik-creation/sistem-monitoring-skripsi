@@ -108,7 +108,7 @@
                         <input type="email" class="form-control" name="email" placeholder="Masukkan Email" required>
                     </div>
                     <div class="form-group">
-                        <label for="" class="small">Scan Tanda Tangan</label><br>
+                        <label for="" class="small">Scan Tanda Tangan*</label><br>
                         <input type="file" name="ttd" placeholder="Masukkan Scan Tanda Tangan" required accept=".png, .jpg, .jpeg">
                     </div>
                 </div>

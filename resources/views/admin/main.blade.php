@@ -286,6 +286,87 @@
       todayHighlight: true,
     });
 
+
+    $(document).ready(function(){
+        $('#filterjadwal').on('change', function(e){
+            var id = e.target.value;
+            $.get('{{ url('admin/proposal/penjadwalan') }}/'+id, function(data){
+                console.log(id);
+                console.log(data);
+                $('#datatabel').empty();
+                $.each(data, function(index, element){
+                    var myIndex = index+1;
+                    // var dosen = {!! json_encode($user->no_induk) !!};
+                    
+                    if(element.status ==  "Berkas OK"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan`
+                    }else if(element.status ==  "Terjadwal"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah dijadwalkan`
+                    }
+
+                    if(element.status ==  "Berkas OK"){
+                        var opsi = `<a href="/admin/proposal/pendaftar/detail/${element.id}" class="btn btn-sm btn-primary">Jadwalkan manual`
+                    }else if(element.status ==  "Terjadwal"){
+                        var opsi = `<a href="/admin/proposal/penjadwalan/detail/${element.id}" class="btn btn-sm btn-primary">Lihat detail`
+                    }
+
+                    $('#datatabel').append(`
+                        <tr>
+                            <td>${myIndex}</td>
+                            <td>${element.semester} ${element.tahun}</td>
+                            <td>${element.nim}</td>
+                            <td>${element.nama}</td>
+                            <td>${element.judul}</td>
+                            <td>${status}</td>
+                            <td>${opsi}</td>
+                        </tr>
+                        `)
+                    
+                });
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        $('#filterjadwalujian').on('change', function(e){
+            var id = e.target.value;
+            $.get('{{ url('admin/skripsi/penjadwalan') }}/'+id, function(data){
+                console.log(id);
+                console.log(data);
+                $('#datatabel').empty();
+                $.each(data, function(index, element){
+                    var myIndex = index+1;
+                    // var dosen = {!! json_encode($user->no_induk) !!};
+                    
+                    if(element.status ==  "Berkas OK"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan`
+                    }else if(element.status ==  "Terjadwal"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah dijadwalkan`
+                    }
+
+                    if(element.status ==  "Berkas OK"){
+                        var opsi = `<a href="/admin/skripsi/pendaftar/detail/${element.id}" class="btn btn-sm btn-primary">Jadwalkan manual`
+                    }else if(element.status ==  "Terjadwal"){
+                        var opsi = `<a href="/admin/skripsi/penjadwalan/detail/${element.id}" class="btn btn-sm btn-primary">Lihat detail`
+                    }
+
+                    $('#datatabel').append(`
+                        <tr>
+                            <td>${myIndex}</td>
+                            <td>${element.semester} ${element.tahun}</td>
+                            <td>${element.nim}</td>
+                            <td>${element.nama}</td>
+                            <td>${element.judul}</td>
+                            <td>${status}</td>
+                            <td>${opsi}</td>
+                        </tr>
+                        `)
+                    
+                });
+            });
+        });
+    });
+
 </script>
 
 </html>
