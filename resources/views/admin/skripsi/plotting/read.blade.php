@@ -24,6 +24,42 @@
             </div>
         </div>
 
+        @if (session()->has('failures'))
+
+            <table class="table table-bordered table-danger">
+                <tr>
+                    <th>Baris Excel Ke-</th>
+                    <th>Kolom</th>
+                    <th>Error</th>
+                    <th>Value</th>
+                </tr>
+                @foreach (session()->get('failures') as $validation)
+                    <tr>
+                        <td>{{ $validation->row() }}</td>
+                        <td>{{ $validation->attribute() }}</td>
+                        <td><ul>
+                            @foreach ($validation->errors() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                            </ul>
+                        </td>
+                        <td>{{ $validation->values()[$validation->attribute()] }}</td>
+                    </tr>
+                @endforeach
+            </table>
+            
+        @endif
+
+        @if (isset($errors) && $errors->any())
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
+
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
             <button type="button" class="close" data-dismiss="alert">×</button> 
@@ -51,7 +87,7 @@
  
 							<label for="" class="small">Pilih File Excel*</label>
 							<div class="form-group">
-								<input type="file" name="file" required>
+								<input type="file" name="file" accept=".xls, .xlsx" required>
 							</div>
  
 						</div>

@@ -16,7 +16,7 @@ class CreatePlotDosbingTable extends Migration
         Schema::create('plot_dosbing', function (Blueprint $table) {
             $table->id();
             $table->string('smt', 50);
-            $table->string('nim', 15);
+            $table->string('nim', 15)->unique();
             $table->string('name');
             $table->string('dosbing1', 15);
             $table->foreign('dosbing1')->references('nidn')->on('dosen');

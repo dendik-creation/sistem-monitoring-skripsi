@@ -26,6 +26,7 @@ class CreateJadwalUjianTable extends Migration
             $table->enum('status1', ['Belum', 'Sudah'])->default('Belum');
             $table->enum('status2', ['Belum', 'Sudah'])->default('Belum');
             $table->enum('status3', ['Belum', 'Sudah'])->default('Belum');
+            $table->enum('status4', ['Belum', 'Sudah'])->default('Belum');
             $table->timestamps();
         });
     }

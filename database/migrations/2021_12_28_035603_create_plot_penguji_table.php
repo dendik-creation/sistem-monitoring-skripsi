@@ -16,7 +16,7 @@ class CreatePlotPengujiTable extends Migration
         Schema::create('plot_penguji', function (Blueprint $table) {
             $table->id();
             $table->string('smt', 50);
-            $table->string('nim', 15);
+            $table->string('nim', 15)->unique();
             $table->string('name');
             $table->string('ketua_penguji', 15);
             $table->foreign('ketua_penguji')->references('nidn')->on('dosen');

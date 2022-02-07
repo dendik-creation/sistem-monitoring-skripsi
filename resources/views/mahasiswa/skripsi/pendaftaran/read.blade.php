@@ -7,11 +7,24 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Pendaftaran Ujian Skripsi</h1>
             <div class="pull-right">
+                @php
+                    $cek = DB::table('berkas_ujian')
+                    ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
+                    ->select('berkas_ujian.*', 'mahasiswa.*')
+                    ->where('berkas_ujian.nim', $user->no_induk)
+                    ->orderByRaw('berkas_ujian.id DESC')
+                    ->first();
+                    // dd($cek);
+                @endphp
                 @if ($databim == null || $databim->ket1 == "Siap ujian" && $databim->ket2 == "Siap ujian")
                     @if ($datapenguji === null)
                     <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled"> 
                         <i class="fa fa-plus"></i> Daftar
                     </a>  
+                    @elseif($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
+                    <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
+                        <i class="fa fa-plus"></i> Daftar
+                    </a> 
                     @else
                     <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                         <i class="fa fa-plus"></i> Daftar

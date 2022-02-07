@@ -6,13 +6,18 @@ use App\PlotPengujiModel;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Validators\Failure;
+use Throwable;
 
-class PlotPengujiImport implements ToModel, WithHeadingRow
+class PlotPengujiImport implements ToModel, WithHeadingRow, SkipsOnError, WithValidation, SkipsOnFailure
 {
+    use Importable, SkipsErrors, SkipsFailures;
     /**
     * @param array $row
     *
@@ -33,22 +38,10 @@ class PlotPengujiImport implements ToModel, WithHeadingRow
         ]);
     }
 
-    // public function rules(): array
-    // {
-    //     return [
-    //         'nim' => Rule::in('plot_penguji', 'nim'), // Table name, field in your db
-    //     ];
-    // }
-
-    // public function customValidationMessages()
-    // {
-    //     return [
-    //         'nim.unique' => 'Data sudah ada',
-    //     ];
-    // }
-
-    // public function chunkSize(): int
-    // {
-    //     return 1000;
-    // }
+    public function rules(): array
+    {
+        return [
+            '*.nim' => Rule::unique('plot_penguji', 'nim') // Table name, field in your db
+        ];
+    }
 }

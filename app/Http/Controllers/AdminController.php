@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Response;
+use Illuminate\Validation\Rule;
 
 use App\DosenModel;
 use App\MahasiswaModel;
@@ -133,7 +134,7 @@ class AdminController extends Controller
         $cek = DosenModel::where('nidn', $request->nidn)->first();
 
         if($cek){
-            return back()->with('error','Data sudah ada');
+            return back()->with('error','Data Dosen '.$cek->nidn.' sudah ada');
         }else{
             // Kalo ganti gambar 
         if($ttd) {
@@ -445,9 +446,9 @@ class AdminController extends Controller
     public function plotDosbingImportExcel(Request $request) 
 	{
 		// validasi
-		$this->validate($request, [
-			'file' => 'required|mimes:csv,xls,xlsx'
-		]);
+		// $this->validate($request, [
+		// 	'file' => 'required|mimes:csv,xls,xlsx'
+		// ]);
  
 		// menangkap file excel
 		$file = $request->file('file');
@@ -458,10 +459,19 @@ class AdminController extends Controller
 		// upload ke folder file_siswa di dalam folder public
 		$file->move('file_excel',$nama_file);
  
-		// import data
-		Excel::import(new PlotDosbingImport, public_path('/file_excel/'.$nama_file));
-        Excel::import(new UserImport, public_path('/file_excel/'.$nama_file));
-        Excel::import(new MahasiswaImport, public_path('/file_excel/'.$nama_file));
+        //1
+        $import1 = new plotDosbingImport;
+        $import2 = new mahasiswaImport;
+        $import3 = new userImport;
+        $import1->import(public_path('/file_excel/'.$nama_file));
+        $import2->import(public_path('/file_excel/'.$nama_file));
+        $import3->import(public_path('/file_excel/'.$nama_file));
+        // dd($import->errors());
+
+        if($import1->failures()->isNotEmpty()){
+            return back()->withFailures($import1->failures());
+        }
+
  
 		return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
 	}
@@ -492,7 +502,7 @@ class AdminController extends Controller
         $cek = PlotDosbingModel::where('nim', $request->nim)->first();
 
         if($cek){
-            return back()->with('error','Data sudah ada');
+            return back()->with('error','Data Mahasiswa '.$cek->nim.' sudah ada');
         }else{
             $mModel = new MahasiswaModel;
 
@@ -630,7 +640,8 @@ class AdminController extends Controller
         $data = DB::table('berkas_sempro')
         ->where('id', $request->id_berkas_sempro)
         ->update(
-        ['status' => 'Terjadwal']
+        ['status' => 'Terjadwal',
+        'komentar_admin' => 'Terjadwal']
         );
 
         $hsModel = new HasilSemproModel;
@@ -664,7 +675,8 @@ class AdminController extends Controller
         $data = DB::table('berkas_sempro')
         ->where('status', 'Berkas OK')
         ->update(
-        ['status' => 'Terjadwal']
+        ['status' => 'Terjadwal',
+        'komentar_admin' => 'Terjadwal']
         );
  
 		return redirect('admin/proposal/penjadwalan')->with(['success' => 'Berhasil']);
@@ -922,9 +934,9 @@ class AdminController extends Controller
     public function plotPengujiImportExcel(Request $request) 
 	{
 		// validasi
-		$this->validate($request, [
-			'file' => 'required|mimes:csv,xls,xlsx'
-		]);
+		// $this->validate($request, [
+		// 	'file' => 'required|mimes:csv,xls,xlsx'
+		// ]);
  
 		// menangkap file excel
 		$file = $request->file('file');
@@ -936,7 +948,14 @@ class AdminController extends Controller
 		$file->move('file_excel',$nama_file);
  
 		// import data
-		Excel::import(new PlotPengujiImport, public_path('/file_excel/'.$nama_file));
+		// Excel::import(new PlotPengujiImport, public_path('/file_excel/'.$nama_file));
+        $import = new plotPengujiImport;
+        $import->import(public_path('/file_excel/'.$nama_file));
+        // dd($import->errors());
+
+        if($import->failures()->isNotEmpty()){
+            return back()->withFailures($import->failures());
+        }
  
 		return redirect('admin/skripsi/plotting')->with(['success' => 'Berhasil']);
 	}
@@ -974,7 +993,7 @@ class AdminController extends Controller
         $cek = PlotPengujiModel::where('nim', $request->nim)->first();
 
         if($cek){
-            return back()->with('error','Data sudah ada');
+            return back()->with('error','Data Mahasiswa '.$cek->nim.' sudah ada');
         }else{
             DB::insert('insert into plot_penguji (smt, nim, name, ketua_penguji, anggota_penguji_1, anggota_penguji_2) values (?, ?, ?, ?, ?, ?)', [$request->smt, $request->nim, $request->name, $request->ketua, $request->anggota1, $request->anggota2]);
             return redirect('admin/skripsi/plotting')->with(['success' => 'Berhasil']);
@@ -1050,7 +1069,8 @@ class AdminController extends Controller
         $data = DB::table('berkas_ujian')
         ->where('status', 'Berkas OK')
         ->update(
-        ['status' => 'Terjadwal']
+        ['status' => 'Terjadwal',
+        'komentar_admin' => 'Terjadwal']
         );
  
 		return redirect('admin/skripsi/penjadwalan')->with(['success' => 'Berhasil']);
@@ -1124,7 +1144,8 @@ class AdminController extends Controller
         $data = DB::table('berkas_ujian')
         ->where('id', $request->id_berkas_ujian)
         ->update(
-        ['status' => 'Terjadwal']
+        ['status' => 'Terjadwal',
+        'komentar_admin' => 'Terjadwal']
         );
 
         $huModel = new HasilUjianModel;

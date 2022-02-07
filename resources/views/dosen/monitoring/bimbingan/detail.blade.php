@@ -198,7 +198,7 @@
         </div>
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
-          <h1 class="h3 mb-2 text-gray-800">Pesan</h1>
+          <h1 class="h3 mb-2 text-gray-800">Catatan Bimbingan</h1>
           <div class="pull-right">
             <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modaldefault">
               Tambah Catatan Bimbingan
