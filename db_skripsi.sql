@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2021 at 03:02 PM
+-- Generation Time: Feb 07, 2022 at 03:25 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_skripsi`
+-- Database: `db_skriptest`
 --
 
 -- --------------------------------------------------------
@@ -29,14 +29,22 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `berkas_sempro` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_plot_dosbing` bigint(20) UNSIGNED NOT NULL,
   `berkas_sempro` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('Menunggu Dijadwalkan','Terjadwal') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu Dijadwalkan',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `status` enum('Menunggu Dijadwalkan','Berkas OK','Berkas tidak lengkap','Terjadwal') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu Dijadwalkan',
+  `komentar_admin` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `berkas_sempro`
+--
+
+INSERT INTO `berkas_sempro` (`id`, `nim`, `id_proposal`, `id_plot_dosbing`, `berkas_sempro`, `status`, `komentar_admin`, `created_at`, `updated_at`) VALUES
+(3, '201851048', 2, 108, '1650689743201851048_Berkas Sempro.zip', 'Terjadwal', '', '2022-02-04 13:15:24', '2022-02-04 06:15:24');
 
 -- --------------------------------------------------------
 
@@ -46,14 +54,22 @@ CREATE TABLE `berkas_sempro` (
 
 CREATE TABLE `berkas_ujian` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_plot_penguji` bigint(20) UNSIGNED NOT NULL,
   `berkas_ujian` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('Menunggu Dijadwalkan','Terjadwal') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('Menunggu Dijadwalkan','Berkas OK','Berkas tidak lengkap','Terjadwal') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu Dijadwalkan',
+  `komentar_admin` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `berkas_ujian`
+--
+
+INSERT INTO `berkas_ujian` (`id`, `nim`, `id_proposal`, `id_plot_penguji`, `berkas_ujian`, `status`, `komentar_admin`, `created_at`, `updated_at`) VALUES
+(1, '201851048', 2, 5, '236883395201851048_Berkas Sempro.zip', 'Terjadwal', 'a', '2022-02-04 14:37:03', '2022-02-04 07:37:03');
 
 -- --------------------------------------------------------
 
@@ -63,7 +79,7 @@ CREATE TABLE `berkas_ujian` (
 
 CREATE TABLE `bidang` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nama_bidang` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_bidang` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -73,8 +89,11 @@ CREATE TABLE `bidang` (
 --
 
 INSERT INTO `bidang` (`id`, `nama_bidang`, `created_at`, `updated_at`) VALUES
-(1, 'Website', NULL, NULL),
-(2, 'Android', NULL, NULL);
+(1, 'Jaringan Komputer', '2022-02-01 01:04:21', NULL),
+(2, 'Bisnis Cerdas & Visi Komputer', '2022-02-01 01:04:21', NULL),
+(3, 'Komputer Grafis', '2022-02-01 01:04:21', NULL),
+(4, 'Komputasi Terapan', '2022-02-01 01:04:21', NULL),
+(5, 'Rekayasa Perangkat Lunak', '2022-02-01 01:04:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,18 +104,26 @@ INSERT INTO `bidang` (`id`, `nama_bidang`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `bimbingan` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_semester` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_plot_dosbing` bigint(20) UNSIGNED NOT NULL,
-  `bimbingan_ke` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bab` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bimbingan_ke` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
   `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `komentar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ket1` enum('Review','Ok','Selesai Bimbingan') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Review',
-  `ket2` enum('Review','Ok','Selesai Bimbingan') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Review',
+  `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ket1` enum('Review','Ok','Siap ujian','Lanjut ke bimbingan selanjutnya') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Review',
+  `ket2` enum('Review','Ok','Siap ujian','Lanjut ke bimbingan selanjutnya') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Review',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bimbingan`
+--
+
+INSERT INTO `bimbingan` (`id`, `id_semester`, `nim`, `id_proposal`, `id_plot_dosbing`, `bimbingan_ke`, `file`, `komentar`, `ket1`, `ket2`, `created_at`, `updated_at`) VALUES
+(3, 1, '201851048', 2, 108, '1', '2046363321201851048_Bimbingan Skripsi 1.pdf', NULL, 'Lanjut ke bimbingan selanjutnya', 'Ok', '2022-02-06 02:39:02', '2022-02-05 19:39:02'),
+(4, 1, '201851048', 2, 108, '2', '2068355410201851048_Bimbingan Skripsi 2.pdf', NULL, 'Ok', 'Ok', '2022-02-06 02:58:30', '2022-02-05 19:58:30'),
+(5, 1, '201851048', 2, 108, '3', '1302381156201851048_Bimbingan Skripsi 2.pdf', NULL, 'Siap ujian', 'Review', '2022-02-06 03:06:33', '2022-02-05 20:06:33');
 
 -- --------------------------------------------------------
 
@@ -106,17 +133,28 @@ CREATE TABLE `bimbingan` (
 
 CREATE TABLE `dosen` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nidn` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nidn` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gelar1` bigint(20) UNSIGNED NOT NULL,
   `gelar2` bigint(20) UNSIGNED DEFAULT NULL,
   `gelar3` bigint(20) UNSIGNED DEFAULT NULL,
   `jabatan_fungsional` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `id_bidang` bigint(20) UNSIGNED NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ttd` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `dosen`
+--
+
+INSERT INTO `dosen` (`id`, `nidn`, `name`, `gelar1`, `gelar2`, `gelar3`, `jabatan_fungsional`, `id_bidang`, `email`, `ttd`, `created_at`, `updated_at`) VALUES
+(1, '0625028501', 'Ratih Nindyasari', 1, 1, NULL, 'Lektor', 5, 'ratih.nindyasari@umk.ac.id', 'ttd ratih.png', '2022-02-01 01:28:31', '2022-02-01 01:28:31'),
+(2, '0604048702', 'Anastasya Latubessy', 1, 2, NULL, 'Lektor', 2, 'anastasya.latubessy@umk.ac.id', 'ttd tasya.png', '2022-02-01 01:29:05', '2022-02-01 01:29:05'),
+(3, '0406107004', 'Ahmad Jazuli', 1, 1, 2, 'Asisten Ahli', 4, 'ahmad.jazuli@umk.ac.id', 'ttd jay.png', '2022-02-01 01:29:31', '2022-02-01 01:29:31'),
+(4, '0608068502', 'Tutik Khotimah', 1, 1, NULL, 'Lektor', 2, 'tutik.khotimah@umk.ac.id', 'ttd tutik.png', '2022-02-04 07:35:55', '2022-02-04 07:35:55');
 
 -- --------------------------------------------------------
 
@@ -130,7 +168,7 @@ CREATE TABLE `failed_jobs` (
   `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -141,25 +179,34 @@ CREATE TABLE `failed_jobs` (
 
 CREATE TABLE `hasil_sempro` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_jadwal_sempro` bigint(20) UNSIGNED DEFAULT NULL,
-  `berita_acara` enum('Diterima','Ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Diterima',
-  `sikap1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `presentasi1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `penguasaan1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jumlah1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `grade1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `berita_acara` enum('Menunggu hasil','Diterima','Ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu hasil',
+  `sikap1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentasi1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `penguasaan1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jumlah1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `grade1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `revisi1` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sikap2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `presentasi2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `penguasaan2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jumlah2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `grade2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sikap2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentasi2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `penguasaan2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jumlah2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `grade2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `revisi2` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hasil_sempro`
+--
+
+INSERT INTO `hasil_sempro` (`id`, `nim`, `id_proposal`, `id_jadwal_sempro`, `berita_acara`, `sikap1`, `presentasi1`, `penguasaan1`, `jumlah1`, `grade1`, `revisi1`, `sikap2`, `presentasi2`, `penguasaan2`, `jumlah2`, `grade2`, `revisi2`, `file1`, `file2`, `created_at`, `updated_at`) VALUES
+(3, '201851048', 2, 3, 'Diterima', NULL, NULL, NULL, '85', 'B', 'rev', NULL, NULL, NULL, '85', 'A', 'rev', '1014703904Revisi bimbingan dosen.pdf', NULL, '2022-02-04 06:15:59', '2022-02-04 06:15:59');
 
 -- --------------------------------------------------------
 
@@ -169,34 +216,52 @@ CREATE TABLE `hasil_sempro` (
 
 CREATE TABLE `hasil_ujian` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_jadwal_ujian` bigint(20) UNSIGNED DEFAULT NULL,
-  `berita_acara` enum('Lulus','Tidak Lulus') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Lulus',
-  `sikap1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `presentasi1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `teori1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `program1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jumlah1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keterangan1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `berita_acara` enum('Menunggu hasil','Lulus','Tidak Lulus') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu hasil',
+  `sikap1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentasi1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `teori1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `program1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jumlah1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan1` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `revisi1` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sikap2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `presentasi2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `teori2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `program2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jumlah2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keterangan2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sikap2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentasi2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `teori2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `program2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jumlah2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan2` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `revisi2` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sikap3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `presentasi3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `teori3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `program3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jumlah3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keterangan3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sikap3` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentasi3` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `teori3` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `program3` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jumlah3` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan3` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `revisi3` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sikap4` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `presentasi4` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `teori4` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `program4` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jumlah4` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan4` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `revisi4` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hasil_ujian`
+--
+
+INSERT INTO `hasil_ujian` (`id`, `nim`, `id_proposal`, `id_jadwal_ujian`, `berita_acara`, `sikap1`, `presentasi1`, `teori1`, `program1`, `jumlah1`, `keterangan1`, `revisi1`, `sikap2`, `presentasi2`, `teori2`, `program2`, `jumlah2`, `keterangan2`, `revisi2`, `sikap3`, `presentasi3`, `teori3`, `program3`, `jumlah3`, `keterangan3`, `revisi3`, `sikap4`, `presentasi4`, `teori4`, `program4`, `jumlah4`, `keterangan4`, `revisi4`, `file1`, `file2`, `file3`, `file4`, `created_at`, `updated_at`) VALUES
+(1, '201851048', 2, 1, 'Menunggu hasil', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 'Lulus', NULL, NULL, NULL, NULL, NULL, '2022-02-04 19:50:40', '2022-02-04 19:50:40');
 
 -- --------------------------------------------------------
 
@@ -206,7 +271,7 @@ CREATE TABLE `hasil_ujian` (
 
 CREATE TABLE `jadwal_sempro` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_berkas_sempro` bigint(20) UNSIGNED NOT NULL,
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
@@ -214,9 +279,16 @@ CREATE TABLE `jadwal_sempro` (
   `ket` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `status1` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
   `status2` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jadwal_sempro`
+--
+
+INSERT INTO `jadwal_sempro` (`id`, `nim`, `id_berkas_sempro`, `tanggal`, `jam`, `tempat`, `ket`, `status1`, `status2`, `created_at`, `updated_at`) VALUES
+(3, '201851048', 3, '2022-01-27', '09:00:00', 'Zoom Meeting', 'as', 'Sudah', 'Sudah', '2022-02-04 06:15:59', '2022-02-04 06:15:59');
 
 -- --------------------------------------------------------
 
@@ -226,7 +298,7 @@ CREATE TABLE `jadwal_sempro` (
 
 CREATE TABLE `jadwal_ujian` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_berkas_ujian` bigint(20) UNSIGNED NOT NULL,
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
@@ -235,9 +307,17 @@ CREATE TABLE `jadwal_ujian` (
   `status1` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
   `status2` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
   `status3` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
+  `status4` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jadwal_ujian`
+--
+
+INSERT INTO `jadwal_ujian` (`id`, `nim`, `id_berkas_ujian`, `tanggal`, `jam`, `tempat`, `ket`, `status1`, `status2`, `status3`, `status4`, `created_at`, `updated_at`) VALUES
+(1, '201851048', 1, '2022-02-16', '09:00:00', 'Zoom Meeting', 'd', 'Belum', 'Belum', 'Belum', 'Sudah', '2022-02-04 19:50:40', '2022-02-04 19:50:40');
 
 -- --------------------------------------------------------
 
@@ -247,13 +327,26 @@ CREATE TABLE `jadwal_ujian` (
 
 CREATE TABLE `mahasiswa` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
-  `hp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
+  `hp` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
+  `status_proposal` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Belum mengajukan proposal',
+  `status_sempro` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Belum seminar proposal',
+  `status_bimbingan` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Belum melakukan bimbingan',
+  `status_skripsi` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Belum mengerjakan',
+  `status_ujian` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Belum ujian',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`id`, `nim`, `name`, `email`, `hp`, `status_proposal`, `status_sempro`, `status_bimbingan`, `status_skripsi`, `status_ujian`, `created_at`, `updated_at`) VALUES
+(108, '201851048', 'LEONANTA PRAMUDYA KUSUMA', 'leonantapramudya7@gmail.com', '62895392292764', 'Sudah mengajukan proposal', 'Sudah seminar proposal - Diterima', 'Siap ujian', 'Sedang dikerjakan', 'Belum ujian', '2022-02-04 04:24:54', '2022-02-04 04:24:54'),
+(109, '201851049', 'TEGUH ARIS WICAKSONO', '-', '-', 'Belum mengajukan proposal', 'Belum seminar proposal', 'Belum melakukan bimbingan', 'Belum mengerjakan', 'Belum ujian', '2022-02-04 05:53:37', '2022-02-04 05:53:37');
 
 -- --------------------------------------------------------
 
@@ -275,28 +368,25 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
-(4, '2021_10_08_052033_create_dosen_table', 2),
-(5, '2021_10_08_120045_create_mahasiswa_table', 3),
-(6, '2021_10_11_120126_create_plot_dosbing_table', 4),
-(7, '2021_10_11_121722_create_table_dosen', 5),
-(8, '2021_10_11_130028_create_plot_dosbing_table', 6),
-(9, '2021_10_12_020848_create_proposal_table', 7),
-(10, '2021_10_12_143001_create_berkas_sempro_table', 8),
-(11, '2021_10_13_131031_create_jadwal_sempro_table', 9),
-(12, '2021_10_18_005758_create_semester_table', 10),
-(13, '2021_10_27_020205_create_hasil_sempro_table', 11),
-(14, '2021_10_27_021334_create_hasil_sempro_table', 12),
-(15, '2021_10_27_022758_create_hasil_sempro_table', 13),
-(16, '2021_11_03_013754_create_bimbingan_table', 14),
-(17, '2021_11_03_014928_create_pesan_bimbingan_table', 14),
-(18, '2021_11_04_031658_create_status_skripsi_table', 15),
-(19, '2021_12_08_113707_create_bidang_table', 16),
-(20, '2021_12_08_123842_create_s1_table', 16),
-(21, '2021_12_08_123945_create_s2_table', 16),
-(22, '2021_12_08_124007_create_s3_table', 16),
-(23, '2021_12_15_021724_create_berkas_ujian_table', 17),
-(24, '2021_12_15_021800_create_jadwal_ujian_table', 17),
-(25, '2021_12_15_021823_create_hasil_ujian_table', 17);
+(4, '2021_12_28_025642_create_semester_table', 1),
+(5, '2021_12_28_025750_create_s1_table', 1),
+(6, '2021_12_28_025839_create_s2_table', 1),
+(7, '2021_12_28_025859_create_s3_table', 1),
+(8, '2021_12_28_025953_create_bidang_table', 1),
+(9, '2021_12_28_030048_create_mahasiswa_table', 1),
+(10, '2021_12_28_030314_create_dosen_table', 1),
+(11, '2021_12_28_030519_create_plot_dosbing_table', 1),
+(12, '2021_12_28_030858_create_proposal_table', 1),
+(13, '2021_12_28_031129_create_berkas_sempro_table', 1),
+(14, '2021_12_28_031220_create_jadwal_sempro_table', 1),
+(15, '2021_12_28_031430_create_hasil_sempro_table', 1),
+(16, '2021_12_28_035230_create_status_skripsi_table', 1),
+(17, '2021_12_28_035357_create_bimbingan_table', 1),
+(18, '2021_12_28_035442_create_pesan_bimbingan_table', 1),
+(19, '2021_12_28_035603_create_plot_penguji_table', 1),
+(20, '2021_12_28_041310_create_berkas_ujian_table', 1),
+(21, '2021_12_28_041431_create_jadwal_ujian_table', 1),
+(22, '2021_12_28_041547_create_hasil_ujian_table', 1);
 
 -- --------------------------------------------------------
 
@@ -310,13 +400,6 @@ CREATE TABLE `password_resets` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `password_resets`
---
-
-INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
-('leonantapramudya7@gmail.com', '$2y$10$UfTytnMY.xaEc2.g9fxME.OdAjrgrT3yoDmwoPcdnUeCsDqrCkcD.', '2021-10-27 08:52:23');
-
 -- --------------------------------------------------------
 
 --
@@ -327,8 +410,8 @@ CREATE TABLE `pesan_bimbingan` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_bimbingan` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `pesan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pesan` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_pendukung` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -341,12 +424,22 @@ CREATE TABLE `pesan_bimbingan` (
 
 CREATE TABLE `plot_dosbing` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `smt` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `smt` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dosbing1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dosbing2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `dosbing1` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dosbing2` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `plot_dosbing`
+--
+
+INSERT INTO `plot_dosbing` (`id`, `smt`, `nim`, `name`, `dosbing1`, `dosbing2`, `created_at`, `updated_at`) VALUES
+(108, 'GASAL 2021/2022', '201851048', 'LEONANTA PRAMUDYA KUSUMA', '0625028501', '0604048702', NULL, NULL),
+(109, 'GASAL 2021/2022', '201851049', 'TEGUH ARIS WICAKSONO', '0604048702', '0625028501', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -356,15 +449,22 @@ CREATE TABLE `plot_dosbing` (
 
 CREATE TABLE `plot_penguji` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `smt` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `smt` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ketua_penguji` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `anggota_penguji_1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `anggota_penguji_2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ketua_penguji` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anggota_penguji_1` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anggota_penguji_2` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `plot_penguji`
+--
+
+INSERT INTO `plot_penguji` (`id`, `smt`, `nim`, `name`, `ketua_penguji`, `anggota_penguji_1`, `anggota_penguji_2`, `created_at`, `updated_at`) VALUES
+(5, 'GASAL 2021/2022', '201851048', 'LEONANTA PRAMUDYA KUSUMA', '0406107004', '0625028501', '0608068502', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -375,19 +475,29 @@ CREATE TABLE `plot_penguji` (
 CREATE TABLE `proposal` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_semester` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `topik` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `topik` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `judul` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `proposal` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ket1` enum('Menunggu ACC','Disetujui','Ditolak','Revisi') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu ACC',
   `ket2` enum('Menunggu ACC','Disetujui','Ditolak','Revisi') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu ACC',
   `id_plot_dosbing` bigint(20) UNSIGNED NOT NULL,
-  `komentar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `komentar1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '-',
-  `komentar2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '-',
+  `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `komentar1` text COLLATE utf8mb4_unicode_ci DEFAULT '-',
+  `komentar2` text COLLATE utf8mb4_unicode_ci DEFAULT '-',
+  `file1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `proposal`
+--
+
+INSERT INTO `proposal` (`id`, `id_semester`, `nim`, `topik`, `judul`, `proposal`, `ket1`, `ket2`, `id_plot_dosbing`, `komentar`, `komentar1`, `komentar2`, `file1`, `file2`, `created_at`, `updated_at`) VALUES
+(1, 1, '201851048', 'Komputer Grafis', 'Sistem Monitoring Skripsi', '1948663106201851048_Proposal Skripsi.pdf', 'Ditolak', 'Ditolak', 108, NULL, 'tolak', 'tolak', NULL, NULL, '2022-02-04 04:26:08', '2022-02-04 04:26:08'),
+(2, 1, '201851048', 'Rekayasa Perangkat Lunak', 'Sistem Monitoring Skripsi Berbasis Web (Studi Kasus Teknik Informatika Universitas Muria Kudus)', '1701703304201851048_Revisi Proposal Skripsi.pdf', 'Disetujui', 'Disetujui', 108, NULL, 'revisi file', 'revisi', '1924352219Revisi bimbingan dosen - Copy.pdf', NULL, '2022-02-04 04:31:03', '2022-02-04 04:31:03');
 
 -- --------------------------------------------------------
 
@@ -397,7 +507,7 @@ CREATE TABLE `proposal` (
 
 CREATE TABLE `s1` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `gelar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gelar` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -407,33 +517,7 @@ CREATE TABLE `s1` (
 --
 
 INSERT INTO `s1` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
-(1, 'S.Ag.', NULL, NULL),
-(2, 'S.Pd.', NULL, NULL),
-(3, 'S.Si.', NULL, NULL),
-(4, 'S.Psi.', NULL, NULL),
-(5, 'S.Hum.', NULL, NULL),
-(6, 'S.Kom.', NULL, NULL),
-(7, 'S.Sn.', NULL, NULL),
-(8, 'S.Pt.', NULL, NULL),
-(9, 'S.Ked.', NULL, NULL),
-(10, 'S.Th.I.', NULL, NULL),
-(11, 'S.Kes.', NULL, NULL),
-(12, 'S.Sos.', NULL, NULL),
-(13, 'S.Kar.', NULL, NULL),
-(14, 'S.Fhil.', NULL, NULL),
-(15, 'S.T.', NULL, NULL),
-(16, 'S.P.', NULL, NULL),
-(17, 'S.S.', NULL, NULL),
-(18, 'S.H.', NULL, NULL),
-(19, 'S.E.', NULL, NULL),
-(20, 'S.Th.K.', NULL, NULL),
-(21, 'S.I.P.', NULL, NULL),
-(22, 'S.K.M.', NULL, NULL),
-(23, 'S.H.I.', NULL, NULL),
-(24, 'S.Sos.I.', NULL, NULL),
-(25, 'S.Fil.I.', NULL, NULL),
-(26, 'S.Pd.I.', NULL, NULL),
-(27, 'M.Mus.', NULL, NULL);
+(1, 'S. Kom', '2022-02-01 01:19:30', '2022-02-01 01:19:30');
 
 -- --------------------------------------------------------
 
@@ -443,7 +527,7 @@ INSERT INTO `s1` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `s2` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `gelar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gelar` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -453,111 +537,8 @@ CREATE TABLE `s2` (
 --
 
 INSERT INTO `s2` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
-(1, 'M.A.B.', NULL, NULL),
-(2, 'M.A.Pd.', NULL, NULL),
-(3, 'M.A.P.', NULL, NULL),
-(4, 'M.A.R.S.', NULL, NULL),
-(5, 'M.Ag.', NULL, NULL),
-(6, 'M.A.Hk.', NULL, NULL),
-(7, 'M.A.Hum.', NULL, NULL),
-(8, 'M.A.Ked.', NULL, NULL),
-(9, 'M.A.Pd.', NULL, NULL),
-(10, 'M.A.Si.', NULL, NULL),
-(11, 'M.Agri.', NULL, NULL),
-(12, 'M.Ak.', NULL, NULL),
-(13, 'M.Ars.', NULL, NULL),
-(14, 'M.Biomed', NULL, NULL),
-(15, 'M.Ds.', NULL, NULL),
-(16, 'M.Div.', NULL, NULL),
-(17, 'M.E.', NULL, NULL),
-(18, 'M.E.I.', NULL, NULL),
-(19, 'M.E.Sy.', NULL, NULL),
-(20, 'M.Epid.', NULL, NULL),
-(21, 'M.Farm.', NULL, NULL),
-(22, 'M.Farm.Klin.', NULL, NULL),
-(23, 'M.Fil.', NULL, NULL),
-(24, 'M.Fil.I.', NULL, NULL),
-(25, 'M.H.', NULL, NULL),
-(26, 'M.H.I.', NULL, NULL),
-(27, 'M.H.Kes.', NULL, NULL),
-(28, 'M.Hum.', NULL, NULL),
-(29, 'M.A.', NULL, NULL),
-(30, 'M.Si.Biomed.', NULL, NULL),
-(31, 'M.I.K.', NULL, NULL),
-(32, 'M.Kesos.', NULL, NULL),
-(33, 'M.Kom.', NULL, NULL),
-(34, 'M.I.Kom.', NULL, NULL),
-(35, 'M.Han.', NULL, NULL),
-(36, 'M.I.Pol.', NULL, NULL),
-(37, 'M.Sy.', NULL, NULL),
-(38, 'M.Ud.', NULL, NULL),
-(39, 'M.Keb.', NULL, NULL),
-(40, 'M.K.K.', NULL, NULL),
-(41, 'M.Ked.Tro', NULL, NULL),
-(42, 'M.Hut.', NULL, NULL),
-(43, 'M.Kn.', NULL, NULL),
-(44, 'M.Kor.', NULL, NULL),
-(45, 'M.Kep.', NULL, NULL),
-(46, 'M.Kes..', NULL, NULL),
-(47, 'M.K.M.', NULL, NULL),
-(48, 'M.K.K.K.', NULL, NULL),
-(49, 'M.Kom.', NULL, NULL),
-(50, 'M.M.', NULL, NULL),
-(51, 'M.M.A.', NULL, NULL),
-(52, 'M.Par.', NULL, NULL),
-(53, 'M.M.Pd.', NULL, NULL),
-(54, 'M.M.R.', NULL, NULL),
-(55, 'M.M.S.I.', NULL, NULL),
-(56, 'M.M.T.', NULL, NULL),
-(57, 'M.Mar.', NULL, NULL),
-(58, 'M.Li.', NULL, NULL),
-(59, 'M.P.I.', NULL, NULL),
-(60, 'M.Pd.', NULL, NULL),
-(61, 'M.Pd.I.', NULL, NULL),
-(62, 'M.Pd.Si.', NULL, NULL),
-(63, 'M.P.Fis.', NULL, NULL),
-(64, 'M.P.Kim.', NULL, NULL),
-(65, 'M.P.Mat.', NULL, NULL),
-(66, 'M.P.', NULL, NULL),
-(67, 'M.Psi.', NULL, NULL),
-(68, 'M.Si.', NULL, NULL),
-(69, 'M.S.Ak.', NULL, NULL),
-(70, 'M.Si.(Han).', NULL, NULL),
-(71, 'M.S.E.', NULL, NULL),
-(72, 'M.S.M.', NULL, NULL),
-(73, 'M.Sn.', NULL, NULL),
-(74, 'M.Sos.I.', NULL, NULL),
-(75, 'M.Stat.', NULL, NULL),
-(76, 'M.S.I.', NULL, NULL),
-(77, 'M.T.', NULL, NULL),
-(78, 'M.T.A.', NULL, NULL),
-(79, 'M.TI.', NULL, NULL),
-(80, 'M.T.P.', NULL, NULL),
-(81, 'M.Div.', NULL, NULL),
-(82, 'M.Th.I.', NULL, NULL),
-(83, 'M.Min.', NULL, NULL),
-(84, 'M.Th.', NULL, NULL),
-(85, 'M.Tr.', NULL, NULL),
-(86, 'M.Tr. Ha', NULL, NULL),
-(87, 'M.Tr.Hanla.', NULL, NULL),
-(88, 'M.Vet.', NULL, NULL),
-(89, 'M.Acc.', NULL, NULL),
-(90, 'M.A.', NULL, NULL),
-(91, 'M.A.Ed.', NULL, NULL),
-(92, 'M.B.A.', NULL, NULL),
-(93, 'M.Com.', NULL, NULL),
-(94, 'M.Cs.', NULL, NULL),
-(95, 'M.Ec.', NULL, NULL),
-(96, 'M.Ed.', NULL, NULL),
-(97, 'M.Eng.', NULL, NULL),
-(98, 'LL.M.', NULL, NULL),
-(99, 'M.Med.Ed.', NULL, NULL),
-(100, 'M.Phil.', NULL, NULL),
-(101, 'M.P.A.', NULL, NULL),
-(102, 'M.P.H.', NULL, NULL),
-(103, 'M.Sc.', NULL, NULL),
-(104, 'M.Sc.Soc.', NULL, NULL),
-(105, 'M.S.E.', NULL, NULL);
+(1, 'M. Kom', '2022-02-01 01:19:37', '2022-02-01 01:19:37'),
+(2, 'M. Cs', '2022-02-01 01:19:42', '2022-02-01 01:19:42');
 
 -- --------------------------------------------------------
 
@@ -567,7 +548,8 @@ INSERT INTO `s2` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `s3` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `gelar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gelar` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `depan` enum('Y','N') COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -576,8 +558,9 @@ CREATE TABLE `s3` (
 -- Dumping data for table `s3`
 --
 
-INSERT INTO `s3` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
-(1, 'Dr.', NULL, NULL);
+INSERT INTO `s3` (`id`, `gelar`, `depan`, `created_at`, `updated_at`) VALUES
+(1, 'Dr.', 'Y', '2022-02-01 01:25:28', '2022-02-01 01:25:28'),
+(2, 'Ph.D', 'N', '2022-02-01 01:27:20', '2022-02-01 01:27:20');
 
 -- --------------------------------------------------------
 
@@ -587,9 +570,9 @@ INSERT INTO `s3` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `semester` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `semester` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tahun` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `aktif` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `semester` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tahun` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aktif` enum('Y','N') COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -599,10 +582,7 @@ CREATE TABLE `semester` (
 --
 
 INSERT INTO `semester` (`id`, `semester`, `tahun`, `aktif`, `created_at`, `updated_at`) VALUES
-(3, 'GASAL', '2021/2022', 'N', '2021-10-18 04:50:29', '2021-10-18 04:50:29'),
-(4, 'GENAP', '2021/2022', 'N', '2021-11-08 05:10:39', '2021-11-08 05:10:39'),
-(5, 'GENAP', '2021/2022', 'N', '2021-12-05 23:44:00', '2021-12-05 23:44:00'),
-(6, 'GASAL', '2021/2022', 'Y', '2021-12-05 23:44:13', '2021-12-05 23:44:13');
+(1, 'GASAL', '2021/2022', 'Y', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -612,13 +592,20 @@ INSERT INTO `semester` (`id`, `semester`, `tahun`, `aktif`, `created_at`, `updat
 
 CREATE TABLE `status_skripsi` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nim` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
-  `status_skripsi` enum('Sedang Dikerjakan','Selesai') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Sedang Dikerjakan',
-  `status_ujian` enum('Belum Ujian','Lulus','Tidak Lulus') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum Ujian',
+  `status_skripsi` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Sedang dikerjakan',
+  `status_ujian` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum ujian',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `status_skripsi`
+--
+
+INSERT INTO `status_skripsi` (`id`, `nim`, `id_proposal`, `status_skripsi`, `status_ujian`, `created_at`, `updated_at`) VALUES
+(3, '201851048', 2, 'Sedang dikerjakan', 'Belum ujian', '2022-02-04 06:17:03', '2022-02-04 06:17:03');
 
 -- --------------------------------------------------------
 
@@ -628,17 +615,17 @@ CREATE TABLE `status_skripsi` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `no_induk` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_induk` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` enum('admin','dosen','mahasiswa') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'mahasiswa',
-  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'undraw_profile.svg',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undraw_profile.svg',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -646,7 +633,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `no_induk`, `name`, `username`, `email`, `email_verified_at`, `password`, `remember_token`, `role`, `photo`, `created_at`, `updated_at`) VALUES
-(1, '12345678910', 'Admin', 'adminskripsi', NULL, '2021-09-22 02:52:53', '$2y$10$f3DuEvp3mflK9tvKe3.FD.FHUqsL167dYWwCXkJwcXnZtcaU/mMoO', NULL, 'admin', 'undraw_profile.svg', '2021-09-22 02:52:53', NULL);
+(1, '12345678910', 'Admin', 'adminskripsi', 'admin@gmail.com', '2022-02-01 01:04:21', '$2y$10$WAW4yUtqnPN36QB1eSBGiecZUDxP35legVY4rWwUVVS0TK2csZlfS', NULL, 'admin', 'undraw_profile.svg', '2022-02-01 01:04:21', NULL),
+(2, '0625028501', 'Ratih Nindyasari, S. Kom, M. Kom, ', '0625028501', 'ratih.nindyasari@umk.ac.id', NULL, '$2y$10$NlFlCJxG9F6wM/8FkaHQQeIC9R4c4z5zga1bXqNeMMoteUnpHyB6G', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(3, '0604048702', 'Anastasya Latubessy, S. Kom, M. Cs, ', '0604048702', 'anastasya.latubessy@umk.ac.id', NULL, '$2y$10$l0KZ0E9MswMQXKAxxwQMc.rqWe7k17YLKv1YuJPJyf6Se3ZqiRPGi', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(4, '0406107004', 'Ahmad Jazuli, S. Kom, M. Kom, Ph.D', '0406107004', 'ahmad.jazuli@umk.ac.id', NULL, '$2y$10$/ZROtOYk964EfmaccSuK9OoX4qdHx3b.drN10dbJcN/lFzUKT45p6', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(111, '201851051', 'ANDIKA', '201851051', NULL, NULL, '$2y$10$wXaZweL1GNl2oYGD7/0vs.azHi6A8la8N.QuXH/iPOz8EVsR12XTa', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
+(112, '201851048', 'LEONANTA PRAMUDYA KUSUMA', '201851048', 'leonantapramudya7@gmail.com', NULL, '$2y$10$ZhbFYPf4Y.HyhvJKJBSvrueLgbiQu7QNJPqYTRrmVVWAhUaSJwtue', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
+(113, '201851049', 'TEGUH ARIS WICAKSONO', '201851049', NULL, NULL, '$2y$10$vefLFib5lz5vqnrkgjAcj.1pEBN41aAR7FjeqepDiPkEJz.XbY8AK', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
+(114, '0608068502', 'Tutik Khotimah, S. Kom, M. Kom, ', '0608068502', 'tutik.khotimah@umk.ac.id', NULL, '$2y$10$dTeyf1.lmcjfohMC9ypI1OZpxHowT5gC6NWBCCzWrV8KJ.X1Qz89i', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -666,9 +660,9 @@ ALTER TABLE `berkas_sempro`
 --
 ALTER TABLE `berkas_ujian`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `nim` (`nim`),
-  ADD KEY `id_proposal` (`id_proposal`),
-  ADD KEY `id_plot_penguji` (`id_plot_penguji`);
+  ADD KEY `berkas_ujian_nim_foreign` (`nim`),
+  ADD KEY `berkas_ujian_id_proposal_foreign` (`id_proposal`),
+  ADD KEY `berkas_ujian_id_plot_penguji_foreign` (`id_plot_penguji`);
 
 --
 -- Indexes for table `bidang`
@@ -681,21 +675,21 @@ ALTER TABLE `bidang`
 --
 ALTER TABLE `bimbingan`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `bimbingan_id_semester_foreign` (`id_semester`),
   ADD KEY `bimbingan_nim_foreign` (`nim`),
   ADD KEY `bimbingan_id_proposal_foreign` (`id_proposal`),
-  ADD KEY `bimbingan_id_plot_dosbing_foreign` (`id_plot_dosbing`),
-  ADD KEY `id_semester` (`id_semester`);
+  ADD KEY `bimbingan_id_plot_dosbing_foreign` (`id_plot_dosbing`);
 
 --
 -- Indexes for table `dosen`
 --
 ALTER TABLE `dosen`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nidn` (`nidn`),
-  ADD KEY `gelar1` (`gelar1`),
-  ADD KEY `gelar2` (`gelar2`),
-  ADD KEY `gelar3` (`gelar3`),
-  ADD KEY `id_bidang` (`id_bidang`);
+  ADD UNIQUE KEY `dosen_nidn_unique` (`nidn`),
+  ADD KEY `dosen_gelar1_foreign` (`gelar1`),
+  ADD KEY `dosen_gelar2_foreign` (`gelar2`),
+  ADD KEY `dosen_gelar3_foreign` (`gelar3`),
+  ADD KEY `dosen_id_bidang_foreign` (`id_bidang`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -717,9 +711,9 @@ ALTER TABLE `hasil_sempro`
 --
 ALTER TABLE `hasil_ujian`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `nim` (`nim`),
-  ADD KEY `id_proposal` (`id_proposal`),
-  ADD KEY `id_jadwal_ujian` (`id_jadwal_ujian`);
+  ADD KEY `hasil_ujian_nim_foreign` (`nim`),
+  ADD KEY `hasil_ujian_id_proposal_foreign` (`id_proposal`),
+  ADD KEY `hasil_ujian_id_jadwal_ujian_foreign` (`id_jadwal_ujian`);
 
 --
 -- Indexes for table `jadwal_sempro`
@@ -734,15 +728,15 @@ ALTER TABLE `jadwal_sempro`
 --
 ALTER TABLE `jadwal_ujian`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `nim` (`nim`),
-  ADD KEY `id_berkas_ujian` (`id_berkas_ujian`);
+  ADD KEY `jadwal_ujian_nim_foreign` (`nim`),
+  ADD KEY `jadwal_ujian_id_berkas_ujian_foreign` (`id_berkas_ujian`);
 
 --
 -- Indexes for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nim` (`nim`);
+  ADD UNIQUE KEY `mahasiswa_nim_unique` (`nim`);
 
 --
 -- Indexes for table `migrations`
@@ -769,27 +763,25 @@ ALTER TABLE `pesan_bimbingan`
 --
 ALTER TABLE `plot_dosbing`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dosbing1` (`dosbing1`),
-  ADD KEY `dosbing2` (`dosbing2`);
+  ADD KEY `plot_dosbing_dosbing1_foreign` (`dosbing1`),
+  ADD KEY `plot_dosbing_dosbing2_foreign` (`dosbing2`);
 
 --
 -- Indexes for table `plot_penguji`
 --
 ALTER TABLE `plot_penguji`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `ketua_penguji` (`ketua_penguji`),
-  ADD KEY `anggota_penguji_1` (`anggota_penguji_1`),
-  ADD KEY `anggota_penguji_2` (`anggota_penguji_2`),
-  ADD KEY `nim` (`nim`);
+  ADD KEY `plot_penguji_ketua_penguji_foreign` (`ketua_penguji`),
+  ADD KEY `plot_penguji_anggota_penguji_1_foreign` (`anggota_penguji_1`),
+  ADD KEY `plot_penguji_anggota_penguji_2_foreign` (`anggota_penguji_2`);
 
 --
 -- Indexes for table `proposal`
 --
 ALTER TABLE `proposal`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `proposal_id_plot_dosbing_foreign` (`id_plot_dosbing`),
-  ADD KEY `nim` (`nim`),
-  ADD KEY `id_semester` (`id_semester`);
+  ADD KEY `proposal_id_semester_foreign` (`id_semester`),
+  ADD KEY `proposal_id_plot_dosbing_foreign` (`id_plot_dosbing`);
 
 --
 -- Indexes for table `s1`
@@ -837,31 +829,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `berkas_sempro`
 --
 ALTER TABLE `berkas_sempro`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `berkas_ujian`
 --
 ALTER TABLE `berkas_ujian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `bidang`
 --
 ALTER TABLE `bidang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `bimbingan`
 --
 ALTER TABLE `bimbingan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `dosen`
 --
 ALTER TABLE `dosen`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -873,49 +865,49 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `hasil_sempro`
 --
 ALTER TABLE `hasil_sempro`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `hasil_ujian`
 --
 ALTER TABLE `hasil_ujian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jadwal_sempro`
 --
 ALTER TABLE `jadwal_sempro`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `jadwal_ujian`
 --
 ALTER TABLE `jadwal_ujian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `pesan_bimbingan`
 --
 ALTER TABLE `pesan_bimbingan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `plot_dosbing`
 --
 ALTER TABLE `plot_dosbing`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `plot_penguji`
@@ -927,43 +919,43 @@ ALTER TABLE `plot_penguji`
 -- AUTO_INCREMENT for table `proposal`
 --
 ALTER TABLE `proposal`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `s1`
 --
 ALTER TABLE `s1`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `s2`
 --
 ALTER TABLE `s2`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `s3`
 --
 ALTER TABLE `s3`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `semester`
 --
 ALTER TABLE `semester`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `status_skripsi`
 --
 ALTER TABLE `status_skripsi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- Constraints for dumped tables
@@ -981,27 +973,27 @@ ALTER TABLE `berkas_sempro`
 -- Constraints for table `berkas_ujian`
 --
 ALTER TABLE `berkas_ujian`
-  ADD CONSTRAINT `berkas_ujian_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`),
-  ADD CONSTRAINT `berkas_ujian_ibfk_2` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
-  ADD CONSTRAINT `berkas_ujian_ibfk_4` FOREIGN KEY (`id_plot_penguji`) REFERENCES `plot_penguji` (`id`);
+  ADD CONSTRAINT `berkas_ujian_id_plot_penguji_foreign` FOREIGN KEY (`id_plot_penguji`) REFERENCES `plot_penguji` (`id`),
+  ADD CONSTRAINT `berkas_ujian_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
+  ADD CONSTRAINT `berkas_ujian_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `bimbingan`
 --
 ALTER TABLE `bimbingan`
-  ADD CONSTRAINT `bimbingan_ibfk_1` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `bimbingan_id_plot_dosbing_foreign` FOREIGN KEY (`id_plot_dosbing`) REFERENCES `plot_dosbing` (`id`),
   ADD CONSTRAINT `bimbingan_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
+  ADD CONSTRAINT `bimbingan_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `bimbingan_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `dosen`
 --
 ALTER TABLE `dosen`
-  ADD CONSTRAINT `dosen_ibfk_1` FOREIGN KEY (`gelar1`) REFERENCES `s1` (`id`),
-  ADD CONSTRAINT `dosen_ibfk_2` FOREIGN KEY (`gelar2`) REFERENCES `s2` (`id`),
-  ADD CONSTRAINT `dosen_ibfk_3` FOREIGN KEY (`gelar3`) REFERENCES `s3` (`id`),
-  ADD CONSTRAINT `dosen_ibfk_4` FOREIGN KEY (`id_bidang`) REFERENCES `bidang` (`id`);
+  ADD CONSTRAINT `dosen_gelar1_foreign` FOREIGN KEY (`gelar1`) REFERENCES `s1` (`id`),
+  ADD CONSTRAINT `dosen_gelar2_foreign` FOREIGN KEY (`gelar2`) REFERENCES `s2` (`id`),
+  ADD CONSTRAINT `dosen_gelar3_foreign` FOREIGN KEY (`gelar3`) REFERENCES `s3` (`id`),
+  ADD CONSTRAINT `dosen_id_bidang_foreign` FOREIGN KEY (`id_bidang`) REFERENCES `bidang` (`id`);
 
 --
 -- Constraints for table `hasil_sempro`
@@ -1015,9 +1007,9 @@ ALTER TABLE `hasil_sempro`
 -- Constraints for table `hasil_ujian`
 --
 ALTER TABLE `hasil_ujian`
-  ADD CONSTRAINT `hasil_ujian_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`),
-  ADD CONSTRAINT `hasil_ujian_ibfk_2` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
-  ADD CONSTRAINT `hasil_ujian_ibfk_3` FOREIGN KEY (`id_jadwal_ujian`) REFERENCES `jadwal_ujian` (`id`);
+  ADD CONSTRAINT `hasil_ujian_id_jadwal_ujian_foreign` FOREIGN KEY (`id_jadwal_ujian`) REFERENCES `jadwal_ujian` (`id`),
+  ADD CONSTRAINT `hasil_ujian_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
+  ADD CONSTRAINT `hasil_ujian_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `jadwal_sempro`
@@ -1030,8 +1022,8 @@ ALTER TABLE `jadwal_sempro`
 -- Constraints for table `jadwal_ujian`
 --
 ALTER TABLE `jadwal_ujian`
-  ADD CONSTRAINT `jadwal_ujian_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`),
-  ADD CONSTRAINT `jadwal_ujian_ibfk_2` FOREIGN KEY (`id_berkas_ujian`) REFERENCES `berkas_ujian` (`id`);
+  ADD CONSTRAINT `jadwal_ujian_id_berkas_ujian_foreign` FOREIGN KEY (`id_berkas_ujian`) REFERENCES `berkas_ujian` (`id`),
+  ADD CONSTRAINT `jadwal_ujian_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `pesan_bimbingan`
@@ -1044,25 +1036,23 @@ ALTER TABLE `pesan_bimbingan`
 -- Constraints for table `plot_dosbing`
 --
 ALTER TABLE `plot_dosbing`
-  ADD CONSTRAINT `plot_dosbing_ibfk_1` FOREIGN KEY (`dosbing1`) REFERENCES `dosen` (`nidn`),
-  ADD CONSTRAINT `plot_dosbing_ibfk_2` FOREIGN KEY (`dosbing2`) REFERENCES `dosen` (`nidn`);
+  ADD CONSTRAINT `plot_dosbing_dosbing1_foreign` FOREIGN KEY (`dosbing1`) REFERENCES `dosen` (`nidn`),
+  ADD CONSTRAINT `plot_dosbing_dosbing2_foreign` FOREIGN KEY (`dosbing2`) REFERENCES `dosen` (`nidn`);
 
 --
 -- Constraints for table `plot_penguji`
 --
 ALTER TABLE `plot_penguji`
-  ADD CONSTRAINT `plot_penguji_ibfk_1` FOREIGN KEY (`ketua_penguji`) REFERENCES `dosen` (`nidn`),
-  ADD CONSTRAINT `plot_penguji_ibfk_2` FOREIGN KEY (`anggota_penguji_1`) REFERENCES `dosen` (`nidn`),
-  ADD CONSTRAINT `plot_penguji_ibfk_3` FOREIGN KEY (`anggota_penguji_2`) REFERENCES `dosen` (`nidn`),
-  ADD CONSTRAINT `plot_penguji_ibfk_4` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
+  ADD CONSTRAINT `plot_penguji_anggota_penguji_1_foreign` FOREIGN KEY (`anggota_penguji_1`) REFERENCES `dosen` (`nidn`),
+  ADD CONSTRAINT `plot_penguji_anggota_penguji_2_foreign` FOREIGN KEY (`anggota_penguji_2`) REFERENCES `dosen` (`nidn`),
+  ADD CONSTRAINT `plot_penguji_ketua_penguji_foreign` FOREIGN KEY (`ketua_penguji`) REFERENCES `dosen` (`nidn`);
 
 --
 -- Constraints for table `proposal`
 --
 ALTER TABLE `proposal`
-  ADD CONSTRAINT `proposal_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`),
-  ADD CONSTRAINT `proposal_ibfk_2` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
-  ADD CONSTRAINT `proposal_id_plot_dosbing_foreign` FOREIGN KEY (`id_plot_dosbing`) REFERENCES `plot_dosbing` (`id`);
+  ADD CONSTRAINT `proposal_id_plot_dosbing_foreign` FOREIGN KEY (`id_plot_dosbing`) REFERENCES `plot_dosbing` (`id`),
+  ADD CONSTRAINT `proposal_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`);
 
 --
 -- Constraints for table `status_skripsi`

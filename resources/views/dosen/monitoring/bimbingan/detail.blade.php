@@ -15,23 +15,98 @@
                   {{method_field('PUT')}}
                   
                   @if ($data -> dosbing1 == $user -> no_induk)
-                    @if ($data -> ket1 == 'Ok' || $data -> ket1 == 'Selesai Bimbingan')
+                    @if ($data -> ket1 == 'Ok')
                       <button type="submit" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
-                    @elseif ($data -> ket1 == 'Selesai Bimbingan')
-                    <button type="submit" class="btn btn-success ml-2" disabled>Selesai Bimbingan</button>
-                    @else
+                      @elseif ($data -> ket1 == 'Selesai Bimbingan')
+                      
+                      @else
+                      @if ($data->ket1=='Lanjut ke bimbingan selanjutnya' || $data->ket1=='Ok' || $data->ket1=='Siap ujian')
+                          
+                      @else
                       <button type="submit" value="Ok" class="btn btn-success ml-2">Ok</button>
+                      @endif
                     @endif
                   @else
                   @if ($data -> ket2 == 'Ok')
                       <button type="submit" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
-                    @elseif ($data -> ket2 == 'Selesai Bimbingan')
-                    <button type="submit" class="btn btn-success ml-2" disabled>Selesai Bimbingan</button>
-                    @else
+                      @elseif ($data -> ket1 == 'Selesai Bimbingan')
+                      @else
+                      @if ($data->ket2=='Lanjut ke bimbingan selanjutnya' || $data->ket2=='Ok' || $data->ket2=='Siap ujian')
+                          
+                      @else
                       <button type="submit" value="Ok" class="btn btn-success ml-2">Ok</button>
+                      @endif
                     @endif
                   @endif
               </form>
+              <form action="/dosen/monitoring/bimbingan/revisi/{{ $data->id }}" method="post">
+                {{csrf_field()}}
+                {{method_field('PUT')}}
+                
+                @if ($data -> dosbing1 == $user -> no_induk)
+                  @if ($data -> ket1 == 'Lanjut ke bimbingan selanjutnya')
+                    <button type="submit" class="btn btn-warning ml-2" disabled>Lanjut ke bimbingan selanjutnya</button>
+                    @elseif ($data -> ket1 == 'Selesai Bimbingan')
+                    @else
+                    @if ($data->ket1=='Ok' || $data->ket1=='Lanjut ke bimbingan selanjutnya' || $data->ket1=='Siap ujian')
+                        
+                    @else
+                    <button type="submit" value="Ok" class="btn btn-warning ml-2">Revisi</button>    
+                    @endif
+                  @endif
+                @else
+                @if ($data -> ket2 == 'Lanjut ke bimbingan selanjutnya')
+                    <button type="submit" class="btn btn-warning ml-2" disabled>Lanjut ke bimbingan selanjutnya</button>
+                    @elseif ($data -> ket1 == 'Selesai Bimbingan')
+                    @else
+                    @if ($data->ket2=='Ok' || $data->ket2=='Lanjut ke bimbingan selanjutnya' || $data->ket2=='Siap ujian')
+                        
+                    @else
+                    <button type="submit" value="Ok" class="btn btn-warning ml-2">Revisi</button>    
+                    @endif
+                  @endif
+                @endif
+            </form>
+            <form action="/dosen/monitoring/bimbingan/siapujian/{{ $data->id }}" method="post">
+              {{csrf_field()}}
+              {{method_field('PUT')}}
+            
+              
+              @if ($data -> dosbing1 == $user -> no_induk)
+                        @if ($data -> ket1 == 'Siap ujian')
+                          <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa siap ujian</button>
+                        @else
+                          @if ($data->ket1=='Ok' || $data->ket1=='Siap ujian' || $data->ket1=='Lanjut ke bimbingan selanjutnya')
+                              
+                          @else
+                          <button type="submit" class="btn btn-success btn-flat ml-2" onclick="return confirm('Yakin?');">
+                            Siap ujian
+                          </button>                              
+                          @endif
+                          @endif
+                         @else
+                         @if ($data -> ket2 == 'Siap ujian')
+                         <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa siap ujian</button>
+                       @else
+                          @if ($data->ket2=='Ok' || $data->ket2=='Siap ujian' || $data->ket2=='Lanjut ke bimbingan selanjutnya')
+                              
+                          @else
+                          <button type="submit" class="btn btn-success btn-flat ml-2" onclick="return confirm('Yakin?');">
+                            Siap ujian
+                          </button>
+                          @endif
+                        @endif
+                      {{-- @else
+                      @if ($data -> ket2 == 'Selesai Bimbingan')
+                          <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa sudah selesai bimbingan</button>
+                        @else
+                          <button type="submit" class="btn btn-success btn-flat" onclick="return confirm('Yakin?');">
+                Selesai Semua Bimbingan
+              </button>
+                        @endif --}}
+                      @endif
+    
+            </form>
               </div>
             </div>
         </div>
@@ -126,14 +201,14 @@
           <h1 class="h3 mb-2 text-gray-800">Pesan</h1>
           <div class="pull-right">
             <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modaldefault">
-              Tambah Pesan
+              Tambah Catatan Bimbingan
             </button>
             <!-- Modal -->
             <div class="modal fade" id="modaldefault" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
               <div class="modal-content">
                   <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Balas Pesan</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Catatan Bimbingan</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
@@ -156,7 +231,7 @@
                       </div>
                       <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" name="submit" class="btn btn-primary">Balas</button>
+                      <button type="submit" name="submit" class="btn btn-primary">Tambah</button>
                       </div>
                   </form>
               </div>
@@ -182,32 +257,7 @@
           @endforeach
         </div>
 
-        <form action="/dosen/monitoring/bimbingan/selesaisemua/{{ $data->id }}" method="post">
-          {{csrf_field()}}
-          {{method_field('PUT')}}
-        <div class="row-mt-5 mb-5 float-right">
-          
-          @if ($data -> dosbing1 == $user -> no_induk)
-                    @if ($data -> ket1 == 'Selesai Bimbingan')
-                      <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa sudah selesai bimbingan</button>
-                    @else
-                      <button type="submit" class="btn btn-success btn-flat" onclick="return confirm('Yakin?');">
-                        Selesai Semua Bimbingan
-                      </button>
-                    @endif
-                  {{-- @else
-                  @if ($data -> ket2 == 'Selesai Bimbingan')
-                      <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa sudah selesai bimbingan</button>
-                    @else
-                      <button type="submit" class="btn btn-success btn-flat" onclick="return confirm('Yakin?');">
-            Selesai Semua Bimbingan
-          </button>
-                    @endif --}}
-                  @endif
-
-          
-        </div>
-        </form>
+        
 
     </div>
 @endsection

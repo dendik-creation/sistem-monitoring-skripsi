@@ -180,7 +180,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dosen/balas/pesan', 'DosenController@insertPesan')->name('insertpesandosen');
 
         Route::put('/dosen/monitoring/bimbingan/selesai/{id}', 'DosenController@selesaiBimbinganMhs')->name('dosenselesaibimbinganmhs');
-        Route::put('/dosen/monitoring/bimbingan/selesaisemua/{id}', 'DosenController@selesaiSemuaBimbinganMhs')->name('dosenselesaisemuabimbinganmhs');
+        Route::put('/dosen/monitoring/bimbingan/revisi/{id}', 'DosenController@revisiBimbinganMhs')->name('dosenrevisibimbinganmhs');
+        Route::put('/dosen/monitoring/bimbingan/siapujian/{id}', 'DosenController@siapUjianMhs')->name('dosensiapujianmhs');
         Route::get('/dosen/monitoring/bimbingan/{id}', 'DosenController@viewBimbinganMahasiswaFilter')->name('databimbinganmahasiswafilter');
 
         //Monitoring Skripsi

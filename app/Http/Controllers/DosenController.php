@@ -1215,7 +1215,55 @@ class DosenController extends Controller
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
     }
 
-    public function selesaiSemuaBimbinganMhs($id){
+    public function revisiBimbinganMhs($id){
+        $user = Auth::user();
+        $dosen = $user -> no_induk;
+
+        $dosen1 = DB::table('bimbingan')
+        ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
+        ->select('plot_dosbing.dosbing1 as dosbing1')
+        ->where('bimbingan.id', $id)
+        ->first();
+
+        $dosen2 = DB::table('bimbingan')
+        ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
+        ->select('plot_dosbing.dosbing2 as dosbing2')
+        ->where('bimbingan.id', $id)
+        ->first();
+        
+        if(($dosen1->dosbing1) == $dosen){
+            $data = DB::table('bimbingan')
+            ->where('id', $id)
+            ->update(
+            ['ket1' => 'Lanjut ke bimbingan selanjutnya']);
+        }else if(($dosen2->dosbing2) == $dosen){
+            $data = DB::table('bimbingan')
+            ->where('id', $id)
+            ->update(
+            ['ket2' => 'Lanjut ke bimbingan selanjutnya']);
+        }
+
+        $getid = DB::table('bimbingan')
+        ->where('bimbingan.id', $id)
+        ->first();
+
+        $cek = DB::table('bimbingan')
+                    ->where('bimbingan.nim', $getid->nim)
+                    ->orderByRaw('bimbingan.bimbingan_ke DESC')
+                    ->first();
+
+        // dd($cek);
+
+        $data = DB::table('mahasiswa')
+        ->where('nim', $cek->nim)
+        ->update(
+        ['status_bimbingan' => 'Bimbingan Ke-'.$cek->bimbingan_ke]);
+        
+
+        return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
+    }
+
+    public function siapUjianMhs($id){
         $user = Auth::user();
         $dosen = $user -> no_induk;
 
@@ -1232,11 +1280,17 @@ class DosenController extends Controller
         ->first();
         
         
-        $finish = DB::table('bimbingan')
-        ->where('id', $id)
-        ->update(
-        ['ket1' => 'Selesai Bimbingan',
-        'ket2' => 'Selesai Bimbingan']);
+        if(($dosen1->dosbing1) == $dosen){
+            $data = DB::table('bimbingan')
+            ->where('id', $id)
+            ->update(
+            ['ket1' => 'Siap ujian']);
+        }else if(($dosen2->dosbing2) == $dosen){
+            $data = DB::table('bimbingan')
+            ->where('id', $id)
+            ->update(
+            ['ket2' => 'Siap ujian']);
+        }
 
         $getid = DB::table('bimbingan')
         ->where('bimbingan.id', $id)
@@ -1250,7 +1304,7 @@ class DosenController extends Controller
         $data = DB::table('mahasiswa')
         ->where('nim', $cek->nim)
         ->update(
-        ['status_bimbingan' => 'Selesai Semua Bimbingan']);
+        ['status_bimbingan' => 'Siap ujian']);
 
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
     }
@@ -1294,7 +1348,7 @@ class DosenController extends Controller
         }
 
         
-        
+
         return redirect()->back()->with(['success' => 'Berhasil']);
     }
 

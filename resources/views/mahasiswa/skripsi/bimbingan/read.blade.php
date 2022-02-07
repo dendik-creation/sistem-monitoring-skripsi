@@ -51,9 +51,9 @@
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> bimbingan_ke }}</td>
                                     <td>
-                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Selesai Bimbingan' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}</p>
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}</p>
                                          - 
-                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Selesai Bimbingan' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}</p>
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}</p>
                                     </td>
                                     <td><a href="/mahasiswa/skripsi/bimbingan/detail/{{ $item->bimbingan_ke  }}" class="btn btn-sm btn-primary">Lihat Detail</a></td>
                                 </tr>

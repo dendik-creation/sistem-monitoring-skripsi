@@ -7,7 +7,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Pendaftaran Ujian Skripsi</h1>
             <div class="pull-right">
-                @if ($databim == null || $databim->ket1 == "Selesai Bimbingan" && $databim->ket2 == "Selesai Bimbingan")
+                @if ($databim == null || $databim->ket1 == "Siap ujian" && $databim->ket2 == "Siap ujian")
                     @if ($datapenguji === null)
                     <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled"> 
                         <i class="fa fa-plus"></i> Daftar

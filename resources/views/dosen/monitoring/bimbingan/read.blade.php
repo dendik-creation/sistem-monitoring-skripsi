@@ -59,9 +59,9 @@
                                     <td>{{ $item -> bimbingan_ke }}</td>
                                     <td>
                                         @if ($item -> dosbing1 == $user -> no_induk)
-                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Selesai Bimbingan' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}
                                         @else
-                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Selesai Bimbingan' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}
                                         @endif
                                     </td>
                                     <td><a href="/dosen/monitoring/bimbingan/detail/{{ $item->nim }}/{{ $item->bimbingan_ke }}" class="btn btn-sm btn-primary">Lihat Detail</a></td>

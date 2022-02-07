@@ -388,15 +388,15 @@
 
                     
                     if(element.dosbing1 ==  dosen){
-                        if(element.ket1 == 'OK'  || element.ket1 == 'Selesai Bimbingan'){
+                        if(element.ket1 == 'Ok'  || element.ket1 == 'Siap ujian'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">${element.ket1}`
-                        }else if(element.ket1 == 'Review'){
+                        }else if(element.ket1 == 'Review' || element.ket1 == 'Lanjut ke bimbingan selanjutnya'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket1}`
                         }
                     }else{
-                        if(element.ket2 == 'Ok'  || element.ket2 == 'Selesai Bimbingan'){
+                        if(element.ket2 == 'Ok'  || element.ket2 == 'Siap ujian'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">${element.ket2}`
-                        }else if(element.ket2 == 'Review'){
+                        }else if(element.ket2 == 'Review' || element.ket2 == 'Lanjut ke bimbingan selanjutnya'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket2}`
                         }                    }
 

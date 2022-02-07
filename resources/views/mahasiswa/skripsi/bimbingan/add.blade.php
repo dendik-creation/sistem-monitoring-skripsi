@@ -33,7 +33,22 @@
                     </div>
                     <div class="form-group">
                         <label for="" class="small">Bimbingan Ke*</label>
-                        <input type="number" class="form-control" name="bimbingan_ke" value="AUTO">
+                        @php
+                            $bim = DB::table('bimbingan')
+                            ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
+                            ->select('bimbingan.*')
+                            ->where('bimbingan.nim', $user -> no_induk)
+                            ->orderByRaw('bimbingan.id DESC')
+                            ->first();
+                            // dd($bim);
+                            if($bim == null){
+                                $bimke = 1;
+                            }else{
+                                $bimke = $bim->bimbingan_ke + 1;
+                            }
+
+                        @endphp
+                        <input type="number" class="form-control" name="bimbingan_ke" value="{{ $bimke }}" readonly>
                     </div>
                     {{-- <div class="form-group">
                         <label for="" class="small">BAB*</label>
