@@ -97,6 +97,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/berkas/sempro/exportexcel', 'AdminController@exportBerkasSempro');
         Route::post('/admin/proposal/penjadwalan/importexcel', 'AdminController@penjadwalanSemproImportExcel')->name('penjadwalansemproimportexcel');
 
+        //Hasil Sempro
+        Route::get('/admin/proposal/hasil', 'AdminController@viewHasilSempro')->name('datahasilsemproadmin');
+        Route::get('/admin/proposal/hasil/filter/{id}', 'AdminController@viewHasilSemproFilter')->name('datahasilsemproadminfilter');
+
         //Skripsi Monitoring
         Route::get('/admin/skripsi/monitoring', 'AdminController@viewSkripsiMonitoring')->name('dataskripsimonitoring');
 
@@ -122,6 +126,10 @@ Route::middleware(['auth'])->group(function () {
         //download excel ok
         Route::get('/admin/berkas/ujian/exportexcel', 'AdminController@exportBerkasUjian');
         Route::post('/admin/ujian/penjadwalan/importexcel', 'AdminController@penjadwalanUjianImportExcel')->name('penjadwalanujianimportexcel');
+
+        //Hasil Ujian
+        Route::get('/admin/skripsi/hasil', 'AdminController@viewHasilUjian')->name('datahasilujianadmin');
+        Route::get('/admin/skripsi/hasil/filter/{id}', 'AdminController@viewHasilUjianFilter')->name('datahasilujianadminfilter');
 
         //s1
         Route::get('/admin/dosen/s1', 'AdminController@viewS1')->name('datas1');
@@ -150,6 +158,19 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/insertbidangdosen', 'AdminController@insertBidang')->name('insertbidang');
         Route::get('/admin/dosen/bidang/edit/{id}', 'AdminController@formEditBidang')->name('formeditbidang');
         Route::put('/admin/dosen/bidang/{id}', 'AdminController@updateBidang')->name('updatebidang');
+
+        //rekap
+        Route::get('/admin/rekap/pembimbing/seminar', 'AdminController@viewPembimbingSeminar')->name('datapembimbingseminar');
+        Route::get('/admin/rekap/pembimbing/skripsi', 'AdminController@viewPembimbingSkripsi')->name('datapembimbingskripsi');
+        Route::get('/admin/rekap/penguji/skripsi', 'AdminController@viewPengujiSkripsi')->name('datapengujiskripsi');
+        //tampil rekap
+        Route::post('/admin/rekap/pembimbing/seminar/tampil', 'AdminController@tampilPembimbingSeminar')->name('tampilpembimbingseminar');
+        Route::post('/admin/rekap/pembimbing/skripsi/tampil', 'AdminController@tampilPembimbingSkripsi')->name('tampilpembimbingskripsi');
+        Route::post('/admin/rekap/penguji/skripsi/tampil', 'AdminController@tampilPengujiSkripsi')->name('tampilpengujiskripsi');
+        //cetak rekap
+        Route::post('/admin/rekap/pembimbing/seminar/cetak', 'AdminController@cetakPembimbingSeminar')->name('cetakpembimbingseminar');
+        Route::post('/admin/rekap/pembimbing/skripsi/cetak', 'AdminController@cetakPembimbingSkripsi')->name('cetakpembimbingskripsi');
+        Route::post('/admin/rekap/penguji/skripsi/cetak', 'AdminController@cetakPengujiSkripsi')->name('cetakpengujiskripsi');
     });
  
     //DOSEN
@@ -197,6 +218,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dosen/sempro/inserthasil', 'DosenController@insertHasilSempro')->name('inserthasilsempro');
         Route::get('/dosen/sempro/hasil', 'DosenController@viewHasilSempro')->name('datahasilsemprodosen');
         Route::get('/dosen/sempro/hasil/detail/{id}', 'DosenController@viewDetailHasilSempro')->name('detailhasilsemprodosen');
+        Route::get('/dosen/sempro/hasil/filter/{id}', 'DosenController@viewHasilSemproFilter')->name('datahasilsemprodosenfilter');
 
         //Print pdf
         Route::get('/dosen/ujian/berita', 'DosenController@viewBeritaAcara')->name('viewberitaacara');
@@ -210,6 +232,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dosen/skripsi/inserthasil', 'DosenController@insertHasilUjian')->name('inserthasilujian');
         Route::get('/dosen/skripsi/hasil', 'DosenController@viewHasilUjian')->name('datahasilujiandosen');
         Route::get('/dosen/skripsi/hasil/detail/{id}', 'DosenController@viewDetailHasilUjian')->name('detailhasilujiandosen');
+        Route::get('/dosen/skripsi/hasil/filter/{id}', 'DosenController@viewHasilUjianFilter')->name('datahasilujiandosenfilter');
 
     });
 
@@ -251,7 +274,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mahasiswa/skripsi/bimbingan', 'MahasiswaController@viewBimbingan')->name('databimbingan');
         Route::get('/mahasiswa/skripsi/bimbingan/detail/{id}', 'MahasiswaController@viewBimbinganDetail')->name('databimbingandetail');
         Route::get('/mahasiswa/skripsi/bimbingan/tambah', 'MahasiswaController@formAddBimbingan')->name('formaddbimbingan');
+        Route::get('/mahasiswa/skripsi/bimbingan/tambah/2', 'MahasiswaController@formAddBimbingan2')->name('formaddbimbingan2');
         Route::post('/mahasiswa/insertbimbingan', 'MahasiswaController@insertBimbingan')->name('insertbimbingan');
+        Route::post('/mahasiswa/insertbimbingan/2', 'MahasiswaController@insertBimbingan2')->name('insertbimbingan2');
         
         Route::post('/mahasiswa/balas/pesan', 'MahasiswaController@insertPesan')->name('insertpesan');
 
@@ -270,6 +295,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/sempro/hasil/cetakmhs/{id}', 'MahasiswaController@cetakDokumenSemproMhs')->name('cetakdokumensempromhs');
         Route::get('/ujian/hasil/cetakmhs/{id}', 'MahasiswaController@cetakDokumenUjianMhs')->name('cetakdokumenujianmhs');
+
+        //tampil & cetak bimbingan
+        Route::get('/mahasiswa/skripsi/bimbingan/tampil', 'MahasiswaController@tampilBimbinganMhs')->name('tampilbimbinganmhs');
+        Route::get('/mahasiswa/skripsi/bimbingan/cetak', 'MahasiswaController@cetakBimbinganMhs')->name('cetakbimbinganmhs');
 
     });
  

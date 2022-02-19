@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2022 at 03:25 AM
+-- Generation Time: Feb 19, 2022 at 05:26 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `berkas_sempro` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_semester` bigint(20) UNSIGNED NOT NULL,
   `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_plot_dosbing` bigint(20) UNSIGNED NOT NULL,
@@ -43,8 +44,10 @@ CREATE TABLE `berkas_sempro` (
 -- Dumping data for table `berkas_sempro`
 --
 
-INSERT INTO `berkas_sempro` (`id`, `nim`, `id_proposal`, `id_plot_dosbing`, `berkas_sempro`, `status`, `komentar_admin`, `created_at`, `updated_at`) VALUES
-(3, '201851048', 2, 108, '1650689743201851048_Berkas Sempro.zip', 'Terjadwal', '', '2022-02-04 13:15:24', '2022-02-04 06:15:24');
+INSERT INTO `berkas_sempro` (`id`, `id_semester`, `nim`, `id_proposal`, `id_plot_dosbing`, `berkas_sempro`, `status`, `komentar_admin`, `created_at`, `updated_at`) VALUES
+(1, 1, '201851048', 1, 1, '204198234Berkas Sempro.zip', 'Terjadwal', 'Terjadwal', '2022-02-09 14:15:12', '2022-02-09 07:15:12'),
+(3, 2, '201851060', 2, 3, '1467736756Berkas Sempro.zip', 'Terjadwal', 'Terjadwal', '2022-02-15 06:38:34', '2022-02-14 23:38:34'),
+(4, 2, '201851061', 3, 4, '1388452674Berkas Sempro.zip', 'Terjadwal', 'Terjadwal', '2022-02-15 06:39:05', '2022-02-14 23:39:05');
 
 -- --------------------------------------------------------
 
@@ -54,9 +57,10 @@ INSERT INTO `berkas_sempro` (`id`, `nim`, `id_proposal`, `id_plot_dosbing`, `ber
 
 CREATE TABLE `berkas_ujian` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_semester` bigint(20) UNSIGNED NOT NULL,
   `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
-  `id_plot_penguji` bigint(20) UNSIGNED NOT NULL,
+  `id_plot_penguji` bigint(20) UNSIGNED DEFAULT NULL,
   `berkas_ujian` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('Menunggu Dijadwalkan','Berkas OK','Berkas tidak lengkap','Terjadwal') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Menunggu Dijadwalkan',
   `komentar_admin` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -68,8 +72,8 @@ CREATE TABLE `berkas_ujian` (
 -- Dumping data for table `berkas_ujian`
 --
 
-INSERT INTO `berkas_ujian` (`id`, `nim`, `id_proposal`, `id_plot_penguji`, `berkas_ujian`, `status`, `komentar_admin`, `created_at`, `updated_at`) VALUES
-(1, '201851048', 2, 5, '236883395201851048_Berkas Sempro.zip', 'Terjadwal', 'a', '2022-02-04 14:37:03', '2022-02-04 07:37:03');
+INSERT INTO `berkas_ujian` (`id`, `id_semester`, `nim`, `id_proposal`, `id_plot_penguji`, `berkas_ujian`, `status`, `komentar_admin`, `created_at`, `updated_at`) VALUES
+(1, 2, '201851060', 2, NULL, '1580324338Berkas Ujian Skripsi.zip', 'Terjadwal', 'Terjadwal', '2022-02-15 07:35:15', '2022-02-15 00:35:15');
 
 -- --------------------------------------------------------
 
@@ -89,11 +93,11 @@ CREATE TABLE `bidang` (
 --
 
 INSERT INTO `bidang` (`id`, `nama_bidang`, `created_at`, `updated_at`) VALUES
-(1, 'Jaringan Komputer', '2022-02-01 01:04:21', NULL),
-(2, 'Bisnis Cerdas & Visi Komputer', '2022-02-01 01:04:21', NULL),
-(3, 'Komputer Grafis', '2022-02-01 01:04:21', NULL),
-(4, 'Komputasi Terapan', '2022-02-01 01:04:21', NULL),
-(5, 'Rekayasa Perangkat Lunak', '2022-02-01 01:04:21', NULL);
+(1, 'Jaringan Komputer', '2022-02-09 07:00:53', NULL),
+(2, 'Bisnis Cerdas & Visi Komputer', '2022-02-09 07:00:53', NULL),
+(3, 'Komputer Grafis', '2022-02-09 07:00:53', NULL),
+(4, 'Komputasi Terapan', '2022-02-09 07:00:53', NULL),
+(5, 'Rekayasa Perangkat Lunak', '2022-02-09 07:00:53', NULL);
 
 -- --------------------------------------------------------
 
@@ -110,8 +114,9 @@ CREATE TABLE `bimbingan` (
   `bimbingan_ke` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
   `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ket1` enum('Review','Ok','Siap ujian','Lanjut ke bimbingan selanjutnya') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Review',
-  `ket2` enum('Review','Ok','Siap ujian','Lanjut ke bimbingan selanjutnya') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Review',
+  `ket1` enum('Review','Ok','Lanjut ke bimbingan selanjutnya','Siap ujian','-') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
+  `ket2` enum('Review','Ok','Lanjut ke bimbingan selanjutnya','Siap ujian','-') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
+  `bimbingan_kepada` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -120,10 +125,12 @@ CREATE TABLE `bimbingan` (
 -- Dumping data for table `bimbingan`
 --
 
-INSERT INTO `bimbingan` (`id`, `id_semester`, `nim`, `id_proposal`, `id_plot_dosbing`, `bimbingan_ke`, `file`, `komentar`, `ket1`, `ket2`, `created_at`, `updated_at`) VALUES
-(3, 1, '201851048', 2, 108, '1', '2046363321201851048_Bimbingan Skripsi 1.pdf', NULL, 'Lanjut ke bimbingan selanjutnya', 'Ok', '2022-02-06 02:39:02', '2022-02-05 19:39:02'),
-(4, 1, '201851048', 2, 108, '2', '2068355410201851048_Bimbingan Skripsi 2.pdf', NULL, 'Ok', 'Ok', '2022-02-06 02:58:30', '2022-02-05 19:58:30'),
-(5, 1, '201851048', 2, 108, '3', '1302381156201851048_Bimbingan Skripsi 2.pdf', NULL, 'Siap ujian', 'Review', '2022-02-06 03:06:33', '2022-02-05 20:06:33');
+INSERT INTO `bimbingan` (`id`, `id_semester`, `nim`, `id_proposal`, `id_plot_dosbing`, `bimbingan_ke`, `file`, `komentar`, `ket1`, `ket2`, `bimbingan_kepada`, `created_at`, `updated_at`) VALUES
+(1, 2, '201851048', 1, 1, '1', '1974271672Bimbingan.pdf', NULL, 'Lanjut ke bimbingan selanjutnya', '-', '0625028501', '2022-02-14 14:54:48', '2022-02-14 07:54:48'),
+(2, 2, '201851048', 1, 1, '1', '54466393Bimbingan.pdf', NULL, '-', 'Ok', '0604048702', '2022-02-14 15:53:17', '2022-02-14 08:53:17'),
+(3, 2, '201851048', 1, 1, '2', '2141150261Bimbingan.pdf', 'Revisi', 'Review', '-', '0625028501', '2022-02-14 17:30:23', '2022-02-14 10:30:23'),
+(4, 2, '201851060', 2, 3, '1', '2067937708Bimbingan.pdf', NULL, 'Siap ujian', '-', '0608068502', '2022-02-15 06:53:06', '2022-02-14 23:53:06'),
+(5, 2, '201851060', 2, 3, '1', '53319748Bimbingan.pdf', NULL, '-', 'Siap ujian', '0406107004', '2022-02-15 06:53:14', '2022-02-14 23:53:14');
 
 -- --------------------------------------------------------
 
@@ -151,10 +158,10 @@ CREATE TABLE `dosen` (
 --
 
 INSERT INTO `dosen` (`id`, `nidn`, `name`, `gelar1`, `gelar2`, `gelar3`, `jabatan_fungsional`, `id_bidang`, `email`, `ttd`, `created_at`, `updated_at`) VALUES
-(1, '0625028501', 'Ratih Nindyasari', 1, 1, NULL, 'Lektor', 5, 'ratih.nindyasari@umk.ac.id', 'ttd ratih.png', '2022-02-01 01:28:31', '2022-02-01 01:28:31'),
-(2, '0604048702', 'Anastasya Latubessy', 1, 2, NULL, 'Lektor', 2, 'anastasya.latubessy@umk.ac.id', 'ttd tasya.png', '2022-02-01 01:29:05', '2022-02-01 01:29:05'),
-(3, '0406107004', 'Ahmad Jazuli', 1, 1, 2, 'Asisten Ahli', 4, 'ahmad.jazuli@umk.ac.id', 'ttd jay.png', '2022-02-01 01:29:31', '2022-02-01 01:29:31'),
-(4, '0608068502', 'Tutik Khotimah', 1, 1, NULL, 'Lektor', 2, 'tutik.khotimah@umk.ac.id', 'ttd tutik.png', '2022-02-04 07:35:55', '2022-02-04 07:35:55');
+(1, '0406107004', 'Ahmad Jazuli', 1, 1, NULL, 'Asisten Ahli', 3, 'ahmad.jazuli@umk.ac.id', 'ttd jay.png', '2022-02-09 07:02:32', '2022-02-09 07:02:32'),
+(2, '0625028501', 'Ratih Nindyasari', 1, 1, NULL, 'Lektor', 5, 'ratih.nindyasari@umk.ac.id', 'ttd ratih.png', '2022-02-09 07:02:51', '2022-02-09 07:02:51'),
+(3, '0604048702', 'Anastasya Latubessy', 1, 2, NULL, 'Lektor', 2, 'anastasya.latubessy@umk.ac.id', 'ttd tasya.png', '2022-02-09 07:03:21', '2022-02-09 07:03:21'),
+(4, '0608068502', 'Tutik Khotimah', 1, 1, NULL, 'Lektor', 4, 'tutik.khotimah@umk.ac.id', 'ttd tutik.png', '2022-02-09 07:03:41', '2022-02-09 07:03:41');
 
 -- --------------------------------------------------------
 
@@ -179,6 +186,7 @@ CREATE TABLE `failed_jobs` (
 
 CREATE TABLE `hasil_sempro` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_semester` bigint(20) UNSIGNED NOT NULL,
   `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_jadwal_sempro` bigint(20) UNSIGNED DEFAULT NULL,
@@ -197,6 +205,8 @@ CREATE TABLE `hasil_sempro` (
   `revisi2` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nilai_akhir` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT '-',
+  `grade_akhir` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT '-',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -205,8 +215,10 @@ CREATE TABLE `hasil_sempro` (
 -- Dumping data for table `hasil_sempro`
 --
 
-INSERT INTO `hasil_sempro` (`id`, `nim`, `id_proposal`, `id_jadwal_sempro`, `berita_acara`, `sikap1`, `presentasi1`, `penguasaan1`, `jumlah1`, `grade1`, `revisi1`, `sikap2`, `presentasi2`, `penguasaan2`, `jumlah2`, `grade2`, `revisi2`, `file1`, `file2`, `created_at`, `updated_at`) VALUES
-(3, '201851048', 2, 3, 'Diterima', NULL, NULL, NULL, '85', 'B', 'rev', NULL, NULL, NULL, '85', 'A', 'rev', '1014703904Revisi bimbingan dosen.pdf', NULL, '2022-02-04 06:15:59', '2022-02-04 06:15:59');
+INSERT INTO `hasil_sempro` (`id`, `id_semester`, `nim`, `id_proposal`, `id_jadwal_sempro`, `berita_acara`, `sikap1`, `presentasi1`, `penguasaan1`, `jumlah1`, `grade1`, `revisi1`, `sikap2`, `presentasi2`, `penguasaan2`, `jumlah2`, `grade2`, `revisi2`, `file1`, `file2`, `nilai_akhir`, `grade_akhir`, `created_at`, `updated_at`) VALUES
+(4, 1, '201851048', 1, 3, 'Diterima', '80', '80', '80', '80', NULL, NULL, NULL, NULL, NULL, '90', NULL, NULL, NULL, NULL, '85', 'A', '2022-02-13 09:14:04', '2022-02-13 09:14:04'),
+(6, 2, '201851061', 3, NULL, 'Menunggu hasil', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '-', '-', '2022-02-14 23:40:17', '2022-02-14 23:40:17'),
+(7, 2, '201851060', 2, 5, 'Diterima', '80', '80', '86', '83', NULL, NULL, NULL, NULL, NULL, '85', NULL, NULL, NULL, NULL, '84', 'AB', '2022-02-14 23:40:27', '2022-02-14 23:40:27');
 
 -- --------------------------------------------------------
 
@@ -216,6 +228,7 @@ INSERT INTO `hasil_sempro` (`id`, `nim`, `id_proposal`, `id_jadwal_sempro`, `ber
 
 CREATE TABLE `hasil_ujian` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_semester` bigint(20) UNSIGNED NOT NULL,
   `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_proposal` bigint(20) UNSIGNED NOT NULL,
   `id_jadwal_ujian` bigint(20) UNSIGNED DEFAULT NULL,
@@ -252,6 +265,8 @@ CREATE TABLE `hasil_ujian` (
   `file2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nilai_akhir` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
+  `grade_akhir` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -260,8 +275,9 @@ CREATE TABLE `hasil_ujian` (
 -- Dumping data for table `hasil_ujian`
 --
 
-INSERT INTO `hasil_ujian` (`id`, `nim`, `id_proposal`, `id_jadwal_ujian`, `berita_acara`, `sikap1`, `presentasi1`, `teori1`, `program1`, `jumlah1`, `keterangan1`, `revisi1`, `sikap2`, `presentasi2`, `teori2`, `program2`, `jumlah2`, `keterangan2`, `revisi2`, `sikap3`, `presentasi3`, `teori3`, `program3`, `jumlah3`, `keterangan3`, `revisi3`, `sikap4`, `presentasi4`, `teori4`, `program4`, `jumlah4`, `keterangan4`, `revisi4`, `file1`, `file2`, `file3`, `file4`, `created_at`, `updated_at`) VALUES
-(1, '201851048', 2, 1, 'Menunggu hasil', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 'Lulus', NULL, NULL, NULL, NULL, NULL, '2022-02-04 19:50:40', '2022-02-04 19:50:40');
+INSERT INTO `hasil_ujian` (`id`, `id_semester`, `nim`, `id_proposal`, `id_jadwal_ujian`, `berita_acara`, `sikap1`, `presentasi1`, `teori1`, `program1`, `jumlah1`, `keterangan1`, `revisi1`, `sikap2`, `presentasi2`, `teori2`, `program2`, `jumlah2`, `keterangan2`, `revisi2`, `sikap3`, `presentasi3`, `teori3`, `program3`, `jumlah3`, `keterangan3`, `revisi3`, `sikap4`, `presentasi4`, `teori4`, `program4`, `jumlah4`, `keterangan4`, `revisi4`, `file1`, `file2`, `file3`, `file4`, `nilai_akhir`, `grade_akhir`, `created_at`, `updated_at`) VALUES
+(3, 2, '201851060', 2, 7, 'Lulus', '80', '80', '80', '80', '80', 'Lulus', NULL, '90', '90', '90', '90', '90', 'Lulus', NULL, '80', '80', '80', '74', '77', 'Lulus', NULL, '80', '80', '80', '80', '80', 'Lulus', NULL, NULL, NULL, NULL, NULL, '81.75', 'AB', '2022-02-15 21:32:19', '2022-02-15 21:32:19'),
+(4, 2, '201851048', 1, 8, 'Lulus', '80', '80', '80', '80', '80', 'Lulus', NULL, '90', '90', '90', '90', '90', 'Lulus', NULL, '80', '80', '80', '74', '77', 'Lulus', NULL, '80', '80', '80', '80', '80', 'Lulus', NULL, NULL, NULL, NULL, NULL, '81.75', 'AB', '2022-02-15 21:32:19', '2022-02-15 21:32:19');
 
 -- --------------------------------------------------------
 
@@ -271,6 +287,7 @@ INSERT INTO `hasil_ujian` (`id`, `nim`, `id_proposal`, `id_jadwal_ujian`, `berit
 
 CREATE TABLE `jadwal_sempro` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_semester` bigint(20) UNSIGNED NOT NULL,
   `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_berkas_sempro` bigint(20) UNSIGNED NOT NULL,
   `tanggal` date NOT NULL,
@@ -287,8 +304,10 @@ CREATE TABLE `jadwal_sempro` (
 -- Dumping data for table `jadwal_sempro`
 --
 
-INSERT INTO `jadwal_sempro` (`id`, `nim`, `id_berkas_sempro`, `tanggal`, `jam`, `tempat`, `ket`, `status1`, `status2`, `created_at`, `updated_at`) VALUES
-(3, '201851048', 3, '2022-01-27', '09:00:00', 'Zoom Meeting', 'as', 'Sudah', 'Sudah', '2022-02-04 06:15:59', '2022-02-04 06:15:59');
+INSERT INTO `jadwal_sempro` (`id`, `id_semester`, `nim`, `id_berkas_sempro`, `tanggal`, `jam`, `tempat`, `ket`, `status1`, `status2`, `created_at`, `updated_at`) VALUES
+(3, 2, '201851048', 1, '2022-02-14', '09:00:00', 'Zoom Meeting', 'r', 'Sudah', 'Sudah', '2022-02-13 09:14:04', '2022-02-13 09:14:04'),
+(4, 2, '201851061', 4, '2022-02-16', '09:00:00', 'Zoom Meeting', 'Link', 'Belum', 'Belum', '2022-02-14 23:40:17', '2022-02-14 23:40:17'),
+(5, 2, '201851060', 3, '2022-02-17', '09:00:00', 'Zoom Meeting', 'Link', 'Sudah', 'Sudah', '2022-02-14 23:40:27', '2022-02-14 23:40:27');
 
 -- --------------------------------------------------------
 
@@ -298,6 +317,7 @@ INSERT INTO `jadwal_sempro` (`id`, `nim`, `id_berkas_sempro`, `tanggal`, `jam`, 
 
 CREATE TABLE `jadwal_ujian` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_semester` bigint(20) UNSIGNED NOT NULL,
   `nim` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_berkas_ujian` bigint(20) UNSIGNED NOT NULL,
   `tanggal` date NOT NULL,
@@ -308,6 +328,9 @@ CREATE TABLE `jadwal_ujian` (
   `status2` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
   `status3` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
   `status4` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Belum',
+  `ketua_penguji` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anggota_penguji_1` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anggota_penguji_2` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -316,8 +339,9 @@ CREATE TABLE `jadwal_ujian` (
 -- Dumping data for table `jadwal_ujian`
 --
 
-INSERT INTO `jadwal_ujian` (`id`, `nim`, `id_berkas_ujian`, `tanggal`, `jam`, `tempat`, `ket`, `status1`, `status2`, `status3`, `status4`, `created_at`, `updated_at`) VALUES
-(1, '201851048', 1, '2022-02-16', '09:00:00', 'Zoom Meeting', 'd', 'Belum', 'Belum', 'Belum', 'Sudah', '2022-02-04 19:50:40', '2022-02-04 19:50:40');
+INSERT INTO `jadwal_ujian` (`id`, `id_semester`, `nim`, `id_berkas_ujian`, `tanggal`, `jam`, `tempat`, `ket`, `status1`, `status2`, `status3`, `status4`, `ketua_penguji`, `anggota_penguji_1`, `anggota_penguji_2`, `created_at`, `updated_at`) VALUES
+(7, 2, '201851060', 1, '2022-02-20', '09:00:00', 'Zoom', 'Linkk', 'Sudah', 'Sudah', 'Sudah', 'Sudah', '0625028501', '0608068502', '0604048702', '2022-02-15 21:32:19', '2022-02-15 21:32:19'),
+(8, 2, '201851048', 1, '2022-02-20', '09:00:00', 'Zoom', 'Linkk', 'Sudah', 'Sudah', 'Sudah', 'Sudah', '0406107004', '0625028501', '0608068502', '2022-02-15 21:32:19', '2022-02-15 21:32:19');
 
 -- --------------------------------------------------------
 
@@ -345,8 +369,10 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`id`, `nim`, `name`, `email`, `hp`, `status_proposal`, `status_sempro`, `status_bimbingan`, `status_skripsi`, `status_ujian`, `created_at`, `updated_at`) VALUES
-(108, '201851048', 'LEONANTA PRAMUDYA KUSUMA', 'leonantapramudya7@gmail.com', '62895392292764', 'Sudah mengajukan proposal', 'Sudah seminar proposal - Diterima', 'Siap ujian', 'Sedang dikerjakan', 'Belum ujian', '2022-02-04 04:24:54', '2022-02-04 04:24:54'),
-(109, '201851049', 'TEGUH ARIS WICAKSONO', '-', '-', 'Belum mengajukan proposal', 'Belum seminar proposal', 'Belum melakukan bimbingan', 'Belum mengerjakan', 'Belum ujian', '2022-02-04 05:53:37', '2022-02-04 05:53:37');
+(1, '201851048', 'LEONANTA PRAMUDYA KUSUMA', 'leonantapramudya7@gmail.com', '62895392292764', 'Sudah mengajukan proposal', 'Sudah seminar proposal - Diterima', 'Bimbingan Ke-1', 'Sedang dikerjakan', 'Belum ujian', '2022-02-09 07:04:05', '2022-02-09 07:04:05'),
+(2, '201851049', 'ANDIKA EKA SAPUTRA', '-', '-', 'Belum mengajukan proposal', 'Belum seminar proposal', 'Belum melakukan bimbingan', 'Belum mengerjakan', 'Belum ujian', '2022-02-13 23:45:12', '2022-02-13 23:45:12'),
+(3, '201851060', 'ALFINA FEBRILIANTIKA', 'alfinafebriliantika@gmail.com', '62895392292764', 'Sudah mengajukan proposal', 'Sudah seminar proposal - Diterima', 'Siap ujian', 'Selesai', 'Sudah ujian - Lulus', '2022-02-14 23:31:17', '2022-02-14 23:31:17'),
+(4, '201851061', 'AGUSTINA WAHYU RAHMAPUTRI', 'agustina@gmail.com', '62895392292764', 'Sudah mengajukan proposal', 'Belum seminar proposal', 'Belum melakukan bimbingan', 'Belum mengerjakan', 'Belum ujian', '2022-02-14 23:31:46', '2022-02-14 23:31:46');
 
 -- --------------------------------------------------------
 
@@ -416,6 +442,13 @@ CREATE TABLE `pesan_bimbingan` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `pesan_bimbingan`
+--
+
+INSERT INTO `pesan_bimbingan` (`id`, `id_bimbingan`, `id_user`, `pesan`, `file_pendukung`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, 'Rev', NULL, '2022-02-14 17:29:04', '2022-02-14 10:29:04');
+
 -- --------------------------------------------------------
 
 --
@@ -438,8 +471,10 @@ CREATE TABLE `plot_dosbing` (
 --
 
 INSERT INTO `plot_dosbing` (`id`, `smt`, `nim`, `name`, `dosbing1`, `dosbing2`, `created_at`, `updated_at`) VALUES
-(108, 'GASAL 2021/2022', '201851048', 'LEONANTA PRAMUDYA KUSUMA', '0625028501', '0604048702', NULL, NULL),
-(109, 'GASAL 2021/2022', '201851049', 'TEGUH ARIS WICAKSONO', '0604048702', '0625028501', NULL, NULL);
+(1, 'GASAL 2021/2022', '201851048', 'LEONANTA PRAMUDYA KUSUMA', '0625028501', '0604048702', NULL, NULL),
+(2, 'GENAP 2021/2022', '201851049', 'ANDIKA EKA SAPUTRA', '0625028501', '0604048702', NULL, NULL),
+(3, 'GENAP 2021/2022', '201851060', 'ALFINA FEBRILIANTIKA', '0608068502', '0406107004', NULL, NULL),
+(4, 'GENAP 2021/2022', '201851061', 'AGUSTINA WAHYU RAHMAPUTRI', '0608068502', '0406107004', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -458,13 +493,6 @@ CREATE TABLE `plot_penguji` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `plot_penguji`
---
-
-INSERT INTO `plot_penguji` (`id`, `smt`, `nim`, `name`, `ketua_penguji`, `anggota_penguji_1`, `anggota_penguji_2`, `created_at`, `updated_at`) VALUES
-(5, 'GASAL 2021/2022', '201851048', 'LEONANTA PRAMUDYA KUSUMA', '0406107004', '0625028501', '0608068502', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -496,8 +524,9 @@ CREATE TABLE `proposal` (
 --
 
 INSERT INTO `proposal` (`id`, `id_semester`, `nim`, `topik`, `judul`, `proposal`, `ket1`, `ket2`, `id_plot_dosbing`, `komentar`, `komentar1`, `komentar2`, `file1`, `file2`, `created_at`, `updated_at`) VALUES
-(1, 1, '201851048', 'Komputer Grafis', 'Sistem Monitoring Skripsi', '1948663106201851048_Proposal Skripsi.pdf', 'Ditolak', 'Ditolak', 108, NULL, 'tolak', 'tolak', NULL, NULL, '2022-02-04 04:26:08', '2022-02-04 04:26:08'),
-(2, 1, '201851048', 'Rekayasa Perangkat Lunak', 'Sistem Monitoring Skripsi Berbasis Web (Studi Kasus Teknik Informatika Universitas Muria Kudus)', '1701703304201851048_Revisi Proposal Skripsi.pdf', 'Disetujui', 'Disetujui', 108, NULL, 'revisi file', 'revisi', '1924352219Revisi bimbingan dosen - Copy.pdf', NULL, '2022-02-04 04:31:03', '2022-02-04 04:31:03');
+(1, 1, '201851048', 'Rekayasa Perangkat Lunak', 'Sistem Monitoring Skripsi', '1236740955Proposal.pdf', 'Disetujui', 'Disetujui', 1, 'Proposal', '-', '-', NULL, NULL, '2022-02-09 07:14:14', '2022-02-09 07:14:14'),
+(2, 2, '201851060', 'Komputasi Terapan', 'Sistem Kelola Karyawan', '607743662Proposal.pdf', 'Disetujui', 'Disetujui', 3, NULL, '-', '-', NULL, NULL, '2022-02-14 23:32:50', '2022-02-14 23:32:50'),
+(3, 2, '201851061', 'Jaringan Komputer', 'Jaringan RT/RW NET', '1224993828Proposal.pdf', 'Disetujui', 'Disetujui', 4, NULL, '-', '-', NULL, NULL, '2022-02-14 23:33:34', '2022-02-14 23:33:34');
 
 -- --------------------------------------------------------
 
@@ -517,7 +546,7 @@ CREATE TABLE `s1` (
 --
 
 INSERT INTO `s1` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
-(1, 'S. Kom', '2022-02-01 01:19:30', '2022-02-01 01:19:30');
+(1, 'S. Kom', '2022-02-09 07:01:46', '2022-02-09 07:01:46');
 
 -- --------------------------------------------------------
 
@@ -537,8 +566,8 @@ CREATE TABLE `s2` (
 --
 
 INSERT INTO `s2` (`id`, `gelar`, `created_at`, `updated_at`) VALUES
-(1, 'M. Kom', '2022-02-01 01:19:37', '2022-02-01 01:19:37'),
-(2, 'M. Cs', '2022-02-01 01:19:42', '2022-02-01 01:19:42');
+(1, 'M. Kom', '2022-02-09 07:01:53', '2022-02-09 07:01:53'),
+(2, 'M. Cs', '2022-02-09 07:01:57', '2022-02-09 07:01:57');
 
 -- --------------------------------------------------------
 
@@ -559,8 +588,7 @@ CREATE TABLE `s3` (
 --
 
 INSERT INTO `s3` (`id`, `gelar`, `depan`, `created_at`, `updated_at`) VALUES
-(1, 'Dr.', 'Y', '2022-02-01 01:25:28', '2022-02-01 01:25:28'),
-(2, 'Ph.D', 'N', '2022-02-01 01:27:20', '2022-02-01 01:27:20');
+(1, 'Dr.', 'Y', '2022-02-09 07:02:04', '2022-02-09 07:02:04');
 
 -- --------------------------------------------------------
 
@@ -582,7 +610,8 @@ CREATE TABLE `semester` (
 --
 
 INSERT INTO `semester` (`id`, `semester`, `tahun`, `aktif`, `created_at`, `updated_at`) VALUES
-(1, 'GASAL', '2021/2022', 'Y', NULL, NULL);
+(1, 'GASAL', '2021/2022', 'N', NULL, NULL),
+(2, 'GENAP', '2021/2022', 'Y', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -605,7 +634,9 @@ CREATE TABLE `status_skripsi` (
 --
 
 INSERT INTO `status_skripsi` (`id`, `nim`, `id_proposal`, `status_skripsi`, `status_ujian`, `created_at`, `updated_at`) VALUES
-(3, '201851048', 2, 'Sedang dikerjakan', 'Belum ujian', '2022-02-04 06:17:03', '2022-02-04 06:17:03');
+(1, '201851048', 1, 'Sedang dikerjakan', 'Belum ujian', '2022-02-13 09:09:40', '2022-02-13 09:09:40'),
+(2, '201851048', 1, 'Sedang dikerjakan', 'Belum ujian', '2022-02-13 09:15:21', '2022-02-13 09:15:21'),
+(3, '201851060', 2, 'Selesai', 'Sudah ujian - Lulus', '2022-02-14 23:43:50', '2022-02-14 23:43:50');
 
 -- --------------------------------------------------------
 
@@ -633,14 +664,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `no_induk`, `name`, `username`, `email`, `email_verified_at`, `password`, `remember_token`, `role`, `photo`, `created_at`, `updated_at`) VALUES
-(1, '12345678910', 'Admin', 'adminskripsi', 'admin@gmail.com', '2022-02-01 01:04:21', '$2y$10$WAW4yUtqnPN36QB1eSBGiecZUDxP35legVY4rWwUVVS0TK2csZlfS', NULL, 'admin', 'undraw_profile.svg', '2022-02-01 01:04:21', NULL),
-(2, '0625028501', 'Ratih Nindyasari, S. Kom, M. Kom, ', '0625028501', 'ratih.nindyasari@umk.ac.id', NULL, '$2y$10$NlFlCJxG9F6wM/8FkaHQQeIC9R4c4z5zga1bXqNeMMoteUnpHyB6G', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
-(3, '0604048702', 'Anastasya Latubessy, S. Kom, M. Cs, ', '0604048702', 'anastasya.latubessy@umk.ac.id', NULL, '$2y$10$l0KZ0E9MswMQXKAxxwQMc.rqWe7k17YLKv1YuJPJyf6Se3ZqiRPGi', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
-(4, '0406107004', 'Ahmad Jazuli, S. Kom, M. Kom, Ph.D', '0406107004', 'ahmad.jazuli@umk.ac.id', NULL, '$2y$10$/ZROtOYk964EfmaccSuK9OoX4qdHx3b.drN10dbJcN/lFzUKT45p6', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
-(111, '201851051', 'ANDIKA', '201851051', NULL, NULL, '$2y$10$wXaZweL1GNl2oYGD7/0vs.azHi6A8la8N.QuXH/iPOz8EVsR12XTa', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
-(112, '201851048', 'LEONANTA PRAMUDYA KUSUMA', '201851048', 'leonantapramudya7@gmail.com', NULL, '$2y$10$ZhbFYPf4Y.HyhvJKJBSvrueLgbiQu7QNJPqYTRrmVVWAhUaSJwtue', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
-(113, '201851049', 'TEGUH ARIS WICAKSONO', '201851049', NULL, NULL, '$2y$10$vefLFib5lz5vqnrkgjAcj.1pEBN41aAR7FjeqepDiPkEJz.XbY8AK', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
-(114, '0608068502', 'Tutik Khotimah, S. Kom, M. Kom, ', '0608068502', 'tutik.khotimah@umk.ac.id', NULL, '$2y$10$dTeyf1.lmcjfohMC9ypI1OZpxHowT5gC6NWBCCzWrV8KJ.X1Qz89i', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL);
+(1, '12345678910', 'Admin', 'adminskripsi', 'admin@gmail.com', '2022-02-09 07:00:53', '$2y$10$cGCioQDlVCjpqblx8OjVrOGNWBwUZ6vANLF0UqVDETFGdpwF0RCpS', NULL, 'admin', 'undraw_profile.svg', '2022-02-09 07:00:53', NULL),
+(2, '0406107004', 'Ahmad Jazuli, S. Kom, M. Kom, ', '0406107004', 'ahmad.jazuli@umk.ac.id', NULL, '$2y$10$3dXSgVOUEhK3kXVcP8uk/Od83yAcKs3BLCzsmhezii4jJftkFWrVO', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(3, '0625028501', 'Ratih Nindyasari, S. Kom, M. Kom, ', '0625028501', 'ratih.nindyasari@umk.ac.id', NULL, '$2y$10$GRRrvav9jp/XXGN/yN6ULuAq.ORx3iErxJElOLiXdNpdDjTXiQ/Sy', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(4, '0604048702', 'Anastasya Latubessy, S. Kom, M. Cs, ', '0604048702', 'anastasya.latubessy@umk.ac.id', NULL, '$2y$10$pQsjrP7.E.pRdFEfkZOHX.1j4PhTpkzQ5A1cIoUja0b8MwFcPbi8m', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(5, '0608068502', 'Tutik Khotimah, S. Kom, M. Kom, ', '0608068502', 'tutik.khotimah@umk.ac.id', NULL, '$2y$10$FoQNrLKzEFyNfY68uG/JBOhVTLyoUImNl4j6L.KcvoeyAXdHpHmz6', NULL, 'dosen', 'undraw_profile.svg', NULL, NULL),
+(6, '201851048', 'LEONANTA PRAMUDYA KUSUMA', '201851048', 'leonantapramudya7@gmail.com', NULL, '$2y$10$Gk0A3cvET6VapZJw3NZQme85TK5YCr.ppVIoc.lcUZ6Opsf1dDre6', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
+(7, '201851049', 'ANDIKA EKA SAPUTRA', '201851049', NULL, NULL, '$2y$10$NQ6eD5sAz6TE8r9zymhJ..5dESlDQuoc4fycwmkF/FNFK2Q.tXpnu', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
+(8, '201851060', 'ALFINA FEBRILIANTIKA', '201851060', 'alfinafebriliantika@gmail.com', NULL, '$2y$10$Qz3Kpv18NzdwBOlU5/jLDORJrTqFvMGTYCmX7LSnbWGmeRHY.mRRe', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL),
+(9, '201851061', 'AGUSTINA WAHYU RAHMAPUTRI', '201851061', 'agustina@gmail.com', NULL, '$2y$10$XSYYTP.ZJ2UjxNph9gKsqOZSn89Nm.9YGmMWzCcrXRrtZ5N.p.b8O', NULL, 'mahasiswa', 'undraw_profile.svg', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -651,6 +683,7 @@ INSERT INTO `users` (`id`, `no_induk`, `name`, `username`, `email`, `email_verif
 --
 ALTER TABLE `berkas_sempro`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `berkas_sempro_id_semester_foreign` (`id_semester`),
   ADD KEY `berkas_sempro_nim_foreign` (`nim`),
   ADD KEY `berkas_sempro_id_proposal_foreign` (`id_proposal`),
   ADD KEY `berkas_sempro_id_plot_dosbing_foreign` (`id_plot_dosbing`);
@@ -660,9 +693,9 @@ ALTER TABLE `berkas_sempro`
 --
 ALTER TABLE `berkas_ujian`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `berkas_ujian_id_semester_foreign` (`id_semester`),
   ADD KEY `berkas_ujian_nim_foreign` (`nim`),
-  ADD KEY `berkas_ujian_id_proposal_foreign` (`id_proposal`),
-  ADD KEY `berkas_ujian_id_plot_penguji_foreign` (`id_plot_penguji`);
+  ADD KEY `berkas_ujian_id_proposal_foreign` (`id_proposal`);
 
 --
 -- Indexes for table `bidang`
@@ -678,7 +711,8 @@ ALTER TABLE `bimbingan`
   ADD KEY `bimbingan_id_semester_foreign` (`id_semester`),
   ADD KEY `bimbingan_nim_foreign` (`nim`),
   ADD KEY `bimbingan_id_proposal_foreign` (`id_proposal`),
-  ADD KEY `bimbingan_id_plot_dosbing_foreign` (`id_plot_dosbing`);
+  ADD KEY `bimbingan_id_plot_dosbing_foreign` (`id_plot_dosbing`),
+  ADD KEY `bimbingan_kepada` (`bimbingan_kepada`);
 
 --
 -- Indexes for table `dosen`
@@ -702,6 +736,7 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `hasil_sempro`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `hasil_sempro_id_semester_foreign` (`id_semester`),
   ADD KEY `hasil_sempro_nim_foreign` (`nim`),
   ADD KEY `hasil_sempro_id_proposal_foreign` (`id_proposal`),
   ADD KEY `hasil_sempro_id_jadwal_sempro_foreign` (`id_jadwal_sempro`);
@@ -711,6 +746,7 @@ ALTER TABLE `hasil_sempro`
 --
 ALTER TABLE `hasil_ujian`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `hasil_ujian_id_semester_foreign` (`id_semester`),
   ADD KEY `hasil_ujian_nim_foreign` (`nim`),
   ADD KEY `hasil_ujian_id_proposal_foreign` (`id_proposal`),
   ADD KEY `hasil_ujian_id_jadwal_ujian_foreign` (`id_jadwal_ujian`);
@@ -720,6 +756,7 @@ ALTER TABLE `hasil_ujian`
 --
 ALTER TABLE `jadwal_sempro`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `jadwal_sempro_id_semester_foreign` (`id_semester`),
   ADD KEY `jadwal_sempro_nim_foreign` (`nim`),
   ADD KEY `jadwal_sempro_id_berkas_sempro_foreign` (`id_berkas_sempro`);
 
@@ -728,8 +765,12 @@ ALTER TABLE `jadwal_sempro`
 --
 ALTER TABLE `jadwal_ujian`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `jadwal_ujian_id_semester_foreign` (`id_semester`),
   ADD KEY `jadwal_ujian_nim_foreign` (`nim`),
-  ADD KEY `jadwal_ujian_id_berkas_ujian_foreign` (`id_berkas_ujian`);
+  ADD KEY `jadwal_ujian_id_berkas_ujian_foreign` (`id_berkas_ujian`),
+  ADD KEY `ketua_penguji` (`ketua_penguji`),
+  ADD KEY `anggota_penguji_1` (`anggota_penguji_1`),
+  ADD KEY `anggota_penguji_2` (`anggota_penguji_2`);
 
 --
 -- Indexes for table `mahasiswa`
@@ -763,6 +804,7 @@ ALTER TABLE `pesan_bimbingan`
 --
 ALTER TABLE `plot_dosbing`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `plot_dosbing_nim_unique` (`nim`),
   ADD KEY `plot_dosbing_dosbing1_foreign` (`dosbing1`),
   ADD KEY `plot_dosbing_dosbing2_foreign` (`dosbing2`);
 
@@ -771,6 +813,7 @@ ALTER TABLE `plot_dosbing`
 --
 ALTER TABLE `plot_penguji`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `plot_penguji_nim_unique` (`nim`),
   ADD KEY `plot_penguji_ketua_penguji_foreign` (`ketua_penguji`),
   ADD KEY `plot_penguji_anggota_penguji_1_foreign` (`anggota_penguji_1`),
   ADD KEY `plot_penguji_anggota_penguji_2_foreign` (`anggota_penguji_2`);
@@ -781,6 +824,7 @@ ALTER TABLE `plot_penguji`
 ALTER TABLE `proposal`
   ADD PRIMARY KEY (`id`),
   ADD KEY `proposal_id_semester_foreign` (`id_semester`),
+  ADD KEY `proposal_nim_foreign` (`nim`),
   ADD KEY `proposal_id_plot_dosbing_foreign` (`id_plot_dosbing`);
 
 --
@@ -819,7 +863,8 @@ ALTER TABLE `status_skripsi`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_no_induk_unique` (`no_induk`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -829,7 +874,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `berkas_sempro`
 --
 ALTER TABLE `berkas_sempro`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `berkas_ujian`
@@ -865,31 +910,31 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `hasil_sempro`
 --
 ALTER TABLE `hasil_sempro`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `hasil_ujian`
 --
 ALTER TABLE `hasil_ujian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `jadwal_sempro`
 --
 ALTER TABLE `jadwal_sempro`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `jadwal_ujian`
 --
 ALTER TABLE `jadwal_ujian`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -901,25 +946,25 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `pesan_bimbingan`
 --
 ALTER TABLE `pesan_bimbingan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `plot_dosbing`
 --
 ALTER TABLE `plot_dosbing`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `plot_penguji`
 --
 ALTER TABLE `plot_penguji`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `proposal`
 --
 ALTER TABLE `proposal`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `s1`
@@ -937,13 +982,13 @@ ALTER TABLE `s2`
 -- AUTO_INCREMENT for table `s3`
 --
 ALTER TABLE `s3`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `semester`
 --
 ALTER TABLE `semester`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `status_skripsi`
@@ -955,7 +1000,7 @@ ALTER TABLE `status_skripsi`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -967,20 +1012,14 @@ ALTER TABLE `users`
 ALTER TABLE `berkas_sempro`
   ADD CONSTRAINT `berkas_sempro_id_plot_dosbing_foreign` FOREIGN KEY (`id_plot_dosbing`) REFERENCES `plot_dosbing` (`id`),
   ADD CONSTRAINT `berkas_sempro_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
+  ADD CONSTRAINT `berkas_sempro_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `berkas_sempro_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
-
---
--- Constraints for table `berkas_ujian`
---
-ALTER TABLE `berkas_ujian`
-  ADD CONSTRAINT `berkas_ujian_id_plot_penguji_foreign` FOREIGN KEY (`id_plot_penguji`) REFERENCES `plot_penguji` (`id`),
-  ADD CONSTRAINT `berkas_ujian_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
-  ADD CONSTRAINT `berkas_ujian_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `bimbingan`
 --
 ALTER TABLE `bimbingan`
+  ADD CONSTRAINT `bimbingan_ibfk_1` FOREIGN KEY (`bimbingan_kepada`) REFERENCES `dosen` (`nidn`),
   ADD CONSTRAINT `bimbingan_id_plot_dosbing_foreign` FOREIGN KEY (`id_plot_dosbing`) REFERENCES `plot_dosbing` (`id`),
   ADD CONSTRAINT `bimbingan_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
   ADD CONSTRAINT `bimbingan_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
@@ -1001,6 +1040,7 @@ ALTER TABLE `dosen`
 ALTER TABLE `hasil_sempro`
   ADD CONSTRAINT `hasil_sempro_id_jadwal_sempro_foreign` FOREIGN KEY (`id_jadwal_sempro`) REFERENCES `jadwal_sempro` (`id`),
   ADD CONSTRAINT `hasil_sempro_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
+  ADD CONSTRAINT `hasil_sempro_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `hasil_sempro_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
@@ -1009,6 +1049,7 @@ ALTER TABLE `hasil_sempro`
 ALTER TABLE `hasil_ujian`
   ADD CONSTRAINT `hasil_ujian_id_jadwal_ujian_foreign` FOREIGN KEY (`id_jadwal_ujian`) REFERENCES `jadwal_ujian` (`id`),
   ADD CONSTRAINT `hasil_ujian_id_proposal_foreign` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id`),
+  ADD CONSTRAINT `hasil_ujian_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `hasil_ujian_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
@@ -1016,13 +1057,18 @@ ALTER TABLE `hasil_ujian`
 --
 ALTER TABLE `jadwal_sempro`
   ADD CONSTRAINT `jadwal_sempro_id_berkas_sempro_foreign` FOREIGN KEY (`id_berkas_sempro`) REFERENCES `berkas_sempro` (`id`),
+  ADD CONSTRAINT `jadwal_sempro_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `jadwal_sempro_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `jadwal_ujian`
 --
 ALTER TABLE `jadwal_ujian`
+  ADD CONSTRAINT `jadwal_ujian_ibfk_1` FOREIGN KEY (`ketua_penguji`) REFERENCES `dosen` (`nidn`),
+  ADD CONSTRAINT `jadwal_ujian_ibfk_2` FOREIGN KEY (`anggota_penguji_1`) REFERENCES `dosen` (`nidn`),
+  ADD CONSTRAINT `jadwal_ujian_ibfk_3` FOREIGN KEY (`anggota_penguji_2`) REFERENCES `dosen` (`nidn`),
   ADD CONSTRAINT `jadwal_ujian_id_berkas_ujian_foreign` FOREIGN KEY (`id_berkas_ujian`) REFERENCES `berkas_ujian` (`id`),
+  ADD CONSTRAINT `jadwal_ujian_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
   ADD CONSTRAINT `jadwal_ujian_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
@@ -1052,7 +1098,8 @@ ALTER TABLE `plot_penguji`
 --
 ALTER TABLE `proposal`
   ADD CONSTRAINT `proposal_id_plot_dosbing_foreign` FOREIGN KEY (`id_plot_dosbing`) REFERENCES `plot_dosbing` (`id`),
-  ADD CONSTRAINT `proposal_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`);
+  ADD CONSTRAINT `proposal_id_semester_foreign` FOREIGN KEY (`id_semester`) REFERENCES `semester` (`id`),
+  ADD CONSTRAINT `proposal_nim_foreign` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`);
 
 --
 -- Constraints for table `status_skripsi`

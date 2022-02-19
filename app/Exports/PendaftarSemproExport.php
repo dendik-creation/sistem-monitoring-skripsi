@@ -18,11 +18,12 @@ class PendaftarSemproExport implements FromCollection, WithHeadings, ShouldAutoS
         ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
-        ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+        ->join('semester', 'berkas_sempro.id_semester', '=', 'semester.id')
         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
         ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-        ->select('berkas_sempro.id as id', 
+        ->select(DB::raw('ROW_NUMBER() OVER() AS no'), 'berkas_sempro.id as id', 
         'proposal.id as id_proposal',
+        'semester.id_semester as id_semester',
         'semester.semester as semester', 
         'semester.tahun as tahun', 
         'berkas_sempro.nim as nim', 
@@ -39,8 +40,10 @@ class PendaftarSemproExport implements FromCollection, WithHeadings, ShouldAutoS
     public function headings(): array
     {
         return [
+            'No.',
             'ID_Berkas',
             'ID_Proposal',
+            'ID_Semester',
             'Semester',
             'Tahun',
             'NIM',

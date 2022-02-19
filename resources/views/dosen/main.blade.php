@@ -385,20 +385,48 @@
                     var myIndex = index+1;
                     var dosen = {!! json_encode($user->no_induk) !!};
                     
-
+                    if(element.depan1 ==  "Y"){
+                        if(element.gelar31 == null){
+                        var bimbingan_kepada = `${element.dosen}, ${element.gelar11}, ${element.gelar21}`
+                        }else{
+                            var bimbingan_kepada = `${element.gelar31} ${element.dosen}, ${element.gelar11}, ${element.gelar21}`
+                        }
+                    }else{
+                        if(element.gelar31 == null){
+                            var bimbingan_kepada = `${element.dosen}, ${element.gelar11}, ${element.gelar21}`
+                        }else{
+                        var bimbingan_kepada = `${element.dosen}, ${element.gelar11}, ${element.gelar21}, ${element.gelar31}`
+                        }
+                    }
                     
-                    if(element.dosbing1 ==  dosen){
+
+                    if(element.bimbingan_kepada == dosen && element.dosbing1 == dosen){
                         if(element.ket1 == 'Ok'  || element.ket1 == 'Siap ujian'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">${element.ket1}`
                         }else if(element.ket1 == 'Review' || element.ket1 == 'Lanjut ke bimbingan selanjutnya'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket1}`
                         }
-                    }else{
+                    }else if(element.bimbingan_kepada != dosen && element.dosbing1 == dosen){
                         if(element.ket2 == 'Ok'  || element.ket2 == 'Siap ujian'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">${element.ket2}`
                         }else if(element.ket2 == 'Review' || element.ket2 == 'Lanjut ke bimbingan selanjutnya'){
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket2}`
-                        }                    }
+                        }
+                    }else if(element.bimbingan_kepada == dosen && element.dosbing2 == dosen){
+                        if(element.ket2 == 'Ok'  || element.ket2 == 'Siap ujian'){
+                            var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">${element.ket2}`
+                        }else if(element.ket2 == 'Review' || element.ket2 == 'Lanjut ke bimbingan selanjutnya'){
+                            var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket2}`
+                        }
+                    }else if(element.bimbingan_kepada != dosen && element.dosbing2 == dosen){
+                        if(element.ket1 == 'Ok'  || element.ket1 == 'Siap ujian'){
+                            var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">${element.ket1}`
+                        }else if(element.ket1 == 'Review' || element.ket1 == 'Lanjut ke bimbingan selanjutnya'){
+                            var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket1}`
+                        }
+                    }
+                    
+
 
                     $('#datatabel').append(`
                         <tr>
@@ -408,9 +436,10 @@
                             <td>${element.nama}</td>
                             <td>${element.judul}</td>
                             <td>${element.bimbingan_ke}</td>
+                            <td>${bimbingan_kepada}</td>
                             <td>${status}</td>
                             <td>
-                                <a href="/dosen/monitoring/bimbingan/detail/${element.nim}/${element.bimbingan_ke}" class="btn btn-sm btn-primary">Lihat Detail</a>
+                                <a href="/dosen/monitoring/bimbingan/detail/${element.nim}/${element.id}" class="btn btn-sm btn-primary">Lihat Detail</a>
                             </td>
                         </tr>
                         `)
@@ -486,6 +515,130 @@
             });
         });
     });
+
+    $(document).ready(function(){
+        $('#filtersemesterhasilsempro').on('change', function(e){
+            var id = e.target.value;
+            $.get('{{ url('dosen/sempro/hasil/filter') }}/'+id, function(data){
+                console.log(id);
+                console.log(data);
+                $('#datatabel').empty();
+                $.each(data, function(index, element){
+                    var myIndex = index+1;
+                    // var dosen = {!! json_encode($user->no_induk) !!};
+                
+
+                    $('#datatabel').append(`
+                        <tr>
+                            <td>${myIndex}</td>
+                            <td>${element.semester} ${element.tahun}</td>
+                            <td>${element.nim}</td>
+                            <td>${element.nama}</td>
+                            <td>${element.judul}</td>
+                            <td>${element.nilai_akhir}</td>
+                            <td>${element.grade_akhir}</td>
+                        </tr>
+                        `)
+                    
+                });
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        $('#filtersemesterhasilujian').on('change', function(e){
+            var id = e.target.value;
+            $.get('{{ url('dosen/skripsi/hasil/filter') }}/'+id, function(data){
+                console.log(id);
+                console.log(data);
+                $('#datatabel').empty();
+                $.each(data, function(index, element){
+                    var myIndex = index+1;
+                    // var dosen = {!! json_encode($user->no_induk) !!};
+                
+
+                    $('#datatabel').append(`
+                        <tr>
+                            <td>${myIndex}</td>
+                            <td>${element.semester} ${element.tahun}</td>
+                            <td>${element.nim}</td>
+                            <td>${element.nama}</td>
+                            <td>${element.judul}</td>
+                            <td>${element.nilai_akhir}</td>
+                            <td>${element.grade_akhir}</td>
+                        </tr>
+                        `)
+                    
+                });
+            });
+        });
+    });
+
+
+    //sempro dosen 1 2
+    function sempro1() {
+		var semprosikap1 = document.getElementById('semprosikap1').value * 20 / 100;
+		var sempropresentasi1 = document.getElementById('sempropresentasi1').value * 30 / 100;
+		var sempropenguasaan1 = document.getElementById('sempropenguasaan1').value * 50 / 100;
+
+		var semprojumlah1 = semprosikap1 + sempropresentasi1 + sempropenguasaan1;
+
+		document.getElementById('semprojumlah1').value = semprojumlah1;
+	}
+
+    function sempro2() {
+		var semprosikap2 = document.getElementById('semprosikap2').value * 20 / 100;
+		var sempropresentasi2 = document.getElementById('sempropresentasi2').value * 30 / 100;
+		var sempropenguasaan2 = document.getElementById('sempropenguasaan2').value * 50 / 100;
+
+		var semprojumlah2 = parseInt(semprosikap2) + parseInt(sempropresentasi2) + parseInt(sempropenguasaan2);
+
+		document.getElementById('semprojumlah2').value = semprojumlah2;
+	}
+
+    function ujian1() {
+		var ujiansikap1 = document.getElementById('ujiansikap1').value * 10 / 100;
+		var ujianpresentasi1 = document.getElementById('ujianpresentasi1').value * 10 / 100;
+        var ujianteori1 = document.getElementById('ujianteori1').value * 40 / 100;
+		var ujianprogram1 = document.getElementById('ujianprogram1').value * 40 / 100;
+
+		var ujianjumlah1 = parseInt(ujiansikap1) + parseInt(ujianpresentasi1) + parseInt(ujianteori1) + parseInt(ujianprogram1);
+
+		document.getElementById('ujianjumlah1').value = ujianjumlah1;
+	}
+
+    function ujian2() {
+		var ujiansikap2 = document.getElementById('ujiansikap2').value * 10 / 100;
+		var ujianpresentasi2 = document.getElementById('ujianpresentasi2').value * 10 / 100;
+        var ujianteori2 = document.getElementById('ujianteori2').value * 40 / 100;
+		var ujianprogram2 = document.getElementById('ujianprogram2').value * 40 / 100;
+
+		var ujianjumlah2 = parseInt(ujiansikap2) + parseInt(ujianpresentasi2) + parseInt(ujianteori2) + parseInt(ujianprogram2);
+
+		document.getElementById('ujianjumlah2').value = ujianjumlah2;
+	}
+
+    function ujian3() {
+		var ujiansikap3 = document.getElementById('ujiansikap3').value * 10 / 100;
+		var ujianpresentasi3 = document.getElementById('ujianpresentasi3').value * 10 / 100;
+        var ujianteori3 = document.getElementById('ujianteori3').value * 40 / 100;
+		var ujianprogram3 = document.getElementById('ujianprogram3').value * 40 / 100;
+
+		var ujianjumlah3 = parseInt(ujiansikap3) + parseInt(ujianpresentasi3) + parseInt(ujianteori3) + parseInt(ujianprogram3);
+
+		document.getElementById('ujianjumlah3').value = ujianjumlah3;
+	}
+
+    function ujian4() {
+		var ujiansikap4 = document.getElementById('ujiansikap4').value * 10 / 100;
+		var ujianpresentasi4 = document.getElementById('ujianpresentasi4').value * 10 / 100;
+        var ujianteori4 = document.getElementById('ujianteori4').value * 40 / 100;
+		var ujianprogram4 = document.getElementById('ujianprogram4').value * 40 / 100;
+
+		var ujianjumlah4 = parseInt(ujiansikap4) + parseInt(ujianpresentasi4) + parseInt(ujianteori4) + parseInt(ujianprogram4);
+
+		document.getElementById('ujianjumlah4').value = ujianjumlah4;
+	}
 
 
 </script>

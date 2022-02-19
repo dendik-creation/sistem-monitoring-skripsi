@@ -327,7 +327,11 @@ class MahasiswaController extends Controller
             'berkas_sempro.max' => 'File terlalu besar, maksimal 20 mb',
         ]);
 
+        $smt = SemesterModel::all()->where('aktif', 'Y')->first();
+
         $bsModel = new BerkasSemproModel;
+
+        $bsModel->id_semester = $smt->id;
 
         $bsModel->nim = $request->nim;
         $bsModel->id_proposal = $request->id_proposal;
@@ -426,7 +430,7 @@ class MahasiswaController extends Controller
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->select('hasil_sempro.id as id', 'hasil_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
         'jadwal_sempro.tanggal as tanggal', 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket',
-        'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'hasil_sempro.berita_acara as berita_acara')
+        'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'hasil_sempro.berita_acara as berita_acara', 'hasil_sempro.*')
         ->where('hasil_sempro.nim', $user->no_induk)
         ->orderByRaw('hasil_sempro.id DESC')
         ->get();
@@ -489,14 +493,41 @@ class MahasiswaController extends Controller
     // View Bimbingan
     public function viewBimbingan(){
         $user = Auth::user();
-        $data = DB::table('bimbingan')
+        $plot = DB::table('plot_dosbing')->where('nim', $user -> no_induk)->orderByRaw('id DESC')->first();
+
+        $data1 = DB::table('bimbingan')
         ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
+        ->join('dosen as dos1', 'bimbingan.bimbingan_kepada', '=', 'dos1.nidn')
+        
+        ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+        ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+        ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
         ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
-        'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2',)
+        'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2',
+        'dos1.name as dosbing1', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+        's31.depan as depan1',)
         ->where('bimbingan.nim', $user -> no_induk)
+        ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing1)
         ->orderByRaw('bimbingan.id DESC')
         ->get();
-        // dd($data);
+
+        $data2 = DB::table('bimbingan')
+        ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
+        ->join('dosen as dos1', 'bimbingan.bimbingan_kepada', '=', 'dos1.nidn')
+        
+        ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+        ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+        ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
+        'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2',
+        'dos1.name as dosbing1', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+        's31.depan as depan1',)
+        ->where('bimbingan.nim', $user -> no_induk)
+        ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing2)
+        ->orderByRaw('bimbingan.id DESC')
+        ->get();
 
         $cekbimbinganselesai = DB::table('bimbingan')
         ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
@@ -508,7 +539,7 @@ class MahasiswaController extends Controller
         ->orderByRaw('bimbingan.bimbingan_ke DESC')
         ->first();
         // dd($cekbimbinganselesai);
-        return view('mahasiswa.skripsi.bimbingan.read', compact('data', 'user', 'cekbimbinganselesai'));
+        return view('mahasiswa.skripsi.bimbingan.read', compact('data1', 'data2', 'user', 'cekbimbinganselesai'));
     }
     public function formAddBimbingan(){
         $user = Auth::user();
@@ -526,13 +557,39 @@ class MahasiswaController extends Controller
 
         ->select('plot_dosbing.id as id', 'plot_dosbing.smt as smt', 'plot_dosbing.nim as nim', 'plot_dosbing.name as name', 
         'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
-        's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's32.depan as depan2', 's31.depan as depan1')
+        's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's32.depan as depan2', 's31.depan as depan1', 'plot_dosbing.dosbing1 as nidn1', 'plot_dosbing.dosbing2 as nidn2')
         ->where('nim', $user -> no_induk)->first();
 
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
         $dataprop = ProposalModel::all()->where('nim', $user -> no_induk)->where('ket1', 'Disetujui')->where('ket2', 'Disetujui')->first();
         return view ('mahasiswa.skripsi.bimbingan.add', compact('data', 'smt', 'dataprop', 'user'));
     }
+
+    public function formAddBimbingan2(){
+        $user = Auth::user();
+        $data = DB::table('plot_dosbing')
+        ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+        ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+        
+        ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
+        ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
+        ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
+
+        ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+        ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
+        ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
+
+        ->select('plot_dosbing.id as id', 'plot_dosbing.smt as smt', 'plot_dosbing.nim as nim', 'plot_dosbing.name as name', 
+        'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
+        's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's32.depan as depan2', 's31.depan as depan1', 'plot_dosbing.dosbing1 as nidn1', 'plot_dosbing.dosbing2 as nidn2')
+        ->where('nim', $user -> no_induk)->first();
+
+        $smt = SemesterModel::all()->where('aktif', 'Y')->first();
+        $dataprop = ProposalModel::all()->where('nim', $user -> no_induk)->where('ket1', 'Disetujui')->where('ket2', 'Disetujui')->first();
+        return view ('mahasiswa.skripsi.bimbingan.add2', compact('data', 'smt', 'dataprop', 'user'));
+    }
+
+
     public function insertBimbingan(Request $request){
         $this->validate($request, [
 			'file_bimbingan' => 'max:30720',
@@ -547,7 +604,7 @@ class MahasiswaController extends Controller
         $bModel->id_proposal = $request->id_proposal;
         $bModel->id_plot_dosbing = $request->id_plot_dosbing;
         $bModel->bimbingan_ke = $request->bimbingan_ke;
-        // $bModel->bab = $request->bab;
+        $bModel->bimbingan_kepada = $request->bimbingan_kepada;
         $bModel->komentar = $request->komentar;
 
 		$file = $request->file('file_bimbingan');
@@ -560,11 +617,49 @@ class MahasiswaController extends Controller
 
         $bModel->file = $namafile;
 
+        $bModel->ket1 = 'Review';
+
         $bModel->created_at = Carbon::now('GMT+7');
         $bModel->save();
         
         return redirect('mahasiswa/skripsi/bimbingan')->with(['success' => 'Berhasil']);
     }
+
+    public function insertBimbingan2(Request $request){
+        $this->validate($request, [
+			'file_bimbingan' => 'max:30720',
+		],
+        [
+            'file_bimbingan.max' => 'File terlalu besar, maksimal 30 mb',
+        ]);
+        $bModel = new BimbinganModel;
+
+        $bModel->id_semester = $request->smt;
+        $bModel->nim = $request->nim;
+        $bModel->id_proposal = $request->id_proposal;
+        $bModel->id_plot_dosbing = $request->id_plot_dosbing;
+        $bModel->bimbingan_ke = $request->bimbingan_ke;
+        $bModel->bimbingan_kepada = $request->bimbingan_kepada;
+        $bModel->komentar = $request->komentar;
+
+		$file = $request->file('file_bimbingan');
+
+        $tujuan_upload = 'filemhs/'.$request->nim.'/bimbingan';
+
+        $namafile = rand().$file->getClientOriginalName();
+
+        $file->move($tujuan_upload,$namafile);
+
+        $bModel->file = $namafile;
+
+        $bModel->ket2 = 'Review';
+
+        $bModel->created_at = Carbon::now('GMT+7');
+        $bModel->save();
+        
+        return redirect('mahasiswa/skripsi/bimbingan')->with(['success' => 'Berhasil']);
+    }
+
     public function viewBimbinganDetail($id){
         $user = Auth::user();
         $data = DB::table('bimbingan')
@@ -573,7 +668,7 @@ class MahasiswaController extends Controller
         ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_ke as bimbingan_ke',
-        'bimbingan.file as file', 'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.created_at as tgl')
+        'bimbingan.file as file', 'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.created_at as tgl', 'bimbingan.bimbingan_kepada as bimbingan_kepada')
         ->where('bimbingan.nim', $user -> no_induk)
         ->where('bimbingan.bimbingan_ke', $id)
         ->first();
@@ -668,29 +763,30 @@ class MahasiswaController extends Controller
         $user = Auth::user();
         $data = DB::table('berkas_ujian')
         ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
-        ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'mahasiswa.status_ujian as status_ujian',
-        'plot_penguji.ketua_penguji as ketua_peguji', 'plot_penguji.anggota_penguji_1 as anggota_penguji_1', 'plot_penguji.anggota_penguji_2 as anggota_penguji_2','berkas_ujian.berkas_ujian as berkas_ujian', 'berkas_ujian.status as status', 'berkas_ujian.komentar_admin as komentar')
+        'berkas_ujian.berkas_ujian as berkas_ujian', 'berkas_ujian.status as status', 'berkas_ujian.komentar_admin as komentar')
         ->where('berkas_ujian.nim', $user->no_induk)
         ->where('proposal.ket1', 'Disetujui')->where('proposal.ket2', 'Disetujui')
         ->orderByRaw('berkas_ujian.id DESC')
         ->get();
+
+        // dd($data);
         
         $databim = DB::table('bimbingan')
         ->where('nim', $user -> no_induk)
         ->orderByRaw('bimbingan.bimbingan_ke DESC')
         ->first();
 
-        $datapenguji = PlotPengujiModel::all()->where('nim', $user -> no_induk)->first();
+        // $datapenguji = PlotPengujiModel::all()->where('nim', $user -> no_induk)->first();
         
-        return view('mahasiswa.skripsi.pendaftaran.read', compact('data', 'databim', 'user', 'datapenguji'));
+        return view('mahasiswa.skripsi.pendaftaran.read', compact('data', 'databim', 'user', ));
     }
     public function formAddUjian(){
         $user = Auth::user();
         $datamhs = MahasiswaModel::all()->where('nim', $user -> no_induk)->first();
         $datadosbing = PlotDosbingModel::all()->where('nim', $user -> no_induk)->first();
-        $datapenguji = PlotPengujiModel::all()->where('nim', $user -> no_induk)->first();
+        // $datapenguji = PlotPengujiModel::all()->where('nim', $user -> no_induk)->first();
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -707,7 +803,7 @@ class MahasiswaController extends Controller
         ->where('nidn', $datadosbing->dosbing2)->first();
         $dataprop = ProposalModel::all()->where('nim', $user -> no_induk)->where('ket1', 'Disetujui')->where('ket2', 'Disetujui')->first();
         // dd($dataprop);
-        return view ('mahasiswa.skripsi.pendaftaran.add', compact('dosen1', 'dosen2', 'datamhs', 'datapenguji', 'datadosbing', 'dataprop', 'user'));
+        return view ('mahasiswa.skripsi.pendaftaran.add', compact('dosen1', 'dosen2', 'datamhs', 'datadosbing', 'dataprop', 'user'));
     }
     public function insertBerkasUjian(Request $request){
         $this->validate($request, [
@@ -717,7 +813,11 @@ class MahasiswaController extends Controller
             'berkas_ujian.max' => 'File terlalu besar, maksimal 30 mb',
         ]);
 
+        $smt = SemesterModel::all()->where('aktif', 'Y')->first();
+
         $buModel = new BerkasUjianModel;
+
+        $buModel->id_semester = $smt->id;
 
         $buModel->nim = $request->nim;
         $buModel->id_proposal = $request->id_proposal;
@@ -780,13 +880,13 @@ class MahasiswaController extends Controller
         ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+        // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
         ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.status as status', 'proposal.judul as judul', 
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_ujian.tanggal as tanggal',
         'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket')
         ->where('jadwal_ujian.nim', $user->no_induk)
         // ->orderByRaw('jadwal_ujian.id DESC')
-        ->where('jadwal_ujian.nim', $user->no_induk)
+        // ->where('jadwal_ujian.nim', $user->no_induk)
         ->where('jadwal_ujian.id', $id)
         ->get();
 
@@ -817,7 +917,7 @@ class MahasiswaController extends Controller
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
         'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket',
-        'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara')
+        'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara', 'hasil_ujian.*')
         ->where('hasil_ujian.nim', $user->no_induk)
         ->orderByRaw('hasil_ujian.id DESC')
         ->get();
@@ -985,6 +1085,87 @@ class MahasiswaController extends Controller
         // dd($anggota1);
 
         return view ('dosen.ujian.dokumen.dokumen_ujian_pdf', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2', ));
+        
+    }
+
+    public function tampilBimbinganMhs(){
+        $user = Auth::user();
+        $plot = DB::table('plot_dosbing')->where('nim', $user -> no_induk)->orderByRaw('id DESC')->first();
+        // dd($plot);
+
+        $data1 =  DB::table('bimbingan')
+        ->join('users', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->join('dosen', 'bimbingan.bimbingan_kepada', '=', 'dosen.nidn')
+        // ->join('pesan_bimbingan', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->select('bimbingan.*', 'users.name as name', 'dosen.ttd as ttd', 'dosen.nidn as nidn')
+        ->where('bimbingan.nim', '=', $user->no_induk)
+        ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing1)
+        ->orderByRaw('bimbingan.id ASC')
+        ->get();
+
+        $data2 =  DB::table('bimbingan')
+        ->join('users', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->join('dosen', 'bimbingan.bimbingan_kepada', '=', 'dosen.nidn')
+        // ->join('pesan_bimbingan', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->select('bimbingan.*', 'users.name as name', 'dosen.ttd as ttd', 'dosen.nidn as nidn')
+        ->where('bimbingan.nim', '=', $user->no_induk)
+        ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing2)
+        ->orderByRaw('bimbingan.id ASC')
+        ->get();
+
+        // dd($data);
+
+
+        return view ('mahasiswa.skripsi.bimbingan.cetakbim',  compact('user', 'data1', 'data2'));
+        
+    }
+
+    public function cetakBimbinganMhs(){
+        $user = Auth::user();
+        $plot = DB::table('plot_dosbing')->where('nim', $user -> no_induk)->orderByRaw('id DESC')->first();
+        $prop = DB::table('proposal')->where('nim', $user -> no_induk)->orderByRaw('id DESC')->first();
+
+        $dosen1 = DB::table('dosen')
+        ->join('s1', 'dosen.gelar1', '=', 's1.id')
+        ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
+        ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.ttd as ttd', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
+        ->where('nidn', $plot->dosbing1)->first();
+        $dosen2 = DB::table('dosen')
+        ->join('s1', 'dosen.gelar1', '=', 's1.id')
+        ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
+        ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.ttd as ttd', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
+        ->where('nidn', $plot->dosbing2)->first();
+
+
+        // dd($plot);
+        $data1 =  DB::table('bimbingan')
+        ->join('users', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->join('dosen', 'bimbingan.bimbingan_kepada', '=', 'dosen.nidn')
+        // ->join('pesan_bimbingan', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->select('bimbingan.*', 'users.name as name', 'dosen.ttd as ttd', 'dosen.nidn as nidn')
+        ->where('bimbingan.nim', '=', $user->no_induk)
+        ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing1)
+        ->orderByRaw('bimbingan.id ASC')
+        ->get();
+
+        $data2 =  DB::table('bimbingan')
+        ->join('users', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->join('dosen', 'bimbingan.bimbingan_kepada', '=', 'dosen.nidn')
+        // ->join('pesan_bimbingan', 'bimbingan.bimbingan_kepada', '=', 'users.no_induk')
+        ->select('bimbingan.*', 'users.name as name', 'dosen.ttd as ttd', 'dosen.nidn as nidn')
+        ->where('bimbingan.nim', '=', $user->no_induk)
+        ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing2)
+        ->orderByRaw('bimbingan.id ASC')
+        ->get();
+
+        // dd($data);
+
+
+        return view ('mahasiswa.skripsi.bimbingan.bimbingan_pdf',  compact('user', 'data1', 'data2', 'prop', 'dosen1', 'dosen2'));
         
     }
 }

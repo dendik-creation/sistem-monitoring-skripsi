@@ -236,6 +236,15 @@
       'autoWidth'   : true
     });
 } );
+
+$(document).ready(function() {
+    $('#dataTable2').DataTable({
+      'paging'      : true,
+      'searching'   : true,
+      'ordering'    : true,
+      'autoWidth'   : true
+    });
+} );
 </script>
 
 </html>

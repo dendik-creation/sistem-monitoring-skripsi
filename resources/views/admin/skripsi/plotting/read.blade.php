@@ -6,12 +6,12 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Plotting Dosen Penguji</h1>
-            <div class="pull-right">
+            {{-- <div class="pull-right">
                 <div class="row">
-                    <a class="btn btn-flat btn-outline-success mr-2" href="{{ route('downloadformatplottingpenguji') }}">Download Format Excel</a>
+                    <a class="btn btn-flat btn-outline-success mr-2" href="{{ route('downloadformatplottingpenguji') }}">Download Format Excel</a> --}}
                     {{-- <a class="btn btn-success btn-flat" href="#" data-toggle="modal" data-target="#importExcel">Import Excel</a>
                     <a class="btn btn-flat btn-outline-success ml-2" href="{{ route('downloadformatplottingdosbing') }}">Tambah Mahasiswa</a> --}}
-                    <div class="dropdown mr-1">
+                    {{-- <div class="dropdown mr-1">
                         <button type="button" class="btn btn-success dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,20">
                           Tambah
                         </button>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         @if (session()->has('failures'))
@@ -125,9 +125,9 @@
                               @foreach($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $item -> smt }}</td>
+                                    <td>{{ $item -> semester }} {{ $item -> tahun }}</td>
                                     <td>{{ $item -> nim }}</td>
-                                    <td>{{ $item -> name }}</td>
+                                    <td>{{ $item -> nama }}</td>
                                     <td>
                                         @if ($item -> depan1 == "Y")
                                             {{ $item -> gelar31 }} {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}

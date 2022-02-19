@@ -88,6 +88,8 @@
                                             ->first();
                                             // dd($jadwal);
                                         @endphp
+                                        {{-- @if ($jadwal == null) --}}
+
                                         @if (($jadwal === null && $item->status == "Menunggu Dijadwalkan") || ($jadwal === null && $item->status == "Berkas OK"))
                                             <p style="pointer-events: none;" class="btn btn-sm btn-warning">Menunggu Dijadwalkan
                                         @else
@@ -126,13 +128,13 @@
 
                                         @if ($jadwal === null && $item->status == "Berkas tidak lengkap")
                                         <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalberkas{{$item->id}}">
-                                            Upload perbaikan berkas
+                                            Upload ulang berkas
                                           </button>
                                         <div class="modal fade" id="modalberkas{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Upload Perbaikan Berkas Sempro</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Upload Ulang Berkas Sempro</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -158,8 +160,8 @@
                                         @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK")
                                         -
                                         @else
-                                        <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
-                                        <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a>
+                                        <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm">Lihat Undangan</a>
+                                        <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary mt-1">Lihat Jadwal</a>
                                         @endif
                                     </td>
                                 </tr>

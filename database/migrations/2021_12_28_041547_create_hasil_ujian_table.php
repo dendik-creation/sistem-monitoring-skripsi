@@ -15,6 +15,8 @@ class CreateHasilUjianTable extends Migration
     {
         Schema::create('hasil_ujian', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_semester');
+            $table->foreign('id_semester')->references('id')->on('semester');
             $table->string('nim', 15);
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_proposal');
@@ -54,6 +56,8 @@ class CreateHasilUjianTable extends Migration
             $table->string('file2')->nullable();
             $table->string('file3')->nullable();
             $table->string('file4')->nullable();
+            $table->string('nilai_akhir', 5)->nullable()->default('-');
+            $table->string('grade_akhir', 5)->nullable()->default('-');
             $table->timestamps();
         });
     }

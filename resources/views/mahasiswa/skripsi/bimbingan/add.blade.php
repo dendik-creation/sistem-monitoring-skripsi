@@ -4,7 +4,7 @@
     <div class="container-fluid mt-4">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-2 text-gray-800">Tambah Bimbingan</h1>
+            <h1 class="h3 mb-2 text-gray-800">Tambah Bimbingan Ke Dosen Pembimbing Utama</h1>
         </div>
 
         @if (count($errors) > 0)
@@ -38,6 +38,7 @@
                             ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
                             ->select('bimbingan.*')
                             ->where('bimbingan.nim', $user -> no_induk)
+                            ->where('bimbingan.bimbingan_kepada', $data->nidn1)
                             ->orderByRaw('bimbingan.id DESC')
                             ->first();
                             // dd($bim);
@@ -86,22 +87,23 @@
                         <input type="text" class="form-control" name="name" placeholder="Masukkan Nama Lengkap" value="{{ $user->name }}" required readonly>
                     </div>
                     <div class="form-group">
-                        <label for="" class="small">Dosen Pembimbing 1*</label>
+                        <label for="" class="small">Dosen Pembimbing Utama*</label>
                         <input type="hidden" value="{{ $data->id }}" name="id_plot_dosbing">
+                        <input type="hidden" value="{{ $data->nidn1 }}" name="bimbingan_kepada">
                         <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($data -> depan1 == "Y")
                               {{ $data -> gelar31 }} {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}
                           @else
                               {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}, {{ $data -> gelar31 }}
                           @endif" required readonly>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="" class="small">Dosen Pembimbing 2*</label>
                         <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($data -> depan2 == "Y")
                               {{ $data -> gelar32 }} {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}
                           @else
                               {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}, {{ $data -> gelar32 }}
                           @endif" required readonly>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </form>

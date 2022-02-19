@@ -20,6 +20,7 @@ class PendaftarSemproImport implements ToModel, WithHeadingRow
         return new JadwalSemproModel([
             'nim' => $row['nim'],
             'id_berkas_sempro' => $row['id_berkas'],
+            'id_semester' => $row['id_semester'],
             'tanggal' => $row['tanggal_seminar'],
             'jam' => $row['jam_seminar'],
             'tempat' => $row['tempat_seminar'],

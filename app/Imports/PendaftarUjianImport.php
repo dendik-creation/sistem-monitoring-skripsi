@@ -20,10 +20,14 @@ class PendaftarUjianImport implements ToModel, WithHeadingRow
         return new JadwalUjianModel([
             'nim' => $row['nim'],
             'id_berkas_ujian' => $row['id_berkas'],
+            'id_semester' => $row['id_semester'],
             'tanggal' => $row['tanggal_ujian'],
             'jam' => $row['jam_ujian'],
             'tempat' => $row['tempat_ujian'],
             'ket' => $row['keterangan'],
+            'ketua_penguji' => $row['nidn_ketua_penguji'],
+            'anggota_penguji_1' => $row['nidn_anggota_penguji_1'],
+            'anggota_penguji_2' => $row['nidn_anggota_penguji_2'],
         ]);
     }
 }

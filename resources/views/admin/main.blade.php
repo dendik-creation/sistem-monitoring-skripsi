@@ -66,12 +66,12 @@
             </li>
 
             <li class="nav-item {{ Request::is('admin/dosen') || Request::is('admin/dosen/*') ? 'active' : ''}}">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                    aria-expanded="true" aria-controls="collapseThree">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Dosen</span>
                 </a>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('datadosen') }}">Data Dosen</a>
                         <a class="collapse-item" href="{{ route('datas1') }}">Gelar S1</a>
@@ -103,6 +103,7 @@
                         <a class="collapse-item" href="{{ route('dataproposalmonitoring') }}">Monitoring</a>
                         <a class="collapse-item" href="{{ route('dataproposalpendaftar') }}">Pendaftar Seminar</a>
                         <a class="collapse-item" href="{{ route('dataproposalpenjadwalan') }}">Jadwal Seminar</a>
+                        <a class="collapse-item" href="{{ route('datahasilsemproadmin') }}">Hasil Seminar</a>
                     </div>
                 </div>
             </li>
@@ -121,6 +122,25 @@
                         <a class="collapse-item" href="{{ route('dataskripsimonitoring') }}">Monitoring</a>
                         <a class="collapse-item" href="{{ route('dataskripsipendaftar') }}">Pendaftar Ujian</a>
                         <a class="collapse-item" href="{{ route('dataskripsipenjadwalan') }}">Jadwal Ujian</a>
+                        <a class="collapse-item" href="{{ route('datahasilujianadmin') }}">Hasil Ujian</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <li class="nav-item {{ Request::is('admin/rekap') || Request::is('admin/rekap/*') ? 'active' : ''}}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="true" aria-controls="collapseThree">
+                    <i class="fas fa-fw fa-print"></i>
+                    <span>Rekap</span>
+                </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('datapembimbingseminar') }}">Pembimbing Seminar</a>
+                        <a class="collapse-item" href="{{ route('datapembimbingskripsi') }}">Pembimbing Skripsi</a>
+                        <a class="collapse-item" href="{{ route('datapengujiskripsi') }}">Penguji Skripsi</a>
                     </div>
                 </div>
             </li>
@@ -359,6 +379,64 @@
                             <td>${element.judul}</td>
                             <td>${status}</td>
                             <td>${opsi}</td>
+                        </tr>
+                        `)
+                    
+                });
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        $('#filtersemesterhasilsempro').on('change', function(e){
+            var id = e.target.value;
+            $.get('{{ url('admin/proposal/hasil/filter') }}/'+id, function(data){
+                console.log(id);
+                console.log(data);
+                $('#datatabel').empty();
+                $.each(data, function(index, element){
+                    var myIndex = index+1;
+                    // var dosen = {!! json_encode($user->no_induk) !!};
+                
+
+                    $('#datatabel').append(`
+                        <tr>
+                            <td>${myIndex}</td>
+                            <td>${element.semester} ${element.tahun}</td>
+                            <td>${element.nim}</td>
+                            <td>${element.nama}</td>
+                            <td>${element.judul}</td>
+                            <td>${element.nilai_akhir}</td>
+                            <td>${element.grade_akhir}</td>
+                        </tr>
+                        `)
+                    
+                });
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        $('#filtersemesterhasilujian').on('change', function(e){
+            var id = e.target.value;
+            $.get('{{ url('admin/skripsi/hasil/filter') }}/'+id, function(data){
+                console.log(id);
+                console.log(data);
+                $('#datatabel').empty();
+                $.each(data, function(index, element){
+                    var myIndex = index+1;
+                    // var dosen = {!! json_encode($user->no_induk) !!};
+                
+
+                    $('#datatabel').append(`
+                        <tr>
+                            <td>${myIndex}</td>
+                            <td>${element.semester} ${element.tahun}</td>
+                            <td>${element.nim}</td>
+                            <td>${element.nama}</td>
+                            <td>${element.judul}</td>
+                            <td>${element.nilai_akhir}</td>
+                            <td>${element.grade_akhir}</td>
                         </tr>
                         `)
                     

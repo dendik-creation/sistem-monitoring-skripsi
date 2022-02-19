@@ -43,6 +43,7 @@
                                 <th>Nama</th>
                                 <th>Judul</th>
                                 <th>Bimbingan Ke</th>
+                                <th>Bimbingan Kepada</th>
                                 <th>Status</th>
                                 <th>Detail</th>
                             </tr>
@@ -58,13 +59,24 @@
                                     <td>{{ $item -> judul }}</td>
                                     <td>{{ $item -> bimbingan_ke }}</td>
                                     <td>
-                                        @if ($item -> dosbing1 == $user -> no_induk)
-                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}
+                                        @if ($item -> depan1 == "Y")
+                                            {{ $item -> gelar31 }} {{ $item -> dosen }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}</p>
                                         @else
-                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}
+                                            {{ $item -> dosen }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}</p>
                                         @endif
                                     </td>
-                                    <td><a href="/dosen/monitoring/bimbingan/detail/{{ $item->nim }}/{{ $item->bimbingan_ke }}" class="btn btn-sm btn-primary">Lihat Detail</a></td>
+                                    <td>
+                                        @if ($item -> bimbingan_kepada == $user -> no_induk && $item -> dosbing1 == $user -> no_induk)
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}
+                                        @elseif ($item -> bimbingan_kepada != $user -> no_induk && $item -> dosbing1 == $user -> no_induk)
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}
+                                        @elseif ($item -> bimbingan_kepada == $user -> no_induk && $item -> dosbing2 == $user -> no_induk)
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Ok' || $item -> ket2 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket2 }}
+                                        @elseif ($item -> bimbingan_kepada != $user -> no_induk && $item -> dosbing2 == $user -> no_induk)
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Ok' || $item -> ket1 == 'Siap ujian' ? 'btn-success' : 'btn-warning')?>">{{ $item -> ket1 }}
+                                        @endif
+                                    </td>
+                                    <td><a href="/dosen/monitoring/bimbingan/detail/{{ $item->nim }}/{{ $item->id }}" class="btn btn-sm btn-primary">Lihat Detail</a></td>
                                 </tr>
                            @endforeach
                         </tbody>

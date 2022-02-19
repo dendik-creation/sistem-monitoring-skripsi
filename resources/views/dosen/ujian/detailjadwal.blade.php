@@ -155,312 +155,333 @@
                 
         </div>
               
-              
-      {{-- Ketua Penguji --}}
-      <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-          <h1 class="h3 mb-2 text-gray-800">Ketua Penguji</h1>
-      </div>
-      <div class="row mt-5">
-        <div class="col-md-12">
-          <table class="table table-borderless">
-                  <tbody>
-                    <tr>
-                      <td>Berita Acara</td>
-                      <td>:</td>
-                      <th>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="berita_acara" id="inlineRadio1" value="Lulus" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>
-                          <label class="form-check-label" for="inlineRadio1">Lulus</label>
-                          <input class="form-check-input ml-5" type="radio" name="berita_acara" id="inlineRadio2" value="Tidak Lulus" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>
-                          <label class="form-check-label" for="inlineRadio2">Tidak Lulus</label>
-                        </div>
-                    </th>
-                    </tr>
-                    <tr>
-                      <td><hr class="sidebar-divider"></td>
-                      <td></td>
-                      <td><hr class="sidebar-divider"></td>
-                    </tr>
-                    <tr>
-                      <td>Nilai Sikap(10%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="sikap1" placeholder="Masukkan Nilai Sikap" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Nilai Presentasi(10%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="presentasi1" placeholder="Masukkan Nilai Presentasi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Nilai Penguasaan Teori(40%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="teori1" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Nilai Penguasaan Program(40%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="program1" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Jumlah</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="jumlah1" placeholder="Masukkan Jumlah" required <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Keterangan</td>
-                      <td>:</td>
-                      <th>
-                        <select class="form-control" name="keterangan1" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>
-                          <option>Pilih Keterangan --</option>
-                          <option>Lulus</option>
-                          <option>Tidak Lulus</option>
-                      </select>
-                    </th>
-                    </tr>
-                    <tr>
-                      <td><hr class="sidebar-divider"></td>
-                      <td></td>
-                      <td><hr class="sidebar-divider"></td>
-                    </tr>
-                    <tr>
-                      <td>Revisi</td>
-                      <td>:</td>
-                      <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></textarea></th>
-                    </tr>
-                    <tr>
-                      <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
-                      <td>:</td>
-                      <th><input type="file" name="file_pendukung1" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button class="btn btn-primary" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
-                        <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->ketua_penguji==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-          </div>
-      </div>
 
-    {{-- Anggota Penguji 1 --}}
-      <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-          <h1 class="h3 mb-2 text-gray-800">Anggota Penguji 1 / Dosen Pembimbing Utama</h1>
-      </div>
-      <div class="row mt-5">
-        <div class="col-md-12">
-          <table class="table table-borderless">
-                  <tbody>
-                    <tr>
-                      <td>Nilai Sikap(10%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="sikap2" placeholder="Masukkan Nilai Sikap" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Nilai Presentasi(10%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="presentasi2" placeholder="Masukkan Nilai Presentasi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Nilai Penguasaan Teori(40%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="teori2" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Nilai Penguasaan Program(40%)</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="program2" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Jumlah</td>
-                      <td>:</td>
-                      <th><input type="text" class="form-control" name="jumlah2" placeholder="Masukkan Jumlah" required <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
-                    </tr>
-                    <tr>
-                      <td>Keterangan</td>
-                      <td>:</td>
-                      <th>
-                        <select class="form-control" name="keterangan2" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>>
-                          <option>Pilih Keterangan --</option>
-                          <option>Lulus</option>
-                          <option>Tidak Lulus</option>
-                      </select>
-                    </th>
-                    </tr>
-                    <tr>
-                      <td><hr class="sidebar-divider"></td>
-                      <td></td>
-                      <td><hr class="sidebar-divider"></td>
-                    </tr>
-                    <tr>
-                      <td>Revisi</td>
-                      <td>:</td>
-                      <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
-                    </tr>
-                    <tr>
-                      <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
-                      <td>:</td>
-                      <th><input type="file" name="file_pendukung2" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button class="btn btn-primary" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
-                        <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-          </div>
-      </div>
+        <ul class="nav nav-tabs mt-5">
+          <li class="nav-item active">
+            <a data-toggle="tab" class="nav-link h6 <?=$item->ketua_penguji==$user->no_induk ? 'active' : 'disabled'?>" href="#ketua">Ketua Penguji</a>
+          </li>
+          <li class="nav-item">
+            <a data-toggle="tab" class="nav-link h6 <?=$item->anggota_penguji_1==$user->no_induk ? 'active' : 'disabled'?>" href="#anggota1">Anggota Penguji 1</a>
+          </li>
+          <li class="nav-item">
+            <a data-toggle="tab" class="nav-link h6 <?=$item->anggota_penguji_2==$user->no_induk ? 'active' : 'disabled'?>" href="#anggota2">Anggota Penguji 2</a>
+          </li>
+          <li class="nav-item">
+            <a data-toggle="tab" class="nav-link h6 <?=$item->dosbing2==$user->no_induk ? 'active' : 'disabled'?>" href="#dosbing2">Dosen Pembimbing Pembantu</a>
+          </li>
+        </ul>
 
-      {{-- Anggota Penguji 2 --}}
-      <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-        <h1 class="h3 mb-2 text-gray-800">Anggota Penguji 2</h1>
-    </div>
-    <div class="row mt-5">
-      <div class="col-md-12">
-        <table class="table table-borderless">
-                <tbody>
-                  <tr>
-                    <td>Nilai Sikap(10%)</td>
-                    <td>:</td>
-                    <th><input type="text" class="form-control" name="sikap3" placeholder="Masukkan Nilai Sikap" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
-                  </tr>
-                  <tr>
-                    <td>Nilai Presentasi(10%)</td>
-                    <td>:</td>
-                    <th><input type="text" class="form-control" name="presentasi3" placeholder="Masukkan Nilai Presentasi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
-                  </tr>
-                  <tr>
-                    <td>Nilai Penguasaan Teori(40%)</td>
-                    <td>:</td>
-                    <th><input type="text" class="form-control" name="teori3" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
-                  </tr>
-                  <tr>
-                    <td>Nilai Penguasaan Program(40%)</td>
-                    <td>:</td>
-                    <th><input type="text" class="form-control" name="program3" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
-                  </tr>
-                  <tr>
-                    <td>Jumlah</td>
-                    <td>:</td>
-                    <th><input type="text" class="form-control" name="jumlah3" placeholder="Masukkan Jumlah" required <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
-                  </tr>
-                  <tr>
-                    <td>Keterangan</td>
-                    <td>:</td>
-                    <th>
-                      <select class="form-control" name="keterangan3" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>>
-                        <option>Pilih Keterangan --</option>
-                        <option>Lulus</option>
-                        <option>Tidak Lulus</option>
-                    </select>
-                  </th>
-                  </tr>
-                  <tr>
-                    <td><hr class="sidebar-divider"></td>
-                    <td></td>
-                    <td><hr class="sidebar-divider"></td>
-                  </tr>
-                  <tr>
-                    <td>Revisi</td>
-                    <td>:</td>
-                    <th><textarea class="form-control" name="revisi3" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
-                  </tr>
-                  <tr>
-                    <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
-                    <td>:</td>
-                    <th><input type="file" name="file_pendukung3" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td>
-                      <button class="btn btn-primary" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
-                      <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        <div class="tab-content">
+          <div id="ketua" class="tab-pane fade <?=$item->ketua_penguji==$user->no_induk ? 'show active' : ''?>">
+            {{-- Ketua Penguji --}}
+            <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+              <h1 class="h3 mb-2 text-gray-800">Ketua Penguji</h1>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12">
+                <table class="table table-borderless">
+                        <tbody>
+                          <tr>
+                            <td>Berita Acara</td>
+                            <td>:</td>
+                            <th>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="berita_acara" id="inlineRadio1" value="Lulus" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>
+                                <label class="form-check-label" for="inlineRadio1">Lulus</label>
+                                <input class="form-check-input ml-5" type="radio" name="berita_acara" id="inlineRadio2" value="Tidak Lulus" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>
+                                <label class="form-check-label" for="inlineRadio2">Tidak Lulus</label>
+                              </div>
+                          </th>
+                          </tr>
+                          <tr>
+                            <td><hr class="sidebar-divider"></td>
+                            <td></td>
+                            <td><hr class="sidebar-divider"></td>
+                          </tr>
+                          <tr>
+                            <td>Nilai Sikap(10%) (1-100)</td>
+                            <td>:</td>
+                            <th><input type="text" class="form-control" name="sikap1" id="ujiansikap1" onkeyup="ujian1()" placeholder="Masukkan Nilai Sikap" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                          </tr>
+                          <tr>
+                            <td>Nilai Presentasi(10%) (1-100)</td>
+                            <td>:</td>
+                            <th><input type="text" class="form-control" name="presentasi1" id="ujianpresentasi1" onkeyup="ujian1()" placeholder="Masukkan Nilai Presentasi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                          </tr>
+                          <tr>
+                            <td>Nilai Penguasaan Teori(40%) (1-100)</td>
+                            <td>:</td>
+                            <th><input type="text" class="form-control" name="teori1" id="ujianteori1" onkeyup="ujian1()" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                          </tr>
+                          <tr>
+                            <td>Nilai Penguasaan Program(40%) (1-100)</td>
+                            <td>:</td>
+                            <th><input type="text" class="form-control" name="program1" id="ujianprogram1" onkeyup="ujian1()" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                          </tr>
+                          <tr>
+                            <td>Jumlah</td>
+                            <td>:</td>
+                            <th><input type="text" class="form-control" name="jumlah1" id="ujianjumlah1" placeholder="Masukkan Jumlah" required <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></th>
+                          </tr>
+                          {{-- <tr>
+                            <td>Keterangan</td>
+                            <td>:</td>
+                            <th>
+                              <select class="form-control" name="keterangan1" <?=//$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?> required>
+                                <option>Pilih Keterangan --</option>
+                                <option>Lulus</option>
+                                <option>Tidak Lulus</option>
+                            </select>
+                          </th>
+                          </tr> --}}
+                          <tr>
+                            <td><hr class="sidebar-divider"></td>
+                            <td></td>
+                            <td><hr class="sidebar-divider"></td>
+                          </tr>
+                          <tr>
+                            <td>Revisi</td>
+                            <td>:</td>
+                            <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                          </tr>
+                          <tr>
+                            <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
+                            <td>:</td>
+                            <th><input type="file" name="file_pendukung1" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                              <button class="btn btn-primary" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
+                              <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->ketua_penguji==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+              </div>
+            </div>
+          </div>
+          <div id="anggota1" class="tab-pane fade <?=$item->anggota_penguji_1==$user->no_induk ? 'show active' : ''?>">
+              {{-- Anggota Penguji 1 --}}
+              <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+                  <h1 class="h3 mb-2 text-gray-800">Anggota Penguji 1 / Dosen Pembimbing Utama</h1>
+              </div>
+              <div class="row mt-5">
+                <div class="col-md-12">
+                  <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td>Nilai Sikap(10%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="sikap2" id="ujiansikap2" onkeyup="ujian2()" placeholder="Masukkan Nilai Sikap" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Presentasi(10%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="presentasi2" id="ujianpresentasi2" onkeyup="ujian2()" placeholder="Masukkan Nilai Presentasi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Penguasaan Teori(40%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="teori2" id="ujianteori2" onkeyup="ujian2()" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Penguasaan Program(40%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="program2" id="ujianprogram2" onkeyup="ujian2()" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Jumlah</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="jumlah2" id="ujianjumlah2" placeholder="Masukkan Jumlah" required <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            {{-- <tr>
+                              <td>Keterangan</td>
+                              <td>:</td>
+                              <th>
+                                <select class="form-control" name="keterangan2" <?=//$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?> required>
+                                  <option>Pilih Keterangan --</option>
+                                  <option>Lulus</option>
+                                  <option>Tidak Lulus</option>
+                              </select>
+                            </th>
+                            </tr> --}}
+                            <tr>
+                              <td><hr class="sidebar-divider"></td>
+                              <td></td>
+                              <td><hr class="sidebar-divider"></td>
+                            </tr>
+                            <tr>
+                              <td>Revisi</td>
+                              <td>:</td>
+                              <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                            </tr>
+                            <tr>
+                              <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
+                              <td>:</td>
+                              <th><input type="file" name="file_pendukung2" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td>
+                                <button class="btn btn-primary" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
+                                <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                  </div>
+              </div>
+          </div>
+          <div id="anggota2" class="tab-pane fade <?=$item->anggota_penguji_2==$user->no_induk ? 'show active' : ''?>">
+              {{-- Anggota Penguji 2 --}}
+              <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+                  <h1 class="h3 mb-2 text-gray-800">Anggota Penguji 2</h1>
+              </div>
+              <div class="row mt-5">
+                <div class="col-md-12">
+                  <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td>Nilai Sikap(10%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="sikap3" id="ujiansikap3" onkeyup="ujian3()" placeholder="Masukkan Nilai Sikap" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Presentasi(10%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="presentasi3" id="ujianpresentasi3" onkeyup="ujian3()" placeholder="Masukkan Nilai Presentasi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Penguasaan Teori(40%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="teori3" id="ujianteori3" onkeyup="ujian3()" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Penguasaan Program(40%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="program3" id="ujianprogram3" onkeyup="ujian3()" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Jumlah</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="jumlah3" id="ujianjumlah3" placeholder="Masukkan Jumlah" required <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            {{-- <tr>
+                              <td>Keterangan</td>
+                              <td>:</td>
+                              <th>
+                                <select class="form-control" name="keterangan3" <?=//$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?> required>
+                                  <option>Pilih Keterangan --</option>
+                                  <option>Lulus</option>
+                                  <option>Tidak Lulus</option>
+                              </select>
+                            </th>
+                            </tr> --}}
+                            <tr>
+                              <td><hr class="sidebar-divider"></td>
+                              <td></td>
+                              <td><hr class="sidebar-divider"></td>
+                            </tr>
+                            <tr>
+                              <td>Revisi</td>
+                              <td>:</td>
+                              <th><textarea class="form-control" name="revisi3" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                            </tr>
+                            <tr>
+                              <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
+                              <td>:</td>
+                              <th><input type="file" name="file_pendukung3" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td>
+                                <button class="btn btn-primary" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
+                                <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                  </div>
+              </div>
+          </div>
+          <div id="dosbing2" class="tab-pane fade <?=$item->dosbing2==$user->no_induk ? 'show active' : ''?>">
+              {{-- Dosbing 2 --}}
+              <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
+                  <h1 class="h3 mb-2 text-gray-800">Dosen Pembimbing Pembantu</h1>
+              </div>
+              <div class="row mt-5">
+                <div class="col-md-12">
+                  <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td>Nilai Sikap(10%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="sikap4" id="ujiansikap4" onkeyup="ujian4()" placeholder="Masukkan Nilai Sikap" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Presentasi(10%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="presentasi4" id="ujianpresentasi4" onkeyup="ujian4()" placeholder="Masukkan Nilai Presentasi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Penguasaan Teori(40%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="teori4" id="ujianteori4" onkeyup="ujian4()" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Nilai Penguasaan Program(40%) (1-100)</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="program4" id="ujianprogram4" onkeyup="ujian4()" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            <tr>
+                              <td>Jumlah</td>
+                              <td>:</td>
+                              <th><input type="text" class="form-control" name="jumlah4" id="ujianjumlah4" placeholder="Masukkan Jumlah" required <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
+                            </tr>
+                            {{-- <tr>
+                              <td>Keterangan</td>
+                              <td>:</td>
+                              <th>
+                                <select class="form-control" name="keterangan4" <?=//$item->dosbing2==$user->no_induk ? '' : 'disabled'?> required>
+                                  <option>Pilih Keterangan --</option>
+                                  <option>Lulus</option>
+                                  <option>Tidak Lulus</option>
+                              </select>
+                            </th>
+                            </tr> --}}
+                            <tr>
+                              <td><hr class="sidebar-divider"></td>
+                              <td></td>
+                              <td><hr class="sidebar-divider"></td>
+                            </tr>
+                            <tr>
+                              <td>Revisi</td>
+                              <td>:</td>
+                              <th><textarea class="form-control" name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                            </tr>
+                            <tr>
+                              <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
+                              <td>:</td>
+                              <th><input type="file" name="file_pendukung4" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td>
+                                <button class="btn btn-primary" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
+                                <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->dosbing2==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                  </div>
+              </div>
+          </div>
         </div>
-    </div>
-
-    {{-- Dosbing 2 --}}
-    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-      <h1 class="h3 mb-2 text-gray-800">Dosen Pembimbing Pembantu</h1>
-  </div>
-  <div class="row mt-5">
-    <div class="col-md-12">
-      <table class="table table-borderless">
-              <tbody>
-                <tr>
-                  <td>Nilai Sikap(10%)</td>
-                  <td>:</td>
-                  <th><input type="text" class="form-control" name="sikap4" placeholder="Masukkan Nilai Sikap" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
-                </tr>
-                <tr>
-                  <td>Nilai Presentasi(10%)</td>
-                  <td>:</td>
-                  <th><input type="text" class="form-control" name="presentasi4" placeholder="Masukkan Nilai Presentasi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
-                </tr>
-                <tr>
-                  <td>Nilai Penguasaan Teori(40%)</td>
-                  <td>:</td>
-                  <th><input type="text" class="form-control" name="teori4" placeholder="Masukkan Nilai Penguasaan Teori" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
-                </tr>
-                <tr>
-                  <td>Nilai Penguasaan Program(40%)</td>
-                  <td>:</td>
-                  <th><input type="text" class="form-control" name="program4" placeholder="Masukkan Nilai Penguasaan Program" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
-                </tr>
-                <tr>
-                  <td>Jumlah</td>
-                  <td>:</td>
-                  <th><input type="text" class="form-control" name="jumlah4" placeholder="Masukkan Jumlah" required <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></th>
-                </tr>
-                <tr>
-                  <td>Keterangan</td>
-                  <td>:</td>
-                  <th>
-                    <select class="form-control" name="keterangan4" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>>
-                      <option>Pilih Keterangan --</option>
-                      <option>Lulus</option>
-                      <option>Tidak Lulus</option>
-                  </select>
-                </th>
-                </tr>
-                <tr>
-                  <td><hr class="sidebar-divider"></td>
-                  <td></td>
-                  <td><hr class="sidebar-divider"></td>
-                </tr>
-                <tr>
-                  <td>Revisi</td>
-                  <td>:</td>
-                  <th><textarea class="form-control" name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
-                </tr>
-                <tr>
-                  <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
-                  <td>:</td>
-                  <th><input type="file" name="file_pendukung4" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <button class="btn btn-primary" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>>Simpan</button>
-                    <a href="{{url()->previous()}}" class="btn btn-secondary" <?=$item->dosbing2==$user->no_induk ? '' : 'style="pointer-events: none;"'?>>Batal</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-      </div>
-  </div>
-
       
       @endforeach
       </form>

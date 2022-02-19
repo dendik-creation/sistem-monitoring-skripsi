@@ -15,6 +15,8 @@ class CreateJadwalUjianTable extends Migration
     {
         Schema::create('jadwal_ujian', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_semester');
+            $table->foreign('id_semester')->references('id')->on('semester');
             $table->string('nim', 15);
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_berkas_ujian');
@@ -27,6 +29,12 @@ class CreateJadwalUjianTable extends Migration
             $table->enum('status2', ['Belum', 'Sudah'])->default('Belum');
             $table->enum('status3', ['Belum', 'Sudah'])->default('Belum');
             $table->enum('status4', ['Belum', 'Sudah'])->default('Belum');
+            $table->string('ketua_penguji', 15);
+            $table->foreign('ketua_penguji')->references('nidn')->on('dosen');
+            $table->string('anggota_penguji_1', 15);
+            $table->foreign('anggota_penguji_1')->references('nidn')->on('dosen');
+            $table->string('anggota_penguji_2', 15);
+            $table->foreign('anggota_penguji_2')->references('nidn')->on('dosen');
             $table->timestamps();
         });
     }

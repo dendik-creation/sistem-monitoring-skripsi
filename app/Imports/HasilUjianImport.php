@@ -21,6 +21,7 @@ class HasilUjianImport implements ToModel, WithHeadingRow
         return new HasilUjianModel([
             'nim' => $row['nim'],
             'id_proposal' => $row['id_proposal'],
+            'id_semester' => $row['id_semester'],
         ]);
     }
 }

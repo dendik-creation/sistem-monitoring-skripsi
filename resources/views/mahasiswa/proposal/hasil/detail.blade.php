@@ -51,6 +51,16 @@
                         <td>:</td>
                         <th class="<?=$item->berita_acara == "Diterima" ? 'text-success' : 'text-danger' ?>">{{ $item->berita_acara }}</th>
                       </tr>
+                      <tr>
+                        <td>Total Nilai</td>
+                        <td>:</td>
+                        <th>{{ $item->nilai_akhir }}</th>
+                      </tr>
+                      <tr>
+                        <td>Grade</td>
+                        <td>:</td>
+                        <th>{{ $item->grade_akhir }}</th>
+                      </tr>
                     </tbody>
                   </table>
                 <div class="ml-2 mt-4">

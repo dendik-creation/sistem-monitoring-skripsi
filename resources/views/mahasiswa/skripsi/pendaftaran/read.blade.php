@@ -16,8 +16,12 @@
                     ->first();
                     // dd($cek);
                 @endphp
-                @if ($databim == null || $databim->ket1 == "Siap ujian" && $databim->ket2 == "Siap ujian")
-                    @if ($datapenguji === null)
+                {{-- @if ($databim->ket1 == "Siap ujian" && $databim->ket2 == "Siap ujian")
+                    {{-- @if ($datapenguji === null) --}}
+                    {{-- <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat"> 
+                        <i class="fa fa-plus"></i> Daftar
+                    </a>
+                    @elseif ($cek == null)
                     <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled"> 
                         <i class="fa fa-plus"></i> Daftar
                     </a>  
@@ -29,9 +33,22 @@
                     <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                         <i class="fa fa-plus"></i> Daftar
                     </a>
-                    @endif
-                @else
+                    @endif --}}
+                {{-- @else
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
+                    <i class="fa fa-plus"></i> Daftar
+                </a> 
+                @endif --}}
+                @if($cek == null)
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
+                    <i class="fa fa-plus"></i> Daftar
+                </a> 
+                @elseif ($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
+                    <i class="fa fa-plus"></i> Daftar
+                </a> 
+                @else
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Daftar
                 </a> 
                 @endif
@@ -120,13 +137,13 @@
 
                                         @if ($jadwal === null && $item->status == "Berkas tidak lengkap")
                                         <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalberkas{{$item->id}}">
-                                            Upload perbaikan berkas
+                                            Upload ulang berkas
                                           </button>
                                         <div class="modal fade" id="modalberkas{{$item->id}}" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Upload Perbaikan Berkas Ujian</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Upload Ulang Berkas Ujian</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -149,11 +166,11 @@
                                             </div>
                                             </div>
                                         </div>
-                                        @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK")
+                                        @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK" )
                                         -
                                         @else
-                                        <a href="/mahasiswa/proposal/jadwalujian/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
-                                        <a href="/ujian/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a>
+                                        <a href="/ujian/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm">Lihat Undangan</a>
+                                        <a href="/mahasiswa/skripsi/jadwalujian/{{ $jadwal->id }}" class="btn btn-sm btn-primary mt-1">Lihat Jadwal</a>
                                         @endif
                                     </td>
                                 </tr>

@@ -42,7 +42,7 @@
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
-                                <th>Status Bimbingan</th>
+                                {{-- <th>Status Bimbingan</th> --}}
                                 <th>Status Skripsi</th>
                                 <th>Status Ujian</th>
                             </tr>
@@ -56,7 +56,7 @@
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item-> judul }}</td>
-                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=$item -> status_bimbingan == "Belum melakukan bimbingan" ? 'btn-danger' : 'btn-success'?>">{{ $item -> status_bimbingan }}</td>
+                                    {{-- <td><p style="pointer-events: none;" class="btn btn-sm <?=//$item -> status_bimbingan == "Belum melakukan bimbingan" ? 'btn-danger' : 'btn-success'?>">{{ $item -> status_bimbingan }}</td> --}}
                                     <td><p style="pointer-events: none;" class="btn btn-sm <?=$item -> status_skripsi == 'Sedang dikerjakan' ? 'btn-warning' : 'btn-success'?>">{{ $item -> status_skripsi }}</td>
                                     <td><p style="pointer-events: none;" class="btn btn-sm <?=($item -> status_ujian == 'Belum ujian' ? 'btn-danger' : ($item -> status_ujian == 'Lulus' ? 'btn-success' : 'btn-danger'))?>">{{ $item -> status_ujian }}</td>
                                 </tr>

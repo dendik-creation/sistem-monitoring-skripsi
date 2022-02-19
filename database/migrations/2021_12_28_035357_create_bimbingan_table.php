@@ -29,6 +29,8 @@ class CreateBimbinganTable extends Migration
             $table->text('komentar')->nullable();
             $table->enum('ket1', ['Review', 'Ok', 'Lanjut ke bimbingan selanjutnya', 'Siap ujian'])->default('Review');
             $table->enum('ket2', ['Review', 'Ok', 'Lanjut ke bimbingan selanjutnya', 'Siap ujian'])->default('Review');
+            $table->string('bimbingan_kepada', 15);
+            $table->foreign('bimbingan_kepada')->references('nidn')->on('dosen');
             $table->timestamps();
         });
     }

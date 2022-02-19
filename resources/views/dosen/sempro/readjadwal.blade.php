@@ -105,9 +105,9 @@
                                             </div>
                                         </div> --}}
 
-                                        <a href="/dosen/sempro/jadwal/detail/{{ $item->id }}" class="btn btn-primary btn-sm">Lihat Detail</a>
-
-                                        <a href="/sempro/jadwal/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a>
+                                        <a href="/sempro/jadwal/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm">Lihat Undangan</a>
+                                        
+                                        <a href="/dosen/sempro/jadwal/detail/{{ $item->id }}" class="btn btn-primary btn-sm mt-1">Detail & Penilaian</a>
                                     </td>
                                 </tr>
                            @endforeach

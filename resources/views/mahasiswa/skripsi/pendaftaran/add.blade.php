@@ -53,7 +53,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="small">Dosen Pembimbing Utama*</label>
-                        <input type="hidden" value="{{ $datapenguji->id }}" name="id_plot_penguji">
+                        {{-- <input type="hidden" value="{{ $datapenguji->id }}" name="id_plot_penguji"> --}}
                         <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else

@@ -95,6 +95,29 @@
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> judul }}</td>
+                                    {{-- @php
+                                      $data =  DB::table('berkas_sempro')
+                                        ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
+                                        ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
+                                        ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
+                                        ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+                                        ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
+                                        ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+                                        ->select('berkas_sempro.no:=@no+1 as no', 'berkas_sempro.id as id', 
+                                        'proposal.id as id_proposal',
+                                        'semester.semester as semester', 
+                                        'semester.tahun as tahun', 
+                                        'berkas_sempro.nim as nim', 
+                                        'mahasiswa.name as nama', 
+                                        'dos1.name as dosbing1', 
+                                        'dos2.name as dosbing2',
+                                        'berkas_sempro.berkas_sempro as berkas_sempro',
+                                        'berkas_sempro.created_at as tgl_daftar', 
+                                        'berkas_sempro.status as status')
+                                        ->where('berkas_sempro.status', 'Berkas OK')
+                                        ->get();
+                                        dd($data);
+                                    @endphp --}}
                                     <td>
                                         {{-- @if ($item -> status1 == 'Belum' && $item -> status2 == 'Belum')
                                         <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum melakukan seminar</p> 

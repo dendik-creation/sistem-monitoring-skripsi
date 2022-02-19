@@ -15,6 +15,8 @@ class CreateHasilSemproTable extends Migration
     {
         Schema::create('hasil_sempro', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_semester');
+            $table->foreign('id_semester')->references('id')->on('semester');
             $table->string('nim', 15);
             $table->foreign('nim')->references('nim')->on('mahasiswa');
             $table->unsignedBigInteger('id_proposal');
@@ -36,6 +38,8 @@ class CreateHasilSemproTable extends Migration
             $table->text('revisi2')->nullable();
             $table->string('file1')->nullable();
             $table->string('file2')->nullable();
+            $table->string('nilai_akhir', 5)->nullable()->default('-');
+            $table->string('grade_akhir', 5)->nullable()->default('-');
             $table->timestamps();
         });
     }

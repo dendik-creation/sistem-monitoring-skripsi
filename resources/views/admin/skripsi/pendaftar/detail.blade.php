@@ -59,7 +59,7 @@
                 <tr>
                   <td>Berkas Ujian</td>
                   <td>:</td>
-                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download file'?></a></th>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas'?></a></th>
                 </tr>
                 <tr>
                   <td>Tanggal Pendaftaran</td>
@@ -73,70 +73,79 @@
         <hr class="sidebar-divider mt-5">
         <div class="row mt-5">
           <div class="col-md-6">
-            <table class="table table-borderless">
-                    <tbody>
-                      <tr>
-                        <td>Ketua Penguji</td>
-                        <td>:</td>
-                        <th>@if ($ketua -> depan == "Y")
-                          {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
-                      @else
-                          {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
-                      @endif</th>
-                      </tr>
-                      <tr>
-                        <td>Anggota Penguji 1</td>
-                        <td>:</td>
-                        <th>@if ($anggota1 -> depan == "Y")
-                          {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
-                      @else
-                          {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
-                      @endif</th>
-                      </tr>
-                      <tr>
-                        <td>Anggota Penguji 2</td>
-                        <td>:</td>
-                        <th>@if ($anggota2 -> depan == "Y")
-                          {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
-                      @else
-                          {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
-                      @endif</th>
-                      </tr>
-                    </tbody>
-                  </table>
+            <form action="/admin/skripsi/insertjadwalujian" method="POST">
+              {{csrf_field()}}
+              <table class="table table-borderless">
+                  <tbody>
+                    <div class="form-group">
+                      <label for="" class="small">Tanggal Ujian Skripsi*</label>
+                      <input type="text" class="form-control" id="datepicker" name="tanggal" placeholder="Masukkan Tanggal" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="small">Jam Ujian Skripsi*</label>
+                      <input type="text" class="form-control" id="timepicker" name="jam" placeholder="Masukkan Jam (Jam:Menit:Detik)" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="small">Tempat Ujian Skripsi*</label>
+                      <input type="text" class="form-control" name="tempat" placeholder="Masukkan Tempat" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="small">Keterangan*</label>
+                      <textarea class="form-control form-control" name="ket" placeholder="Masukkan Keterangan"></textarea>
+                      <input type="hidden" name="nim" value="{{ $item->nim }}">
+                      <input type="hidden" name="id_berkas_ujian" value="{{ $item->id }}">
+                      <input type="hidden" name="id_proposal" value="{{ $item->id_proposal }}">
+                    </div>
+                  </tbody>
+                </table>
+                <div class="mt-4 mb-4">
+                    <button type="submit" class="btn btn-primary mr-2">Jadwalkan</button>
+                    <a href="{{ route('dataskripsipenjadwalan')}}" class="btn btn-secondary">Batal</a>
+                  
+                </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="" class="small">Ketua Penguji*</label>
+                <select class="form-control" name="ketua">
+                    <option>Ketua Penguji --</option>
+                    @foreach($ketua as $item)
+                    @if ($item->depan == "Y")
+                    <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                @else
+                    <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                @endif
+                    @endforeach
+                </select>
             </div>
-            <div class="col-md-5 ml-4">
-              <form action="/admin/skripsi/insertjadwalujian" method="POST">
-                {{csrf_field()}}
-                <table class="table table-borderless">
-                    <tbody>
-                      <div class="form-group">
-                        <label for="" class="small">Tanggal Ujian Skripsi*</label>
-                        <input type="text" class="form-control" id="datepicker" name="tanggal" placeholder="Masukkan Tanggal" required>
-                      </div>
-                      <div class="form-group">
-                        <label for="" class="small">Jam Ujian Skripsi*</label>
-                        <input type="text" class="form-control" id="timepicker" name="jam" placeholder="Masukkan Jam (Jam:Menit:Detik)" required>
-                      </div>
-                      <div class="form-group">
-                        <label for="" class="small">Tempat Ujian Skripsi*</label>
-                        <input type="text" class="form-control" name="tempat" placeholder="Masukkan Tempat" required>
-                      </div>
-                      <div class="form-group">
-                        <label for="" class="small">Keterangan*</label>
-                        <textarea class="form-control form-control" name="ket" placeholder="Masukkan Keterangan"></textarea>
-                        <input type="hidden" name="nim" value="{{ $item->nim }}">
-                        <input type="hidden" name="id_berkas_ujian" value="{{ $item->id }}">
-                        <input type="hidden" name="id_proposal" value="{{ $item->id_proposal }}">
-                      </div>
-                    </tbody>
-                  </table>
-                  <div class="mt-4 mb-4">
-                      <button type="submit" class="btn btn-primary mr-2">Jadwalkan</button>
-                      <a href="{{ route('dataskripsipenjadwalan')}}" class="btn btn-secondary">Batal</a>
-                    </form>
-                  </div>
+            <div class="form-group">
+                <label for="" class="small">Anggota Penguji 1*</label>
+                <select class="form-control" name="anggota1">
+                    <option>Anggota Penguji 1 --</option>
+                    @foreach($anggota1 as $item)
+                        @if ($item->depan == "Y")
+                            <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                        @else
+                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
+            <div class="form-group">
+                <label for="" class="small">Anggota Penguji 2*</label>
+                <select class="form-control" name="anggota2">
+                    <option>Anggota Penguji 2 --</option>
+                    @foreach($anggota2 as $item)
+                        @if ($item->depan == "Y")
+                            <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                        @else
+                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+          </form>
         </div>
         @endforeach
     </div>

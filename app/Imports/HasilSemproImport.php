@@ -21,6 +21,7 @@ class HasilSemproImport implements ToModel, WithHeadingRow
         return new HasilSemproModel([
             'nim' => $row['nim'],
             'id_proposal' => $row['id_proposal'],
+            'id_semester' => $row['id_semester'],
         ]);
     }
 }
