@@ -46,14 +46,27 @@ hr.new4 {
   <div style="position: absolute; left: 200px; top: 370px" class="cls_005"><span class="cls_005">: @if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if($dosen1->depan==null)
+                        {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</span></div>
   <div style="position: absolute; left: 40px; top: 403px" class="cls_005"><span class="cls_005">Pembimbing Pembantu</span></div>
-  <div style="position: absolute; left: 200px; top: 403px" class="cls_005"><span class="cls_005">: @if ($dosen2 -> depan == "Y")
+  <div style="position: absolute; left: 200px; top: 403px" class="cls_005"><span class="cls_005">: @if ($dosen2==null)
+    -
+@else
+@if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</span></div>
+                          @if($dosen2->depan==null)
+                        {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif</span></div>
   <div style="position: absolute; left: 40px; top: 456px;" class="cls_005"><span class="cls_005">Berdasarkan hasil seminar proposal yang telah dipaparkan, maka proposal skripsi ini dinyatakan :</span></div>
   <div style="position: absolute; left: 289px; top: 513px" class="cls_005"><span class="cls_013">{{ $data -> berita_acara }}</span></div>
   <div style="position: absolute; left: 38px; top: 218px; width: 542px;"><span class="cls_005">Pada hari {{ tgl_indo($data->tanggal, true)}} Jam {{ $data -> jam }} WIB di {{ $data -> tempat }} telah dilaksanakan Seminar Proposal Skripsi</span></div>
@@ -70,20 +83,37 @@ hr.new4 {
           <img src="{{ url('ttd/'.$dosen1->nidn.'/'.$dosen1->ttd) }}" alt="" srcset="" height="90" width="auto">
         </td>
 	      <td style="text-align: center; border-bottom:none; border-top:none;" height="120">
+          @if ($dosen2==null)
+                                            -
+                                        @else
           <img src="{{ url('ttd/'.$dosen2->nidn.'/'.$dosen2->ttd) }}" alt="" srcset="" height="90" width="auto">
+          @endif
         </td>
       </tr>
       <tr>
         <td style="text-align: center; border-top:none;"><span class="cls_005"><b>(@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if($dosen1->depan==null)
+                        {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif)</b></span></td>
-		    <td style="text-align: center; border-top:none;"><span class="cls_005"><b>(@if ($dosen2 -> depan == "Y")
+		    <td style="text-align: center; border-top:none;"><span class="cls_005"><b>(@if ($dosen2==null)
+          -
+      @else
+      @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif)</b></span></td>
+                          @if($dosen2->depan==null)
+                        {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif)</b></span></td>
       </tr>
     </tbody>
   </table>
@@ -103,7 +133,12 @@ hr.new4 {
   <div style="position: absolute; left: 195px; top: 194px" class="cls_005"><span class="cls_005">: @if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if($dosen1->depan==null)
+                        {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</span></div>
   <table style="position: absolute; left: 36px; top: 215px; width: 543px; height: 38px; border-collapse: collapse;"200" border="1">
     <tbody>
@@ -150,11 +185,19 @@ hr.new4 {
   <div style="position: absolute; left: 195px; top: 156px" class="cls_005"><span class="cls_005">:</span></div>
   <div style="position: absolute; left: 204px; top: 156px" class="cls_005"><span class="cls_005">{{ $data->judul }}</span></div>
   <div style="position: absolute; left: 35px; top: 190px;" class="cls_005"><span class="cls_005">Pembimbing Pembantu</span></div>
-  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: @if ($dosen2 -> depan == "Y")
+  <div style="position: absolute; left: 195px; top: 190px" class="cls_005"><span class="cls_005">: @if ($dosen2==null)
+    -
+@else
+@if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</span></div>
+                          @if($dosen2->depan==null)
+                        {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif</span></div>
   <table style="position: absolute; left: 36px; top: 215px; width: 543px; height: 38px; border-collapse: collapse;"200" border="1">
     <tbody>
       <tr style="line-height: 17px;">
@@ -226,7 +269,12 @@ hr.new4 {
         <td style="text-align: center"><span class="cls_005"><b>(@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if($dosen1->depan==null)
+                        {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif)</b></span></td>
       </tr>
     </tbody>
@@ -264,15 +312,27 @@ hr.new4 {
       </tr>
       <tr>
         <td style="text-align: center" height="100">
+          @if ($dosen2==null)
+                                            -
+                                        @else
           <img src="{{ url('ttd/'.$dosen2->nidn.'/'.$dosen2->ttd) }}" alt="" srcset="" height="100" width="auto">
+          @endif
         </td>
       </tr>
       <tr>
-        <td style="text-align: center"><span class="cls_005"><b>(@if ($dosen2 -> depan == "Y")
+        <td style="text-align: center"><span class="cls_005"><b>(@if ($dosen2==null)
+          -
+      @else
+      @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif)</b></span></td>
+                          @if($dosen2->depan==null)
+                        {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+                          
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif)</b></span></td>
       </tr>
     </tbody>
   </table>

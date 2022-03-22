@@ -89,7 +89,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('datajadwalsemprodosen') }}">Jadwal Seminar</a>
-                        <a class="collapse-item" href="{{ route('datahasilsemprodosen') }}">Hasil Seminar</a>
+                        <a class="collapse-item" href="{{ route('datanilaisempro') }}">Nilai Seminar</a>
+                        <a class="collapse-item" href="{{ route('datahasilsemprodosen') }}">Hasil Akhir Seminar</a>
                     </div>
                 </div>
             </li>
@@ -105,7 +106,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{  route('datajadwalujiandosen') }}">Jadwal Ujian</a>
-                        <a class="collapse-item" href="{{  route('datahasilujiandosen') }}">Hasil Ujian</a>
+                        <a class="collapse-item" href="{{ route('datanilaiujian') }}">Nilai Ujian</a>
+                        <a class="collapse-item" href="{{  route('datahasilujiandosen') }}">Hasil Akhir Ujian</a>
                     </div>
                 </div>
             </li>
@@ -253,6 +255,15 @@
 <script>
     $(document).ready(function() {
         $('#dataTable').DataTable({
+        'paging'      : true,
+        'searching'   : true,
+        'ordering'    : true,
+        'autoWidth'   : true
+        });
+    });
+
+    $(document).ready(function() {
+        $('#dataTable2').DataTable({
         'paging'      : true,
         'searching'   : true,
         'ordering'    : true,
@@ -537,6 +548,7 @@
                             <td>${element.judul}</td>
                             <td>${element.nilai_akhir}</td>
                             <td>${element.grade_akhir}</td>
+                            <td><a href="/sempro/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
                     
@@ -566,6 +578,7 @@
                             <td>${element.judul}</td>
                             <td>${element.nilai_akhir}</td>
                             <td>${element.grade_akhir}</td>
+                            <td><a href="/ujian/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
                     
@@ -641,6 +654,14 @@
 	}
 
 
+</script>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector:'textarea.deskripsi',
+        width: 900,
+        height: 300
+    });
 </script>
 
 </html>

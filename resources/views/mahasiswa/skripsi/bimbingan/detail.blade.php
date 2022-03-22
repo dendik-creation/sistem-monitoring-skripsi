@@ -53,18 +53,32 @@
                           <th>@if ($dosen1 -> depan == "Y")
                                 {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                             @else
-                                {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                            @if ($dosen1->depan==null)
+                            {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                            @else
+                                
+                            {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                            @endif
                             @endif - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket1 }}</th>
                         </tr>
                       @else
                         <tr>
                           <td>Dosen Pembimbing Pembantu</td>
                           <td>:</td>
-                          <th>@if ($dosen2 -> depan == "Y")
+                          <th>
+                            @if ($dosen2==null)
+                                            -
+                                        @else
+                                        @if ($dosen2 -> depan == "Y")
                                 {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                             @else
-                                {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                            @endif - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket2 }}</th>
+                            @if ($dosen2->depan==null)
+                            {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                            @else
+                                
+                            {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                            @endif
+                            @endif @endif - Bimbingan Ke-{{ $data->bimbingan_ke }} - {{ $data->ket2 }}</th>
                         </tr>
                       @endif
                     </tbody>

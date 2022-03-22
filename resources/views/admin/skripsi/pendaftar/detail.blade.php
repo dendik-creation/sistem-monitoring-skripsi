@@ -44,23 +44,38 @@
                   <th>@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if ($dosen1 -> depan == null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Pembantu</td>
                   <td>:</td>
-                  <th>@if ($dosen2 -> depan == "Y")
+                  <th>
+                    @if ($dosen2==null)
+                                            -
+                                        @else
+                    @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</th>
+                          @if ($dosen2 -> depan == null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif
+                        @endif</th>
                 </tr>
-                <tr>
+                {{-- <tr>
                   <td>Berkas Ujian</td>
                   <td>:</td>
-                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas'?></a></th>
-                </tr>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=//$item->berkas_ujian == null ? '' : 'Download berkas'?></a></th>
+                </tr> --}}
                 <tr>
                   <td>Tanggal Pendaftaran</td>
                   <td>:</td>
@@ -91,7 +106,7 @@
                     </div>
                     <div class="form-group">
                       <label for="" class="small">Keterangan*</label>
-                      <textarea class="form-control form-control" name="ket" placeholder="Masukkan Keterangan"></textarea>
+                      <textarea class="form-control form-control" name="ket" placeholder="Masukkan Keterangan"  rows="10"></textarea>
                       <input type="hidden" name="nim" value="{{ $item->nim }}">
                       <input type="hidden" name="id_berkas_ujian" value="{{ $item->id }}">
                       <input type="hidden" name="id_proposal" value="{{ $item->id_proposal }}">
@@ -113,7 +128,12 @@
                     @if ($item->depan == "Y")
                     <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
                 @else
-                    <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                @if ($item->depan == null)
+                <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>    
+                @else
+                    
+                <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                @endif
                 @endif
                     @endforeach
                 </select>
@@ -126,7 +146,12 @@
                         @if ($item->depan == "Y")
                             <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
                         @else
-                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                        @if ($item->depan == null)
+                        <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>    
+                        @else
+                            
+                        <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                        @endif
                         @endif
                     @endforeach
                 </select>
@@ -139,7 +164,12 @@
                         @if ($item->depan == "Y")
                             <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
                         @else
-                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                        @if ($item->depan == null)
+                        <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>    
+                        @else
+                            
+                        <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                        @endif
                         @endif
                     @endforeach
                 </select>

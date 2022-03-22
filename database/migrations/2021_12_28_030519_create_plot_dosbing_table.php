@@ -20,7 +20,7 @@ class CreatePlotDosbingTable extends Migration
             $table->string('name');
             $table->string('dosbing1', 15);
             $table->foreign('dosbing1')->references('nidn')->on('dosen');
-            $table->string('dosbing2', 15);
+            $table->string('dosbing2', 15)->nullable()->default('-');
             $table->foreign('dosbing2')->references('nidn')->on('dosen');
             $table->timestamps();
         });

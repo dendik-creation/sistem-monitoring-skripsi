@@ -15,6 +15,20 @@
                     ->orderByRaw('berkas_ujian.id DESC')
                     ->first();
                     // dd($cek);
+
+                    $databim = DB::table('bimbingan')
+                    ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
+                    ->select('bimbingan.*', 'mahasiswa.*')
+                    ->where('bimbingan.nim', $user->no_induk)
+                    ->orderByRaw('bimbingan.id DESC')
+                    ->first();
+                    // dd($databim);
+
+                    $mhs = DB::table('mahasiswa')
+                    ->select('mahasiswa.*')
+                    ->where('mahasiswa.nim', $user->no_induk)
+                    ->first();
+                    // dd($mhs);
                 @endphp
                 {{-- @if ($databim->ket1 == "Siap ujian" && $databim->ket2 == "Siap ujian")
                     {{-- @if ($datapenguji === null) --}}
@@ -39,18 +53,25 @@
                     <i class="fa fa-plus"></i> Daftar
                 </a> 
                 @endif --}}
-                @if($cek == null)
+
+                @if($databim==null)
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
+                    <i class="fa fa-plus"></i> Daftar
+                </a>
+                @elseif($mhs->status_bimbingan != "Siap ujian")
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
+                    <i class="fa fa-plus"></i> Daftar
+                </a>
+                @elseif($cek==null)
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Daftar
-                </a> 
+                </a>  
                 @elseif ($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
                     <i class="fa fa-plus"></i> Daftar
                 </a> 
-                @else
-                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
-                    <i class="fa fa-plus"></i> Daftar
-                </a> 
+                
+                
                 @endif
             </div>
         </div>
@@ -77,6 +98,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Semester</th>
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
@@ -90,10 +112,17 @@
                               @foreach($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $item -> smt }} {{ $item -> thn }}</td>
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> judul }}</td>
-                                    <td><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas ujian'?></td>
+                                    <td>
+                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->scan_bukti_bayar}}"><?=$item->scan_bukti_bayar == null ? '' : 'Download bukti pembayaran'?><br>
+                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->laporan}}"><?=$item->laporan == null ? '' : 'Download laporan'?><br>
+                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->transkrip}}"><?=$item->transkrip == null ? '' : 'Download transkrip nilai'?><br>
+                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->ketpengumpulan}}"><?=$item->ketpengumpulan == null ? '' : 'Download surat keterangan'?><br>
+                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->turnitin}}"><?=$item->turnitin == null ? '' : 'Download hasil turnitin'?><br>
+                                    </td>
                                     <td>
                                         @php
                                             $jadwal = DB::table('jadwal_ujian')
@@ -102,9 +131,10 @@
                                             ->where('berkas_ujian.id', $item->id)
                                             ->first();
                                         @endphp
-
-                                        @if (($jadwal === null && $item->status == "Menunggu Dijadwalkan") || ($jadwal === null && $item->status == "Berkas OK"))
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-warning">Menunggu Dijadwalkan
+                                        @if($jadwal === null && $item->status == "Menunggu Verifikasi")
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Menunggu Verifikasi Berkas
+                                        @elseif (($jadwal === null && $item->status == "Menunggu Dijadwalkan") || ($jadwal === null && $item->status == "Berkas OK"))
+                                            <p style="pointer-events: none;" class="btn btn-sm btn-primary">Menunggu Dijadwalkan
                                         @else
 
                                             @if ($jadwal === null || $item->status == "Berkas tidak lengkap")
@@ -118,9 +148,10 @@
                                             ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
                                             ->where('id_berkas_ujian', $item->id)->first();
                                             @endphp
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian</p> - <p style="pointer-events: none;" class="btn btn-sm <?=($ba->berita_acara == "Lulus" ? 'btn-success' : ($ba->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p>
+                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian</p> 
+                                            {{-- - <p style="pointer-events: none;" class="btn btn-sm <?=//($ba->berita_acara == "Lulus" ? 'btn-success' : ($ba->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p> --}}
                                             @else
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum ujian</p> 
+                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Terjadwal</p> 
                                             @endif
                                             @endif
                                         @endif
@@ -153,9 +184,25 @@
                                                     {{method_field('PUT')}}
                                                     <div class="modal-body">
                                                       <div class="form-group">
-                                                        <label for="" class="small">Berkas* (ZIP) (Max 30MB)</label><br>
-                                                        <input type="file" name="berkas_ujian" placeholder="Masukkan File" accept=".zip,.rar,.7zip">
-                                                      </div>
+                                                        <label for="" class="small">Scan Bukti Pembayaran (JPG/PNG/PDF) (Max 2MB)</label><br>
+                                                        <input type="file" name="byr" required  accept=".jpg,.jpeg,.png,.pdf">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="small">Laporan Skripsi (PDF) (Max 20MB)</label><br>
+                                                        <input type="file" name="laporan" required  accept=".jpg,.jpeg,.png,.pdf">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="small">Scan Transkrip Nilai (JPG/PNG/PDF) (Max 2MB)</label><br>
+                                                        <input type="file" name="transkrip" required  accept=".jpg,.jpeg,.png,.pdf">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="small">Scan Surat Keterangan Telah Mengumpulkan Proposal (JPG/PNG/PDF) (Max 2MB)</label><br>
+                                                        <input type="file" name="ketpengumpulan" required  accept=".jpg,.jpeg,.png,.pdf">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="small">Scan Hasil Turnitin (JPG/PNG/PDF) (Max 2MB)</label><br>
+                                                        <input type="file" name="turnitin" required  accept=".jpg,.jpeg,.png,.pdf">
+                                                    </div>
                                                       <input type="hidden" name="nim" value="{{$item->nim}}" id="">
                                                     </div>
                                                     <div class="modal-footer">
@@ -166,7 +213,7 @@
                                             </div>
                                             </div>
                                         </div>
-                                        @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK" )
+                                        @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK" || $item->status == "Menunggu Verifikasi")
                                         -
                                         @else
                                         <a href="/ujian/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm">Lihat Undangan</a>

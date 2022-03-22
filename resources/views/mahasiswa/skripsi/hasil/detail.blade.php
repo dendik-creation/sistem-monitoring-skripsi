@@ -34,17 +34,31 @@
                         <th>@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if ($dosen1->depan==null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>@if ($dosen2 -> depan == "Y")
+                        <th>
+                          @if ($dosen2==null)
+                                            -
+                                        @else
+                                        @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</th>
+                          @if ($dosen2->depan==null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif</th>
                       </tr>
                       <tr>
                         <td>Ketua Penguji</td>
@@ -52,7 +66,12 @@
                         <th>@if ($ketua -> depan == "Y")
                               {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
                           @else
-                              {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                          @if ($ketua->depan==null)
+                          {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}    
+                          @else
+                              
+                          {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
@@ -61,7 +80,12 @@
                         <th>@if ($anggota1 -> depan == "Y")
                               {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
                           @else
-                              {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                          @if ($anggota1->depan==null)
+                          {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
@@ -70,7 +94,12 @@
                         <th>@if ($anggota2 -> depan == "Y")
                               {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
                           @else
-                              {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                          @if ($anggota2->depan==null)
+                          {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
@@ -140,7 +169,7 @@
                       <tr>
                         <td>File Pendukung</td>
                         <td>:</td>
-                        <th><a href="/download/{{$item->nim}}/proposal/revisi dari dosen/{{$item->file1}}"><?=$item->file1 == null ? '-' : 'Download file'?></a></th>
+                        <th><a href="/download/{{$item->nim}}/ujian/revisi dari dosen/{{$item->file1}}"><?=$item->file1 == null ? '-' : 'Download file'?></a></th>
                       </tr>
                       <tr>
                         <td><hr class="sidebar-divider"></td>
@@ -167,7 +196,7 @@
                     <tr>
                       <td>File Pendukung</td>
                       <td>:</td>
-                      <th><a href="/download/{{$item->nim}}/proposal/revisi dari dosen/{{$item->file2}}"><?=$item->file2 == null ? '-' : 'Download file'?></a></th>
+                      <th><a href="/download/{{$item->nim}}/ujian/revisi dari dosen/{{$item->file2}}"><?=$item->file2 == null ? '-' : 'Download file'?></a></th>
                     </tr>
                     <tr>
                       <td><hr class="sidebar-divider"></td>
@@ -194,7 +223,7 @@
                   <tr>
                     <td>File Pendukung</td>
                     <td>:</td>
-                    <th><a href="/download/{{$item->nim}}/proposal/revisi dari dosen/{{$item->file3}}"><?=$item->file3 == null ? '-' : 'Download file'?></a></th>
+                    <th><a href="/download/{{$item->nim}}/ujian/revisi dari dosen/{{$item->file3}}"><?=$item->file3 == null ? '-' : 'Download file'?></a></th>
                   </tr>
                   <tr>
                     <td><hr class="sidebar-divider"></td>

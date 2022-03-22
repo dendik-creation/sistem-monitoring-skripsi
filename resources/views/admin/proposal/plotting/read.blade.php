@@ -114,8 +114,8 @@
                                 <th>Dosen Pembimbing Pembantu</th>
                                 {{-- <th>Sempro</th>
                                 <th>Skripsi</th> --}}
-                                {{-- <th>Edit</th>
-                                <th>Hapus</th> --}}
+                                <th>Edit</th>
+                                {{-- <th>Hapus</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -130,22 +130,36 @@
                                         @if ($item -> depan1 == "Y")
                                             {{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                                         @else
-                                            {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
+                                        @if ($item->depan1==null)
+                                        {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}    
+                                        @else
+                                        
+                                        {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
+                                        @endif
                                         @endif
                                     </td>
                                     <td>
+                                        @if ($item->dosbing2==null)
+                                            -
+                                        @else
                                         @if ($item -> depan2 == "Y")
                                             {{ $item -> gelar32 }} {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
                                         @else
-                                            {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
+                                        @if ($item->depan2==null)
+                                        {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}    
+                                        @else
+                                        
+                                        {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
+                                        @endif
+                                        @endif
                                         @endif
                                     </td>
                                     {{-- <td>Sudah Seminar</td>
                                     <td>Bimbingan Ke-2</td> --}}
-                                    {{-- <td>
-                                        <a href="/admin/dosen/edit/{{$item->nidn}}" class="btn btn-primary btn-sm">Edit</a>
-                                    </td>
                                     <td>
+                                        <a href="/admin/proposal/plotting/edit/{{$item->id}}" class="btn btn-primary btn-sm">Edit</a>
+                                    </td>
+                                    {{-- <td>
                                         <form action="/admin/dosen/{{$item->nidn}}" method="post">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}

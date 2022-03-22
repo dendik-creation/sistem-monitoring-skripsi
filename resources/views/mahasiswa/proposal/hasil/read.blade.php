@@ -35,6 +35,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Semester</th>
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
@@ -49,10 +50,11 @@
                               @foreach($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $item -> smt }} {{ $item -> thn }}</td>
                                     <td>{{ $item -> nim}}</td>
                                     <td>{{ $item -> nama}}</td>
                                     <td>{{ $item -> judul}}</td>
-                                    <td><a style="pointer-events: none;" class="btn btn-sm <?=($item->berita_acara == "Diterima" ? 'btn-success' : ($ba->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</a></td>
+                                    <td><a style="pointer-events: none;" class="btn btn-sm <?=($item->berita_acara == "Diterima" ? 'btn-success' : ($item->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</a></td>
                                     {{-- <td><a href="/sempro/hasil/cetakmhs/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm <?=//$item->status1 == "Sudah" && $item->status2 == "Sudah" ? '' : 'disabled'?>">Lihat Nilai</a></td> --}}
                                     <td>{{ $item -> nilai_akhir}}</td>
                                     <td>{{ $item -> grade_akhir}}</td>

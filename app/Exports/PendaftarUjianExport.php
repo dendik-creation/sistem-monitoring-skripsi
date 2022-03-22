@@ -33,7 +33,7 @@ class PendaftarUjianExport implements FromCollection, WithHeadings, ShouldAutoSi
         // 'dos1.name as ketua', 
         // 'dos2.name as anggota1',
         // 'dos3.name as anggota2',
-        'berkas_ujian.berkas_ujian as berkas_ujian',
+        // 'berkas_ujian.berkas_ujian as berkas_ujian',
         'berkas_ujian.created_at as tgl_daftar', 
         'berkas_ujian.status as status')
         ->where('berkas_ujian.status', 'Berkas OK')
@@ -50,7 +50,7 @@ class PendaftarUjianExport implements FromCollection, WithHeadings, ShouldAutoSi
             'Tahun',
             'NIM',
             'Nama_Mahasiswa',
-            'Berkas',
+            // 'Berkas',
             'Tanggal_Daftar',
             'Status_Berkas',
             'Tanggal_Ujian',

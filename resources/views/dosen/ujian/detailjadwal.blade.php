@@ -59,9 +59,9 @@
                   <th>{{ $item->judul }}</th>
                 </tr>
                 <tr>
-                  <td>Berkas Ujian</td>
+                  <td>Laporan Skripsi</td>
                   <td>:</td>
-                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas ujian'?></a></th>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->laporan}}"><?=$item->laporan == null ? '' : 'Download laporan skripsi'?></a></th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Utama</td>
@@ -69,17 +69,32 @@
                   <th>@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if($dosen1->depan==null)
+                    {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
+                          @else
+
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Pembantu</td>
                   <td>:</td>
-                  <th>@if ($dosen2 -> depan == "Y")
+                  <th>
+                    @if ($dosen2==null)
+                                            -
+                                        @else
+                                        @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</th>
+                          @if($dosen2->depan==null)
+                    {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
+                          @else
+
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif
+                        @endif</th>
                 </tr>
                 <tr>
                   <td><hr class="sidebar-divider"></td>
@@ -93,7 +108,12 @@
                     @if ($ketua -> depan == "Y")
                         {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
                     @else
-                        {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @if($ketua->depan==null)
+                    {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
+                    @else
+
+                    {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+                    @endif
                     @endif
                   </th>
                 </tr>
@@ -104,7 +124,12 @@
                     @if ($anggota1 -> depan == "Y")
                         {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
                     @else
-                        {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @if($anggota1->depan==null)
+                    {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
+                    @else
+
+                    {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+                    @endif
                     @endif
                   </th>
                 </tr>
@@ -115,7 +140,12 @@
                     @if ($anggota2 -> depan == "Y")
                         {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
                     @else
-                        {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @if($anggota2->depan==null)
+                    {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
+                    @else
+
+                    {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+                    @endif
                     @endif
                   </th>
                 </tr>
@@ -146,9 +176,10 @@
                 </tr>
                 <input type="hidden" value="{{ $item -> nim }}" name="nim">
                 <input type="hidden" value="{{ $item -> id_proposal }}" name="id_proposal">
-                <input type="hidden" value="{{ $item -> id }}" name="id_jadwal_ujian">
+                <input type="hidden" value="{{ $item -> id_jadwal_ujian }}" name="id_jadwal_ujian">
                 <input type="hidden" value="{{ $id_hasil_ujian->id }}" name="id_hasil_ujian">
                 <input type="hidden" value="{{ $id_status_skripsi->id }}" name="id_status_skripsi">
+                {{-- <input type="hidden" value="{{ $dosen2 }}" name="pemb2"> --}}
               </tbody>
             </table>
           </div>
@@ -182,7 +213,7 @@
                 <table class="table table-borderless">
                         <tbody>
                           <tr>
-                            <td>Berita Acara</td>
+                            <td>Ujian Skripsi</td>
                             <td>:</td>
                             <th>
                               <div class="form-check form-check-inline">
@@ -242,7 +273,7 @@
                           <tr>
                             <td>Revisi</td>
                             <td>:</td>
-                            <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                            <th><textarea class="form-control " name="revisi1" placeholder="Masukkan Revisi" <?=$item->ketua_penguji==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
                           </tr>
                           <tr>
                             <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
@@ -315,7 +346,7 @@
                             <tr>
                               <td>Revisi</td>
                               <td>:</td>
-                              <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                              <th><textarea class="form-control " name="revisi2" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_1==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
                             </tr>
                             <tr>
                               <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
@@ -388,7 +419,7 @@
                             <tr>
                               <td>Revisi</td>
                               <td>:</td>
-                              <th><textarea class="form-control" name="revisi3" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                              <th><textarea class="form-control " name="revisi3" placeholder="Masukkan Revisi" <?=$item->anggota_penguji_2==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
                             </tr>
                             <tr>
                               <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
@@ -461,7 +492,7 @@
                             <tr>
                               <td>Revisi</td>
                               <td>:</td>
-                              <th><textarea class="form-control" name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                              <th><textarea class="form-control " name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
                             </tr>
                             <tr>
                               <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>

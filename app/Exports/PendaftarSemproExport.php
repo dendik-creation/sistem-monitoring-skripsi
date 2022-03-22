@@ -20,17 +20,17 @@ class PendaftarSemproExport implements FromCollection, WithHeadings, ShouldAutoS
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
         ->join('semester', 'berkas_sempro.id_semester', '=', 'semester.id')
         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
-        ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+        ->leftJoin('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
         ->select(DB::raw('ROW_NUMBER() OVER() AS no'), 'berkas_sempro.id as id', 
         'proposal.id as id_proposal',
-        'semester.id_semester as id_semester',
+        'semester.id as id_semester',
         'semester.semester as semester', 
         'semester.tahun as tahun', 
         'berkas_sempro.nim as nim', 
         'mahasiswa.name as nama', 
         'dos1.name as dosbing1', 
         'dos2.name as dosbing2',
-        'berkas_sempro.berkas_sempro as berkas_sempro',
+        // 'berkas_sempro.berkas_sempro as berkas_sempro',
         'berkas_sempro.created_at as tgl_daftar', 
         'berkas_sempro.status as status')
         ->where('berkas_sempro.status', 'Berkas OK')
@@ -50,7 +50,7 @@ class PendaftarSemproExport implements FromCollection, WithHeadings, ShouldAutoS
             'Nama_Mahasiswa',
             'Dosen_Pembimbing_Utama',
             'Dosen_Pembimbing_Pembantu',
-            'Berkas',
+            // 'Berkas',
             'Tanggal_Daftar',
             'Status Berkas',
             'Tanggal_Seminar',

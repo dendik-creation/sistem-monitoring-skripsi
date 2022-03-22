@@ -49,27 +49,37 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="" class="small">Dosen Pembimbing 1*</label>
+                    <label for="" class="small">Dosen Pembimbing Utama*</label>
                     <select class="form-control" name="dosbing1">
-                        <option>Dosen Pembimbing 1 --</option>
+                        <option value="" readonly>Dosen Pembimbing 1 --</option>
                         @foreach($dosen1 as $item)
                             @if ($item->depan == "Y")
                                 <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
                             @else
-                                <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                            @if ($item->depan == null)
+                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
+                            @else
+                                
+                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                            @endif
                             @endif
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="" class="small">Dosen Pembimbing 2*</label>
+                    <label for="" class="small">Dosen Pembimbing Pembantu*</label>
                     <select class="form-control" name="dosbing2">
-                        <option>Dosen Pembimbing 2 --</option>
+                        <option value="" readonly>Dosen Pembimbing 2 --</option>
                         @foreach($dosen2 as $item)
                             @if ($item->depan == "Y")
                                 <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
                             @else
-                                <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                            @if ($item->depan == null)
+                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }} </option>
+                            @else
+                                
+                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
+                            @endif
                             @endif
                         @endforeach
                     </select>

@@ -23,8 +23,11 @@ class CreateBerkasSemproTable extends Migration
             $table->foreign('id_proposal')->references('id')->on('proposal');
             $table->unsignedBigInteger('id_plot_dosbing');
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
-            $table->string('berkas_sempro');
-            $table->enum('status', ['Menunggu Dijadwalkan', 'Berkas OK', 'Berkas tidak lengkap', 'Terjadwal'])->default('Menunggu Dijadwalkan');
+            $table->string('scan_bukti_bayar');
+            $table->string('proposal');
+            $table->string('krs');
+            $table->string('transkrip');
+            $table->enum('status', ['Menunggu Dijadwalkan', 'Berkas OK', 'Berkas tidak lengkap', 'Terjadwal', 'Menunggu Verifikasi'])->default('Menunggu Verifikasi');
             $table->string('komentar_admin');
             $table->timestamps();
         });

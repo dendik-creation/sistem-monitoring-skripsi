@@ -41,12 +41,25 @@ hr.new4 {
 <div style="position: absolute; left: 206px; top: 240px" class="cls_005"><span class="cls_005">@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
-                          @endif - @if ($dosen2 -> depan == "Y")
+                          @if ($dosen1->depan==null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}      
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
+                          @endif - @if ($dosen2==null)
+                          -
+                      @else
+                      @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</span></div>
+                          @if ($dosen2->depan==null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}      
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif</span></div>
 <div style="position: absolute; left: 38px; top: 279px" class="cls_005"><span class="cls_005">Judul</span></div>
 <div style="position: absolute; left: 198px; top: 279px" class="cls_005"><span class="cls_005">:</span></div>
 <div style="position: absolute; left: 206px; top: 279px" class="cls_005"><span class="cls_005">{{ $data->judul }}</span></div>
@@ -54,19 +67,34 @@ hr.new4 {
 <div style="position: absolute; left: 198px; top: 319px" class="cls_005"><span class="cls_005">: @if ($ketua -> depan == "Y")
   {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
 @else
-  {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+@if ($ketua->depan==null)
+{{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}    
+@else
+    
+{{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
+@endif
 @endif</span></div>
 <div style="position: absolute; left: 38px; top: 349px" class="cls_005"><span class="cls_005">Anggota Penguji 1</span></div>
 <div style="position: absolute; left: 198px; top: 349px" class="cls_005"><span class="cls_005">: @if ($anggota1 -> depan == "Y")
   {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
 @else
-  {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+@if ($anggota1->depan==null)
+{{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}    
+@else
+    
+{{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
+@endif
 @endif</span></div>
 <div style="position: absolute; left: 38px; top: 379px;" class="cls_005"><span class="cls_005">Anggota Penguji 2</span></div>
 <div style="position: absolute; left: 198px; top: 379px" class="cls_005"><span class="cls_005">: @if ($anggota2 -> depan == "Y")
   {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
 @else
-  {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+@if ($anggota2->depan==null)
+{{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}    
+@else
+    
+{{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
+@endif
 @endif</span></div>
 <div style="position: absolute; left: 38px; top: 409px" class="cls_005"><span class="cls_005">Jadwal Ujian</span></div>
 <div style="position: absolute; left: 198px; top: 409px" class="cls_005"><span class="cls_005">: {{ tgl_indo($data->tanggal, true)}}</span></div>

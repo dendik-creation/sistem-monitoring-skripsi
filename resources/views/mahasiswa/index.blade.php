@@ -117,7 +117,12 @@
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if ($dosen1->depan==null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</div>
                                 </div>
                             </div>
@@ -139,11 +144,22 @@
                                 <div class="col mr-2 ml-4">
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">
                                         Dosen Pembimbing Pembantu</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">@if ($dosen2 -> depan == "Y")
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @if ($dosen2==null)
+                                            -
+                                        @else
+                        @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</div>
+                          @if ($dosen2->depan==null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif
+                        @endif
+                        </div>
                                 </div>
                             </div>
                         </div>

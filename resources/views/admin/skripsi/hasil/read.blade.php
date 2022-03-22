@@ -47,7 +47,7 @@
                                 <th>Judul</th>
                                 <th>Total Nilai</th>
                                 <th>Grade</th>
-                                {{-- <th>Opsi</th> --}}
+                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody id="datatabel">
@@ -71,6 +71,7 @@
                                     {{-- <td><a href="/dosen/sempro/hasil/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Detail</a></td> --}}
                                     <td>{{ $item -> nilai_akhir}}</td>
                                     <td>{{ $item -> grade_akhir}}</td>
+                                    <td><a href="/ujian/hasil/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                                 </tr>
                            @endforeach
                         </tbody>

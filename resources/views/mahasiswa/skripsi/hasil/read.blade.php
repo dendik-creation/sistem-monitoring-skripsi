@@ -35,6 +35,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Semester</th>
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
@@ -49,6 +50,7 @@
                               @foreach($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $item -> smt }} {{ $item -> thn }}</td>
                                     <td>{{ $item -> nim}}</td>
                                     <td>{{ $item -> nama}}</td>
                                     <td>{{ $item -> judul}}</td>

@@ -8,50 +8,15 @@
             <h1 class="h3 mb-0 text-gray-800">Rekap Pembimbing Skripsi</h1>
             <div class="pull-right">
                 <div class="row">
-                    <a class="btn btn-flat btn-primary mr-2" href="#" data-toggle="modal" data-target="#cetakPDF">Cetak Rekap PDF</a>
+                    <form method="post" action="/admin/rekap/pembimbing/skripsi/cetak" target="_blank">
+                        {{ csrf_field() }}
+                        <input type="hidden" value="{{ $idsmt }}" name="idsmt">
+                        <button type="submit" class="btn btn-primary">Cetak Rekap PDF</button>
+                    </form>
                 </div>
             </div>            
         </div>
 
-        <div class="modal fade" id="cetakPDF" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<form method="post" action="/admin/rekap/pembimbing/skripsi/cetak" enctype="multipart/form-data" target="_blank">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Cetak Rekap PDF</h5>
-						</div>
-						<div class="modal-body">
- 
-							{{ csrf_field() }}
- 
-							<label for="" class="small">Nomor*</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="nomor" placeholder="Masukkan Nomor" required>
-                                <input type="hidden" value="{{ $idsmt }}" name="idsmt">
-                            </div>
-                            <label for="" class="small">Kaprogdi*</label>
-							<div class="form-group">
-								<select class="form-control" name="kaprodi">
-                                    <option>Kaprogdi --</option>
-                                    @foreach($data as $item)
-                                        @if ($item->depan == "Y")
-                                            <option value="{{ $item->nidn }}">{{ $item->gelar3 }} {{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}</option>
-                                        @else
-                                            <option value="{{ $item->nidn }}">{{ $item->name }}, {{ $item->gelar1 }}, {{ $item->gelar2 }}, {{ $item->gelar3 }} </option>
-                                        @endif
-                                    @endforeach
-                                </select>
-							</div>
- 
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary">Cetak</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
@@ -90,7 +55,12 @@
                                         @if ($item -> depan == "Y")
                                             {{ $item -> gelar3 }} {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}
                                         @else
-                                            {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}, {{ $item -> gelar3 }}
+                                        @if ($item -> depan == null)
+                                        {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}
+                                        @else
+                                            
+                                        {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}, {{ $item -> gelar3 }}
+                                        @endif
                                         @endif
                                     </td>
                                     <td>

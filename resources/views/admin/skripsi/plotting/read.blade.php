@@ -116,8 +116,8 @@
                                 <th>Anggota Penguji 2</th>
                                 {{-- <th>Sempro</th>
                                 <th>Skripsi</th> --}}
-                                {{-- <th>Edit</th>
-                                <th>Hapus</th> --}}
+                                <th>Edit</th>
+                                {{-- <th>Hapus</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -132,27 +132,42 @@
                                         @if ($item -> depan1 == "Y")
                                             {{ $item -> gelar31 }} {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                                         @else
-                                            {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
+                                        @if ($item->depan1==null)
+                                        {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}    
+                                        @else
+                                            
+                                        {{ $item -> dosen1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
+                                        @endif
                                         @endif
                                     <td>
                                         @if ($item -> depan2 == "Y")
                                             {{ $item -> gelar32 }} {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
                                         @else
-                                            {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
+                                        @if ($item->depan2==null)
+                                        {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}    
+                                        @else
+                                            
+                                        {{ $item -> dosen2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
+                                        @endif
                                         @endif
                                     </td>
                                     <td>
                                         @if ($item -> depan3 == "Y")
                                             {{ $item -> gelar33 }} {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}
                                         @else
-                                            {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}, {{ $item -> gelar33 }}
+                                        @if ($item->depan3==null)
+                                        {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}    
+                                        @else
+                                            
+                                        {{ $item -> dosen3 }}, {{ $item -> gelar13 }}, {{ $item -> gelar23 }}, {{ $item -> gelar33 }}
+                                        @endif
                                         @endif
                                     {{-- <td>Sudah Seminar</td>
                                     <td>Bimbingan Ke-2</td> --}}
-                                    {{-- <td>
-                                        <a href="/admin/dosen/edit/{{$item->nidn}}" class="btn btn-primary btn-sm">Edit</a>
-                                    </td>
                                     <td>
+                                        <a href="/admin/skripsi/plotting/edit/{{$item->id}}" class="btn btn-primary btn-sm">Edit</a>
+                                    </td>
+                                    {{-- <td>
                                         <form action="/admin/dosen/{{$item->nidn}}" method="post">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}

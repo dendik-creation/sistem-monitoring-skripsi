@@ -98,10 +98,16 @@
                         <label for="" class="small">Dosen Pembimbing Pembantu*</label>
                         <input type="hidden" value="{{ $data->id }}" name="id_plot_dosbing">
                         <input type="hidden" value="{{ $data->nidn2 }}" name="bimbingan_kepada">
-                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($data -> depan2 == "Y")
+                        <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 2" value="
+                    @if ($data -> depan2 == "Y")
                               {{ $data -> gelar32 }} {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}
                           @else
-                              {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}, {{ $data -> gelar32 }}
+                          @if($data->depan2==null)
+                          {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}
+                          @else
+
+                          {{ $data -> dosbing2 }}, {{ $data -> gelar12 }}, {{ $data -> gelar22 }}, {{ $data -> gelar32 }}
+                          @endif
                           @endif" required readonly>
                     </div>
                 </div>

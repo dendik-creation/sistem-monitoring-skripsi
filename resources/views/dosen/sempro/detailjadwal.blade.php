@@ -45,7 +45,7 @@
                       <tr>
                         <td>Berkas Seminar</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}"><?=$item->berkas_sempro == null ? '' : 'Download berkas sempro'?></a></th>
+                        <th><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download proposal skripsi'?></a></th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Utama</td>
@@ -53,16 +53,31 @@
                         <th>@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if ($dosen1->depan == null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>@if ($dosen2 -> depan == "Y")
+                        <th>
+                          @if ($dosen2==null)
+                                            -
+                                        @else
+                          @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @if ($dosen2->depan == null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
@@ -82,8 +97,9 @@
                       </tr>
                       <input type="hidden" value="{{ $item -> nim }}" name="nim">
                       <input type="hidden" value="{{ $item -> id_proposal }}" name="id_proposal">
-                      <input type="hidden" value="{{ $item -> id }}" name="id_jadwal_sempro">
+                      <input type="hidden" value="{{ $item -> id_jadwal_sempro }}" name="id_jadwal_sempro">
                       <input type="hidden" value="{{ $id_hasil_sempro->id }}" name="id_hasil_sempro">
+                      {{-- <input type="hidden" value="{{ $dosen2 }}" name="pemb2"> --}}
                     </tbody>
                   </table>
             </div>
@@ -111,7 +127,7 @@
                 <table class="table table-borderless">
                         <tbody>
                           <tr>
-                            <td>Berita Acara</td>
+                            <td>Proposal Skripsi</td>
                             <td>:</td>
                             <th>
                               <div class="form-check form-check-inline">
@@ -155,7 +171,7 @@
                           <tr>
                             <td>Revisi</td>
                             <td>:</td>
-                            <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                            <th><textarea class="form-control" name="revisi1" placeholder="Masukkan Revisi" <?=$item->dosbing1==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
                           </tr>
                           <tr>
                             <td>File Pendukung (DOCX, DOC, PDF) (Max 30MB)</td>
@@ -211,7 +227,7 @@
                           <tr>
                             <td>Revisi</td>
                             <td>:</td>
-                            <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?>></textarea></th>
+                            <th><textarea class="form-control" name="revisi2" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
                           </tr>
                           <tr>
                             <td>File Pendukung (DOCX, DOC, PDF) (Max 30MB)</td>

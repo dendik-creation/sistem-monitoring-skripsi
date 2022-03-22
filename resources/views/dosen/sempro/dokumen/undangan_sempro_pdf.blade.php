@@ -43,14 +43,27 @@ hr.new4 {
 <div style="position: absolute; left: 198px; top: 310px" class="cls_005"><span class="cls_005">: @if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if ($dosen1->depan==null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</span></div>
 <div style="position: absolute; left: 38px; top: 340px" class="cls_005"><span class="cls_005">Pembimbing Pembantu</span></div>
-<div style="position: absolute; left: 198px; top: 340px" class="cls_005"><span class="cls_005">: @if ($dosen2 -> depan == "Y")
+<div style="position: absolute; left: 198px; top: 340px" class="cls_005"><span class="cls_005">: @if ($dosen2==null)
+  -
+@else
+@if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</span></div>
+                          @if ($dosen2->depan==null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif</span></div>
 <div style="position: absolute; left: 38px; top: 370px" class="cls_005"><span class="cls_005">Jadwal Seminar</span></div>
 <div style="position: absolute; left: 198px; top: 370px" class="cls_005"><span class="cls_005">: {{ tgl_indo($data->tanggal, true)}}</span></div>
 <div style="position: absolute; left: 38px; top: 400px" class="cls_005"><span class="cls_005">Pukul / Tempat</span></div>

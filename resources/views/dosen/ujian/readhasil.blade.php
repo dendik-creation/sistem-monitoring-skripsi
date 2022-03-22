@@ -5,7 +5,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Hasil Ujian Skripsi</h1>
+            <h1 class="h3 mb-0 text-gray-800">Hasil Akhir Ujian Skripsi</h1>
             <div class="pull-right">
                 @php
                     $smt = DB::table('semester')->get();

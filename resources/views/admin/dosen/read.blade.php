@@ -55,7 +55,11 @@
                                         @if ($item -> depan == "Y")
                                             {{ $item -> gelar3 }} {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}
                                         @else
-                                            {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}, {{ $item -> gelar3 }}
+                                            @if ($item -> depan == null)
+                                                {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}
+                                            @else
+                                                {{ $item -> name }}, {{ $item -> gelar1 }}, {{ $item -> gelar2 }}, {{ $item -> gelar3 }}
+                                            @endif
                                         @endif
                                     </td>
                                     <td>{{ $item -> jabatan }}</td>

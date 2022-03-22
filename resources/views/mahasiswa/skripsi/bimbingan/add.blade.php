@@ -93,7 +93,12 @@
                         <input type="email" class="form-control" name="dosbing1" placeholder="Masukkan Dosen Pembimbing 1" value="@if ($data -> depan1 == "Y")
                               {{ $data -> gelar31 }} {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}
                           @else
-                              {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}, {{ $data -> gelar31 }}
+                          @if($data->depan1==null)
+                          {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}
+                          @else
+
+                          {{ $data -> dosbing1 }}, {{ $data -> gelar11 }}, {{ $data -> gelar21 }}, {{ $data -> gelar31 }}
+                          @endif
                           @endif" required readonly>
                     </div>
                     {{-- <div class="form-group">

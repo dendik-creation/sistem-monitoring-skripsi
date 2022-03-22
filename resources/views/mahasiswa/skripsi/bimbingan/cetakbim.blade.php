@@ -57,11 +57,11 @@
                                     </td>
                                     <td>
                                         Bimbingan Ke-{{ $item->bimbingan_ke }} kepada {{ $item->name }} <br>
-                                        @if ($item->ket1 == "-")
+                                        {{-- @if ($item->ket1 == "-")
                                             Status : {{ $item->ket2 }} <br><br>
-                                        @else
+                                        @else --}}
                                             Status : {{ $item->ket1 }} <br><br>
-                                        @endif
+                                        {{-- @endif --}}
                                         @php
                                             $pesan = DB::table('pesan_bimbingan')
                                             ->select('pesan_bimbingan.*')
@@ -129,11 +129,11 @@
                                     </td>
                                     <td>
                                         Bimbingan Ke-{{ $item->bimbingan_ke }} kepada {{ $item->name }} <br>
-                                        @if ($item->ket1 == "-")
+                                        {{-- @if ($item->ket1 == "-") --}}
                                             Status : {{ $item->ket2 }} <br><br>
-                                        @else
+                                        {{-- @else
                                             Status : {{ $item->ket1 }} <br><br>
-                                        @endif
+                                        @endif --}}
                                         @php
                                             $pesan = DB::table('pesan_bimbingan')
                                             ->select('pesan_bimbingan.*')

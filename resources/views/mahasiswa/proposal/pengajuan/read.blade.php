@@ -66,6 +66,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Semester</th>
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Topik</th>
@@ -79,11 +80,18 @@
                               @foreach($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $item -> smt }} {{ $item -> thn }}</td>
                                     <td>{{ $item -> nim }}</td>
                                     <td>{{ $item -> name }}</td>
                                     <td>{{ $item -> topik }}</td>
                                     <td>{{ $item -> judul }}</td>
-                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Disetujui' ? 'btn-success' : ($item -> ket1 == 'Revisi' ? 'btn-warning' : ($item -> ket1 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket1 }}</p> - <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}</p></td>
+                                    <td>
+                                        @if ($item->dosbing2==null)
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Disetujui' ? 'btn-success' : ($item -> ket1 == 'Revisi' ? 'btn-warning' : ($item -> ket1 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket1 }}</p>
+                                        @else
+                                        <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket1 == 'Disetujui' ? 'btn-success' : ($item -> ket1 == 'Revisi' ? 'btn-warning' : ($item -> ket1 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket1 }}</p> - <p style="pointer-events: none;" class="btn btn-sm <?=($item -> ket2 == 'Disetujui' ? 'btn-success' : ($item -> ket2 == 'Revisi' ? 'btn-warning' : ($item -> ket2 == 'Ditolak' ? 'btn-danger' : 'btn-secondary')))?>">{{ $item -> ket2 }}</p>
+                                        @endif
+                                    </td>
                                     <td><a href="/mahasiswa/proposal/pengajuan/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Lihat detail</a></td>
                                     {{-- <td><a href="/download/proposal/{{$item->proposal}}">{{$item->proposal}}</a></td>
                                     <td>{{ $item -> ket1 }} - {{ $item -> komentar1 }}</td>

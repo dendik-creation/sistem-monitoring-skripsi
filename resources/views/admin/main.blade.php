@@ -148,6 +148,15 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
+            <li class="nav-item {{ Request::is('admin/pengumuman') || Request::is('admin/pengumuman/*') ? 'active' : ''}}">
+                <a class="nav-link" href="{{ route('datapengumuman') }}">
+                    <i class="fas fa-fw fa-bullhorn"></i>
+                    <span>Pengumuman</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -445,6 +454,21 @@
         });
     });
 
+</script>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector:'textarea.deskripsi',
+        plugins: 'link',
+        width: 900,
+        height: 300
+    });
+
+    tinymce.init({
+        selector:'textarea.keterangan',
+        width: 610,
+        height: 300
+    });
 </script>
 
 </html>

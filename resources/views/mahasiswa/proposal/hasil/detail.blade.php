@@ -34,17 +34,31 @@
                         <th>@if ($dosen1 -> depan == "Y")
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @if ($dosen1->depan==null)
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
+                          @endif
                           @endif</th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Pembantu</td>
                         <td>:</td>
-                        <th>@if ($dosen2 -> depan == "Y")
+                        <th>
+                          @if ($dosen2==null)
+                                            -
+                                        @else
+                                        @if ($dosen2 -> depan == "Y")
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
-                          @endif</th>
+                          @if ($dosen2->depan==null)
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          @else
+                              
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
+                          @endif
+                          @endif @endif</th>
                       </tr>
                       <tr>
                         <td>Status</td>
@@ -64,7 +78,7 @@
                     </tbody>
                   </table>
                 <div class="ml-2 mt-4">
-                    <a href="/sempro/hasil/cetakmhs/{{ $item->id }}" target="_blank" class="btn btn-primary <?=$item->status1 == "Sudah" && $item->status2 == "Sudah" ? '' : 'disabled'?>">Lihat Nilai</a>
+                    <a href="/sempro/hasil/cetakmhs/{{ $item->id }}" target="_blank" class="btn btn-primary <?=$item->status1 == "Sudah" ? '' : 'disabled'?>">Lihat Nilai</a>
                     <a href="{{ route('datahasilsempromhs')}}" class="btn btn-secondary ml-1">Kembali</a>
                 </div>
             </div>

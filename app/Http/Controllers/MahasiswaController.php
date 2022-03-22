@@ -121,7 +121,9 @@ class MahasiswaController extends Controller
         $user = Auth::user();
         $data = DB::table('proposal')
         ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
-        ->select('proposal.id as id', 'proposal.nim as nim', 'proposal.topik as topik', 'proposal.judul as judul', 'proposal.proposal as proposal',
+        ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+        ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+        ->select('plot_dosbing.dosbing2 as dosbing2', 'proposal.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'proposal.nim as nim', 'proposal.topik as topik', 'proposal.judul as judul', 'proposal.proposal as proposal',
         'proposal.ket1 as ket1', 'proposal.ket2 as ket2', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'mahasiswa.name as name')
         ->where('proposal.nim', $user->no_induk)
         ->orderByRaw('proposal.id DESC')
@@ -211,7 +213,13 @@ class MahasiswaController extends Controller
 
             $pModel->proposal = $namafile;
 
-            $pModel->save();
+            if($request->dosbing2=='-'){
+                $pModel->ket2 = "Disetujui";
+                $pModel->save();
+            }else{
+                $pModel->save();
+            }
+
         }
 
         return redirect('mahasiswa/proposal/pengajuan')->with(['success' => 'Berhasil']);
@@ -286,8 +294,9 @@ class MahasiswaController extends Controller
         ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
-        ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'mahasiswa.status_sempro as status_sempro',
-        'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'berkas_sempro.berkas_sempro as berkas_sempro', 'berkas_sempro.status as status', 'berkas_sempro.komentar_admin as komentar')
+        ->join('semester', 'berkas_sempro.id_semester', '=', 'semester.id')
+        ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'semester.semester as smt', 'semester.tahun as thn', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'mahasiswa.status_sempro as status_sempro',
+        'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'berkas_sempro.*', 'berkas_sempro.status as status', 'berkas_sempro.komentar_admin as komentar')
         ->where('berkas_sempro.nim', $user->no_induk)
         ->where('proposal.ket1', 'Disetujui')->where('proposal.ket2', 'Disetujui')
         ->orderByRaw('berkas_sempro.id DESC')
@@ -321,10 +330,16 @@ class MahasiswaController extends Controller
     }
     public function insertBerkas(Request $request){
         $this->validate($request, [
-			'berkas_sempro' => 'max:20480',
+			'byr' => 'max:2048',
+            'proposal' => 'max:10240',
+            'krs' => 'max:2048',
+            'transkrip' => 'max:2048',
 		],
         [
-            'berkas_sempro.max' => 'File terlalu besar, maksimal 20 mb',
+            'byr.max' => 'File bukti pembayaran terlalu besar, maksimal 2 mb',
+            'proposal.max' => 'File proposal terlalu besar, maksimal 10 mb',
+            'krs.max' => 'File KRS terlalu besar, maksimal 2 mb',
+            'transkrip.max' => 'File transkrip nilai terlalu besar, maksimal 2 mb',
         ]);
 
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
@@ -337,15 +352,27 @@ class MahasiswaController extends Controller
         $bsModel->id_proposal = $request->id_proposal;
         $bsModel->id_plot_dosbing = $request->id_plot_dosbing;
 
-		$file = $request->file('berkas_sempro');
+		$byr = $request->file('byr');
+        $proposal = $request->file('proposal');
+        $krs = $request->file('krs');
+        $transkrip = $request->file('transkrip');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_sempro';
 
-        $namafile = rand().$file->getClientOriginalName();
+        $namabyr = rand().$byr->getClientOriginalName();
+        $namaproposal = rand().$proposal->getClientOriginalName();
+        $namakrs = rand().$krs->getClientOriginalName();
+        $namatranskrip = rand().$transkrip->getClientOriginalName();
 
-        $file->move($tujuan_upload,$namafile);
+        $byr->move($tujuan_upload,$namabyr);
+        $proposal->move($tujuan_upload,$namaproposal);
+        $krs->move($tujuan_upload,$namakrs);
+        $transkrip->move($tujuan_upload,$namatranskrip);
 
-        $bsModel->berkas_sempro = $namafile;
+        $bsModel->scan_bukti_bayar = $namabyr;
+        $bsModel->proposal = $namaproposal;
+        $bsModel->krs = $namakrs;
+        $bsModel->transkrip = $namatranskrip;
 
         $bsModel->created_at = Carbon::now('GMT+7');
 
@@ -366,20 +393,32 @@ class MahasiswaController extends Controller
                     ->where('berkas_sempro.id', $id)
                     ->first();
 
-        unlink('filemhs/'.$request->nim.'/berkas_sempro'.'/'.$delberkaslama->berkas_sempro);
+        // unlink('filemhs/'.$request->nim.'/berkas_sempro'.'/'.$delberkaslama->berkas_sempro);
 
-        $file = $request->file('berkas_sempro');
+        $byr = $request->file('byr');
+        $proposal = $request->file('proposal');
+        $krs = $request->file('krs');
+        $transkrip = $request->file('transkrip');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_sempro';
 
-        $namafile = rand().$file->getClientOriginalName();
+        $namabyr = rand().$byr->getClientOriginalName();
+        $namaproposal = rand().$proposal->getClientOriginalName();
+        $namakrs = rand().$krs->getClientOriginalName();
+        $namatranskrip = rand().$transkrip->getClientOriginalName();
 
-        $file->move($tujuan_upload,$namafile);
+        $byr->move($tujuan_upload,$namabyr);
+        $proposal->move($tujuan_upload,$namaproposal);
+        $krs->move($tujuan_upload,$namakrs);
+        $transkrip->move($tujuan_upload,$namatranskrip);
 
         $data = DB::table('berkas_sempro')
             ->where('id', $id)
             ->update(
-            ['berkas_sempro' => $namafile,
+            ['scan_bukti_bayar' => $namabyr,
+            'proposal' => $namaproposal,
+            'krs' => $namakrs,
+            'transkrip' => $namatranskrip,
             'status' => 'Menunggu Dijadwalkan']);
         
         return redirect('mahasiswa/proposal/daftarsempro')->with(['success' => 'Berhasil']);
@@ -393,7 +432,8 @@ class MahasiswaController extends Controller
         ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.status as status', 'proposal.judul as judul', 
+        ->join('semester', 'jadwal_sempro.id_semester', '=', 'semester.id')
+        ->select('jadwal_sempro.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.status as status', 'proposal.judul as judul', 
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal',
         'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket')
         ->where('jadwal_sempro.nim', $user->no_induk)
@@ -428,7 +468,8 @@ class MahasiswaController extends Controller
         ->join('proposal', 'hasil_sempro.id_proposal', '=', 'proposal.id')
         ->join('jadwal_sempro', 'hasil_sempro.id_jadwal_sempro', '=', 'jadwal_sempro.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('hasil_sempro.id as id', 'hasil_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
+        ->join('semester', 'proposal.id_semester', '=', 'semester.id')
+        ->select('hasil_sempro.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'hasil_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
         'jadwal_sempro.tanggal as tanggal', 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket',
         'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'hasil_sempro.berita_acara as berita_acara', 'hasil_sempro.*')
         ->where('hasil_sempro.nim', $user->no_induk)
@@ -498,35 +539,37 @@ class MahasiswaController extends Controller
         $data1 = DB::table('bimbingan')
         ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
         ->join('dosen as dos1', 'bimbingan.bimbingan_kepada', '=', 'dos1.nidn')
+        ->join('semester', 'bimbingan.id_semester', '=', 'semester.id')
         
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
-        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
+        ->select('bimbingan.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
         'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2',
         'dos1.name as dosbing1', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
         ->where('bimbingan.nim', $user -> no_induk)
         ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing1)
-        ->orderByRaw('bimbingan.id DESC')
+        ->orderByRaw('bimbingan.id ASC')
         ->get();
 
         $data2 = DB::table('bimbingan')
         ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
         ->join('dosen as dos1', 'bimbingan.bimbingan_kepada', '=', 'dos1.nidn')
+        ->join('semester', 'bimbingan.id_semester', '=', 'semester.id')
         
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
-        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
+        ->select('bimbingan.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file',
         'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2',
         'dos1.name as dosbing1', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
         ->where('bimbingan.nim', $user -> no_induk)
         ->where('bimbingan.bimbingan_kepada', '=', $plot->dosbing2)
-        ->orderByRaw('bimbingan.id DESC')
+        ->orderByRaw('bimbingan.id ASC')
         ->get();
 
         $cekbimbinganselesai = DB::table('bimbingan')
@@ -539,19 +582,19 @@ class MahasiswaController extends Controller
         ->orderByRaw('bimbingan.bimbingan_ke DESC')
         ->first();
         // dd($cekbimbinganselesai);
-        return view('mahasiswa.skripsi.bimbingan.read', compact('data1', 'data2', 'user', 'cekbimbinganselesai'));
+        return view('mahasiswa.skripsi.bimbingan.read', compact('data1', 'data2', 'user', 'cekbimbinganselesai', 'plot'));
     }
     public function formAddBimbingan(){
         $user = Auth::user();
         $data = DB::table('plot_dosbing')
         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
-        ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
+        ->leftJoin('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
         
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
-        ->join('s1 as s12', 'dos2.gelar1', '=', 's12.id')
+        ->leftJoin('s1 as s12', 'dos2.gelar1', '=', 's12.id')
         ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
         ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
@@ -559,6 +602,8 @@ class MahasiswaController extends Controller
         'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's32.depan as depan2', 's31.depan as depan1', 'plot_dosbing.dosbing1 as nidn1', 'plot_dosbing.dosbing2 as nidn2')
         ->where('nim', $user -> no_induk)->first();
+
+        // dd($data);
 
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
         $dataprop = ProposalModel::all()->where('nim', $user -> no_induk)->where('ket1', 'Disetujui')->where('ket2', 'Disetujui')->first();
@@ -670,8 +715,9 @@ class MahasiswaController extends Controller
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_ke as bimbingan_ke',
         'bimbingan.file as file', 'bimbingan.komentar as komentar', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.created_at as tgl', 'bimbingan.bimbingan_kepada as bimbingan_kepada')
         ->where('bimbingan.nim', $user -> no_induk)
-        ->where('bimbingan.bimbingan_ke', $id)
+        ->where('bimbingan.id', $id)
         ->first();
+        // dd($data);
 
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
@@ -688,7 +734,6 @@ class MahasiswaController extends Controller
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->dosbing2)->first();
         
-        // dd($data);
         $id_bim = $data->id;
 
         $pesan = DB::table('pesan_bimbingan')
@@ -764,8 +809,9 @@ class MahasiswaController extends Controller
         $data = DB::table('berkas_ujian')
         ->join('mahasiswa', 'berkas_ujian.nim', '=', 'mahasiswa.nim')
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
-        ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'mahasiswa.status_ujian as status_ujian',
-        'berkas_ujian.berkas_ujian as berkas_ujian', 'berkas_ujian.status as status', 'berkas_ujian.komentar_admin as komentar')
+        ->join('semester', 'berkas_ujian.id_semester', '=', 'semester.id')
+        ->select('berkas_ujian.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'mahasiswa.status_ujian as status_ujian',
+        'berkas_ujian.*', 'berkas_ujian.status as status', 'berkas_ujian.komentar_admin as komentar')
         ->where('berkas_ujian.nim', $user->no_induk)
         ->where('proposal.ket1', 'Disetujui')->where('proposal.ket2', 'Disetujui')
         ->orderByRaw('berkas_ujian.id DESC')
@@ -807,10 +853,18 @@ class MahasiswaController extends Controller
     }
     public function insertBerkasUjian(Request $request){
         $this->validate($request, [
-			'berkas_ujian' => 'max:30720',
+			'byr' => 'max:2048',
+            'laporan' => 'max:20480',
+            'transkrip' => 'max:2048',
+            'ketpengumpulan' => 'max:2048',
+            'turnitin' => 'max:2048',
 		],
         [
-            'berkas_ujian.max' => 'File terlalu besar, maksimal 30 mb',
+            'byr.max' => 'File bukti pembayaran terlalu besar, maksimal 2 mb',
+            'laporan.max' => 'File laporan terlalu besar, maksimal 20 mb',
+            'transkrip.max' => 'File transkrip nilai terlalu besar, maksimal 2 mb',
+            'ketpengumpulan.max' => 'File keterangan terlalu besar, maksimal 2 mb',
+            'turnitin.max' => 'File turnitin terlalu besar, maksimal 2 mb',
         ]);
 
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
@@ -821,17 +875,47 @@ class MahasiswaController extends Controller
 
         $buModel->nim = $request->nim;
         $buModel->id_proposal = $request->id_proposal;
-        $buModel->id_plot_penguji = $request->id_plot_penguji;
+        // $buModel->id_plot_penguji = $request->id_plot_penguji;
 
-		$file = $request->file('berkas_ujian');
+        
+
+        $byr = $request->file('byr');
+        $laporan = $request->file('laporan');
+        $transkrip = $request->file('transkrip');
+        $ketpengumpulan = $request->file('ketpengumpulan');
+        $turnitin = $request->file('turnitin');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_ujian';
 
-        $namafile = rand().$file->getClientOriginalName();
+        $namabyr = rand().$byr->getClientOriginalName();
+        $namalaporan = rand().$laporan->getClientOriginalName();
+        $namatranskrip = rand().$transkrip->getClientOriginalName();
+        $namaketpengumpulan = rand().$ketpengumpulan->getClientOriginalName();
+        $namaturnitin = rand().$turnitin->getClientOriginalName();
 
-        $file->move($tujuan_upload,$namafile);
+        $byr->move($tujuan_upload,$namabyr);
+        $laporan->move($tujuan_upload,$namalaporan);
+        $transkrip->move($tujuan_upload,$namatranskrip);
+        $ketpengumpulan->move($tujuan_upload,$namaketpengumpulan);
+        $turnitin->move($tujuan_upload,$namaturnitin);
 
-        $buModel->berkas_ujian = $namafile;
+        $buModel->scan_bukti_bayar = $namabyr;
+        $buModel->laporan = $namalaporan;
+        $buModel->transkrip = $namatranskrip;
+        $buModel->ketpengumpulan = $namaketpengumpulan;
+        $buModel->turnitin = $namaturnitin;
+
+
+
+		// $file = $request->file('berkas_ujian');
+
+        // $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_ujian';
+
+        // $namafile = rand().$file->getClientOriginalName();
+
+        // $file->move($tujuan_upload,$namafile);
+
+        // $buModel->berkas_ujian = $namafile;
 
         $buModel->created_at = Carbon::now('GMT+7');
 
@@ -852,20 +936,36 @@ class MahasiswaController extends Controller
                     ->where('berkas_ujian.id', $id)
                     ->first();
 
-        unlink('filemhs/'.$request->nim.'/berkas_ujian'.'/'.$delberkaslama->berkas_ujian);
+        // unlink('filemhs/'.$request->nim.'/berkas_ujian'.'/'.$delberkaslama->berkas_ujian);
 
-        $file = $request->file('berkas_ujian');
+        $byr = $request->file('byr');
+        $laporan = $request->file('laporan');
+        $transkrip = $request->file('transkrip');
+        $ketpengumpulan = $request->file('ketpengumpulan');
+        $turnitin = $request->file('turnitin');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_ujian';
 
-        $namafile = rand().$file->getClientOriginalName();
+        $namabyr = rand().$byr->getClientOriginalName();
+        $namalaporan = rand().$laporan->getClientOriginalName();
+        $namatranskrip = rand().$transkrip->getClientOriginalName();
+        $namaketpengumpulan = rand().$ketpengumpulan->getClientOriginalName();
+        $namaturnitin = rand().$turnitin->getClientOriginalName();
 
-        $file->move($tujuan_upload,$namafile);
+        $byr->move($tujuan_upload,$namabyr);
+        $laporan->move($tujuan_upload,$namalaporan);
+        $transkrip->move($tujuan_upload,$namatranskrip);
+        $ketpengumpulan->move($tujuan_upload,$namaketpengumpulan);
+        $turnitin->move($tujuan_upload,$namaturnitin);
 
         $data = DB::table('berkas_ujian')
             ->where('id', $id)
             ->update(
-            ['berkas_ujian' => $namafile,
+            ['scan_bukti_bayar' => $namabyr,
+            'laporan' => $namalaporan,
+            'transkrip' => $namatranskrip,
+            'ketpengumpulan' => $namaketpengumpulan,
+            'turnitin' => $namaturnitin,
             'status' => 'Menunggu Dijadwalkan']);
         
         return redirect('mahasiswa/skripsi/daftarujian')->with(['success' => 'Berhasil']);
@@ -880,8 +980,9 @@ class MahasiswaController extends Controller
         ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+        ->join('semester', 'jadwal_ujian.id_semester', '=', 'semester.id')
         // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
-        ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.status as status', 'proposal.judul as judul', 
+        ->select('jadwal_ujian.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.status as status', 'proposal.judul as judul', 
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_ujian.tanggal as tanggal',
         'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket')
         ->where('jadwal_ujian.nim', $user->no_induk)
@@ -915,7 +1016,8 @@ class MahasiswaController extends Controller
         ->join('proposal', 'hasil_ujian.id_proposal', '=', 'proposal.id')
         ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
+        ->join('semester', 'hasil_ujian.id_semester', '=', 'semester.id')
+        ->select('hasil_ujian.id as id', 'semester.semester as smt', 'semester.tahun as thn', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
         'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket',
         'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara', 'hasil_ujian.*')
         ->where('hasil_ujian.nim', $user->no_induk)
@@ -932,9 +1034,9 @@ class MahasiswaController extends Controller
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
         ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
-        ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+        // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
         ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'hasil_ujian.berita_acara as berita_acara', 'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat',
-        'plot_penguji.ketua_penguji as ketua', 'plot_penguji.anggota_penguji_1 as anggota_1', 'plot_penguji.anggota_penguji_2 as anggota_2',
+        'jadwal_ujian.ketua_penguji as ketua', 'jadwal_ujian.anggota_penguji_1 as anggota_1', 'jadwal_ujian.anggota_penguji_2 as anggota_2',
         'hasil_ujian.sikap1 as sikap1', 'hasil_ujian.presentasi1 as presentasi1', 'hasil_ujian.teori1 as teori1', 'hasil_ujian.program1 as program1', 'hasil_ujian.jumlah1 as jumlah1', 'hasil_ujian.keterangan1 as keterangan1', 'hasil_ujian.revisi1 as revisi1',
         'hasil_ujian.sikap2 as sikap2', 'hasil_ujian.presentasi2 as presentasi2', 'hasil_ujian.teori2 as teori2', 'hasil_ujian.program2 as program2', 'hasil_ujian.jumlah2 as jumlah2', 'hasil_ujian.keterangan2 as keterangan2', 'hasil_ujian.revisi2 as revisi2',
         'hasil_ujian.sikap3 as sikap3', 'hasil_ujian.presentasi3 as presentasi3', 'hasil_ujian.teori3 as teori3', 'hasil_ujian.program3 as program3', 'hasil_ujian.jumlah3 as jumlah3', 'hasil_ujian.keterangan3 as keterangan3', 'hasil_ujian.revisi3 as revisi3',
@@ -1032,9 +1134,9 @@ class MahasiswaController extends Controller
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
         ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
-        ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
+        // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
         ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'hasil_ujian.berita_acara as berita_acara', 'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat',
-        'plot_penguji.ketua_penguji as ketua', 'plot_penguji.anggota_penguji_1 as anggota_1', 'plot_penguji.anggota_penguji_2 as anggota_2',
+        'jadwal_ujian.ketua_penguji as ketua', 'jadwal_ujian.anggota_penguji_1 as anggota_1', 'jadwal_ujian.anggota_penguji_2 as anggota_2',
         'hasil_ujian.sikap1 as sikap1', 'hasil_ujian.presentasi1 as presentasi1', 'hasil_ujian.teori1 as teori1', 'hasil_ujian.program1 as program1', 'hasil_ujian.jumlah1 as jumlah1', 'hasil_ujian.keterangan1 as keterangan1', 'hasil_ujian.revisi1 as revisi1',
         'hasil_ujian.sikap2 as sikap2', 'hasil_ujian.presentasi2 as presentasi2', 'hasil_ujian.teori2 as teori2', 'hasil_ujian.program2 as program2', 'hasil_ujian.jumlah2 as jumlah2', 'hasil_ujian.keterangan2 as keterangan2', 'hasil_ujian.revisi2 as revisi2',
         'hasil_ujian.sikap3 as sikap3', 'hasil_ujian.presentasi3 as presentasi3', 'hasil_ujian.teori3 as teori3', 'hasil_ujian.program3 as program3', 'hasil_ujian.jumlah3 as jumlah3', 'hasil_ujian.keterangan3 as keterangan3', 'hasil_ujian.revisi3 as revisi3',
@@ -1049,14 +1151,14 @@ class MahasiswaController extends Controller
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
         ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
-        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 'dosen.ttd as ttd', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->dosbing1)->first();
         $dosen2 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
         ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
-        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 'dosen.ttd as ttd', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->dosbing2)->first();
 
@@ -1064,21 +1166,21 @@ class MahasiswaController extends Controller
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
         ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
-        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 'dosen.ttd as ttd', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->ketua)->first();
         $anggota1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
         ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
-        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 'dosen.ttd as ttd', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->anggota_1)->first();
         $anggota2 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
         ->leftJoin('s3', 'dosen.gelar3', '=', 's3.id')
-        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
+        ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 'dosen.ttd as ttd', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->anggota_2)->first();
 

@@ -15,7 +15,26 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('auth/login');
+    $data = DB::table('pengumuman')
+        ->select('pengumuman.*')
+        ->orderByRaw('pengumuman.id DESC')
+        ->get();
+
+    return view('home', compact('data'));
+});
+Route::get('/pengumuman/detail/{id}', function ($id) {
+    $data = DB::table('pengumuman')
+        ->select('pengumuman.*')
+        ->orderByRaw('pengumuman.id DESC')
+        ->where('id', $id)
+        ->first();
+
+    $pengumuman = DB::table('pengumuman')
+    ->select('pengumuman.*')
+    ->orderByRaw('pengumuman.id DESC')
+    ->get();
+
+    return view('pengumuman', compact('data', 'pengumuman'));
 });
 
 Auth::routes();
@@ -76,6 +95,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/proposal/plotting/tambah', 'AdminController@formAddSatuMahasiswa')->name('formaddsatumahasiswa');
         Route::post('/admin/proposal/plotting/insert', 'AdminController@insertSatuMahasiswa')->name('insertsatumahasiswa');
         Route::post('/admin/plotdosbing/importexcel', 'AdminController@plotDosbingImportExcel')->name('plotdosbingimportexcel');
+        Route::get('/admin/proposal/plotting/edit/{id}', 'AdminController@formEditPlotDosbing')->name('formeditplotdosbing');
+        Route::put('/admin/proposal/plotting/{id}', 'AdminController@updatePlotDosbing')->name('updateplotdosbing');
 
         //Proposal Monitoring
         Route::get('/admin/proposal/monitoring', 'AdminController@viewProposalMonitoring')->name('dataproposalmonitoring');
@@ -88,6 +109,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/berkas/sempro/ok/{id}', 'AdminController@berkasSemproOk')->name('berkassemprook');
         //berkas kurang lengkap
         Route::put('/admin/berkas/sempro/kurang/{id}', 'AdminController@berkasSemproKurang')->name('berkassemprokurang');
+        //cek berkas
+        Route::get('/admin/proposal/pendaftar/cek/{id}', 'AdminController@viewProposalPendaftarCekBerkas')->name('dataproposalpendaftarcekberkas');
 
         //Proposal Penjadwalan
         Route::get('/admin/proposal/penjadwalan', 'AdminController@viewProposalPenjadwalan')->name('dataproposalpenjadwalan');
@@ -109,6 +132,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/skripsi/plotting/tambah', 'AdminController@formPengujiAddSatuMahasiswa')->name('formpengujiaddsatumahasiswa');
         Route::post('/admin/skripsi/plotting/insert', 'AdminController@insertPengujiSatuMahasiswa')->name('insertpengujisatumahasiswa');
         Route::post('/admin/plotpenguji/importexcel', 'AdminController@plotPengujiImportExcel')->name('plotpengujiimportexcel');
+        Route::get('/admin/skripsi/plotting/edit/{id}', 'AdminController@formEditPlotPenguji')->name('formeditplotpenguji');
+        Route::put('/admin/skripsi/plotting/{id}', 'AdminController@updatePlotPenguji')->name('updateplotpenguji');
 
         //Ujian Skripsi Pendaftar
         Route::get('/admin/skripsi/pendaftar', 'AdminController@viewSkripsiPendaftar')->name('dataskripsipendaftar');
@@ -118,6 +143,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/berkas/ujian/ok/{id}', 'AdminController@berkasUjianOk')->name('berkasujianok');
         //berkas kurang lengkap
         Route::put('/admin/berkas/ujian/kurang/{id}', 'AdminController@berkasUjianKurang')->name('berkasujiankurang');
+        //cek berkas
+        Route::get('/admin/skripsi/pendaftar/cek/{id}', 'AdminController@viewSkripsiPendaftarCekBerkas')->name('dataskripsipendaftarcekberkas');
 
         //Ujian Skripsi Penjadwalan
         Route::get('/admin/skripsi/penjadwalan', 'AdminController@viewSkripsiPenjadwalan')->name('dataskripsipenjadwalan');
@@ -171,6 +198,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/rekap/pembimbing/seminar/cetak', 'AdminController@cetakPembimbingSeminar')->name('cetakpembimbingseminar');
         Route::post('/admin/rekap/pembimbing/skripsi/cetak', 'AdminController@cetakPembimbingSkripsi')->name('cetakpembimbingskripsi');
         Route::post('/admin/rekap/penguji/skripsi/cetak', 'AdminController@cetakPengujiSkripsi')->name('cetakpengujiskripsi');
+
+        //Pengumuman
+        Route::get('/admin/pengumuman', 'AdminController@viewPengumuman')->name('datapengumuman');
+        Route::get('/admin/pengumuman/tambah', 'AdminController@formAddPengumuman')->name('formaddpengumuman');
+        Route::post('/admin/insertpengumuman', 'AdminController@insertPengumuman')->name('insertpengumuman');
+        Route::get('/admin/pengumuman/edit/{id}', 'AdminController@formEditPengumuman')->name('formeditpengumuman');
+        Route::put('/admin/pengumuman/{id}', 'AdminController@updatePengumuman')->name('updatepengumuman');
+        Route::delete('/admin/pengumuman/{id}', 'AdminController@deletePengumuman')->name('deletepengumuman');
     });
  
     //DOSEN
@@ -234,6 +269,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dosen/skripsi/hasil/detail/{id}', 'DosenController@viewDetailHasilUjian')->name('detailhasilujiandosen');
         Route::get('/dosen/skripsi/hasil/filter/{id}', 'DosenController@viewHasilUjianFilter')->name('datahasilujiandosenfilter');
 
+        Route::get('/dosen/sempro/nilai', 'DosenController@viewNilaiSempro')->name('datanilaisempro');
+        // Route::get('/dosen/sempro/nilai/edit/{id}', 'DosenController@formEditNilaiSempro')->name('formeditnilaisempro');
+        Route::put('/dosen/sempro/nilai/{id}', 'DosenController@updateNilaiSempro')->name('updatenilaisempro');
+
+        Route::get('/dosen/skripsi/nilai', 'DosenController@viewNilaiUjian')->name('datanilaiujian');
+        // Route::get('/dosen/skripsi/nilai/edit/{id}', 'DosenController@formEditNilaiUjian')->name('formeditnilaiujian');
+        Route::put('/dosen/skripsi/nilai/{id}', 'DosenController@updateNilaiUjian')->name('updatenilaiujian');
     });
 
     //MAHASISWA
