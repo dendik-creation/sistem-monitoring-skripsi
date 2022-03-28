@@ -117,11 +117,7 @@
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> judul }}</td>
                                     <td>
-                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->scan_bukti_bayar}}"><?=$item->scan_bukti_bayar == null ? '' : 'Download bukti pembayaran'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->laporan}}"><?=$item->laporan == null ? '' : 'Download laporan'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->transkrip}}"><?=$item->transkrip == null ? '' : 'Download transkrip nilai'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->ketpengumpulan}}"><?=$item->ketpengumpulan == null ? '' : 'Download surat keterangan'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->turnitin}}"><?=$item->turnitin == null ? '' : 'Download hasil turnitin'?><br>
+                                        <a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas ujian'?><br>
                                     </td>
                                     <td>
                                         @php
@@ -183,11 +179,11 @@
                                                     {{csrf_field()}}
                                                     {{method_field('PUT')}}
                                                     <div class="modal-body">
-                                                      <div class="form-group">
-                                                        <label for="" class="small">Scan Bukti Pembayaran (JPG/PNG/PDF) (Max 2MB)</label><br>
-                                                        <input type="file" name="byr" required  accept=".jpg,.jpeg,.png,.pdf">
-                                                    </div>
-                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <label for="" class="small">Berkas* (ZIP) (Max 30MB)</label><br>
+                                                            <input type="file" name="berkasujian" accept=".zip,.rar,.7zip">
+                                                          </div>
+                                                    {{-- <div class="form-group">
                                                         <label for="" class="small">Laporan Skripsi (PDF) (Max 20MB)</label><br>
                                                         <input type="file" name="laporan" required  accept=".jpg,.jpeg,.png,.pdf">
                                                     </div>
@@ -202,7 +198,7 @@
                                                     <div class="form-group">
                                                         <label for="" class="small">Scan Hasil Turnitin (JPG/PNG/PDF) (Max 2MB)</label><br>
                                                         <input type="file" name="turnitin" required  accept=".jpg,.jpeg,.png,.pdf">
-                                                    </div>
+                                                    </div> --}}
                                                       <input type="hidden" name="nim" value="{{$item->nim}}" id="">
                                                     </div>
                                                     <div class="modal-footer">
@@ -216,7 +212,7 @@
                                         @elseif($item->status == "Menunggu Dijadwalkan" || $item->status == "Berkas OK" || $item->status == "Menunggu Verifikasi")
                                         -
                                         @else
-                                        <a href="/ujian/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm">Lihat Undangan</a>
+                                        {{-- <a href="/ujian/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm">Lihat Undangan</a> --}}
                                         <a href="/mahasiswa/skripsi/jadwalujian/{{ $jadwal->id }}" class="btn btn-sm btn-primary mt-1">Lihat Jadwal</a>
                                         @endif
                                     </td>

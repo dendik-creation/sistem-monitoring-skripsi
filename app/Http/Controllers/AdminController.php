@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Response;
 use Illuminate\Validation\Rule;
 use ZipArchive;
+use File;
 
 use App\DosenModel;
 use App\MahasiswaModel;
@@ -665,51 +666,34 @@ class AdminController extends Controller
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data[0]->dosbing2)->first();
 
-        // dd($data[0]->scan_bukti_bayar);
-
-        // $filename = $_FILES['file']['name'];
-
-        // // Get file extension
-        // $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-        // $valid_ext = array('zip');
-
-        // // Check extension
-        // if(in_array(strtolower($ext),$valid_ext)){
-        // $tmp_name = $_FILES['file']['tmp_name'];
-
         // $zip = new ZipArchive;
-        // $res = $zip->open($tmp_name);
-        // if ($res === TRUE) {
-
-        // // Unzip path
-        // $path = _PATH."/files/";
-
-        // // Extract file
-        // $zip->extractTo($path);
-        // $zip->close();
-
-        // echo 'Unzip!';
-        // } else {
-        // echo 'failed!';
-        // }
-        // }else{
-        // echo 'Invalid file';
-        // }
-
-
-
-        // $zip = new ZipArchive;
-        // $res = $zip->open('filemhs/'.$data[0]->nim.'/berkas_sempro/'.$data[0]->scan_bukti_bayar);
-        // // $res = $zip->open($data[0]->scan_bukti_bayar);
-        // if ($res === TRUE) {
+        // $res = $zip->open('filemhs/'.$data[0]->nim.'/berkas_sempro/'.$data[0]->berkas_sempro);
+        // if (!File::exists('filemhs/'.$data[0]->nim.'/berkas_sempro/extract')) {
         //     $zip->extractTo('filemhs/'.$data[0]->nim.'/berkas_sempro/extract');
         //     $zip->close();
-        //     $heh = "ya";
+        //     // $heh = "ya";
         // } else {
-        //     $heh = "tidak";
+        //     // $heh = "tidak";
         // }
-        return view('admin.proposal.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2',));
+
+
+        $path = public_path('filemhs/'.$data[0]->nim.'/berkas_sempro/extract');
+        $allFiles = scandir($path);
+        $files = array_diff($allFiles, array('.', '..'));
+    //   dd($files);
+    
+
+        return view('admin.proposal.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2', 'files'));
+    }
+
+    public function hapusBerkasSempro($nim, $file){
+        unlink('filemhs/'.$nim.'/berkas_sempro/extract/'.$file);
+        return back();
+    }
+
+    public function hapusBerkasUjian($nim, $file){
+        unlink('filemhs/'.$nim.'/berkas_ujian/extract/'.$file);
+        return back();
     }
 
     public function viewProposalPendaftarDetail($id){
@@ -1348,7 +1332,12 @@ class AdminController extends Controller
         ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->get();
-        return view('admin.skripsi.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2'));
+
+        $path = public_path('filemhs/'.$data[0]->nim.'/berkas_ujian/extract');
+        $allFiles = scandir($path);
+        $files = array_diff($allFiles, array('.', '..'));
+
+        return view('admin.skripsi.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2', 'files'));
     }
 
     public function viewSkripsiPendaftarDetail($id){

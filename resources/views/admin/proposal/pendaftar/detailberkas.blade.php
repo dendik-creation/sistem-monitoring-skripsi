@@ -78,29 +78,21 @@
             <thead>
                 <th>No.</th>
                 <th>Berkas</th>
-                <th>File</th>
+                <td>Opsi</td>
             </thead>
             <tbody>
-                <tr>
-                    <td>1.</td>
-                    <td>Scan Bukti Pembayaran (JPG/PNG/PDF) (Max 2MB)</td>
-                    <td><a href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/'.$item->scan_bukti_bayar)?>" target="_blank"><?=$item->scan_bukti_bayar == null ? '' : 'Lihat berkas'?></a></td>
+              <?php $no=1?>
+              @foreach($files as $file)
+              <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $file }}</td>
+                  <td>
+                    <a class="btn btn-sm btn-primary" href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/extract/'.$file)?>" target="_blank">Lihat berkas</a>
+                    <a class="btn btn-sm btn-danger" href="/admin/hapusberkassempro/{{ $item->nim }}/{{$file}}">Hapus berkas</a>
+                  </td>
                 </tr>
-                <tr>
-                    <td>2.</td>
-                    <td>Proposal Skripsi (PDF) (Max 10MB)</td>
-                    <td><a href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/'.$item->proposal)?>" target="_blank"><?=$item->proposal == null ? '' : 'Lihat berkas'?></a></td>
-                </tr>
-                <tr>
-                    <td>3.</td>
-                    <td>Scan KRS (JPG/PNG/PDF) (Max 2MB)</td>
-                    <td><a href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/'.$item->krs)?>" target="_blank"><?=$item->krs == null ? '' : 'Lihat berkas'?></a></td>
-                </tr>
-                <tr>
-                    <td>4.</td>
-                    <td>Scan Transkrip Nilai (JPG/PNG/PDF) (Max 2MB)</td>
-                    <td><a href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/'.$item->transkrip)?>" target="_blank"><?=$item->transkrip == null ? '' : 'Lihat berkas'?></a></td>
-                </tr>
+                @endforeach
+                
             </tbody>
         </table>
           <div class="ml-2 mt-4 mb-4 row">

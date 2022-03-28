@@ -45,7 +45,7 @@
                       <tr>
                         <td>Berkas Seminar</td>
                         <td>:</td>
-                        <th><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download proposal skripsi'?></a></th>
+                        <th><a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}"><?=$item->berkas_sempro == null ? '' : 'Download berkas sempro'?><br></th>
                       </tr>
                       <tr>
                         <td>Dosen Pembimbing Utama</td>

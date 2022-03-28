@@ -59,9 +59,9 @@
                   <th>{{ $item->judul }}</th>
                 </tr>
                 <tr>
-                  <td>Laporan Skripsi</td>
+                  <td>Berkas Ujian</td>
                   <td>:</td>
-                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->laporan}}"><?=$item->laporan == null ? '' : 'Download laporan skripsi'?></a></th>
+                  <th><a href="/download/{{ $item->nim }}/berkas_ujian/{{$item->berkas_ujian}}"><?=$item->berkas_ujian == null ? '' : 'Download berkas ujian'?></a></th>
                 </tr>
                 <tr>
                   <td>Dosen Pembimbing Utama</td>
@@ -484,12 +484,12 @@
                               </select>
                             </th>
                             </tr> --}}
-                            <tr>
+                            {{-- <tr>
                               <td><hr class="sidebar-divider"></td>
                               <td></td>
                               <td><hr class="sidebar-divider"></td>
-                            </tr>
-                            <tr>
+                            </tr> --}}
+                            {{-- <tr>
                               <td>Revisi</td>
                               <td>:</td>
                               <th><textarea class="form-control " name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?> rows="5"></textarea></th>
@@ -498,7 +498,7 @@
                               <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
                               <td>:</td>
                               <th><input type="file" name="file_pendukung4" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"></th>
-                            </tr>
+                            </tr> --}}
                             <tr>
                               <td></td>
                               <td></td>

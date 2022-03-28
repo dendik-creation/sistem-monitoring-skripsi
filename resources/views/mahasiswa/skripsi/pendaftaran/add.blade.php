@@ -37,7 +37,16 @@
                         <label for="" class="small">No. HP/WA*</label>
                         <input type="text" class="form-control" name="hp" placeholder="Masukkan No. HP/WA" value="{{ $datamhs->hp }}" required readonly>
                     </div>
-                    
+                    <div class="form-group">
+                        <label for="" class="small">Berkas* (ZIP) (Max 30MB)</label><br>
+                        <input type="file" name="berkasujian" placeholder="Masukkan Berkas Ujian Skripsi" required  accept=".zip,.rar,.7zip">
+                    </div>
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary mr-2" <?=$dataprop === null ? 'disabled' : '' ?>>
+                            Daftar
+                        </button>
+                        <a href="{{url()->previous()}}" class="btn btn-secondary">Batal</a>
+                    </div>
                     
                     
                 </div>
@@ -79,52 +88,7 @@
                         <input type="hidden" value="{{ $dataprop->id }}" name="id_proposal">
                         <input type="text" class="form-control" name="judul" placeholder="Masukkan Judul Skripsi" value="<?=$dataprop === null ? 'Belum di ACC' : $dataprop->judul ?>" required readonly>
                     </div>
-                    {{-- <div class="form-group">
-                        <label for="" class="small">Berkas* (ZIP) (Max 30MB)</label><br>
-                        <input type="file" name="berkas_ujian" placeholder="Masukkan Berkas Ujian Skripsi" required  accept=".zip,.rar,.7zip">
-                    </div> --}}
-                </div>
-            </div>
-            <div class="row mt-2">
-                <table class="table table-bordered mt-2">
-                    <thead>
-                        <th>No.</th>
-                        <th>Berkas</th>
-                        <th>File</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1.</td>
-                            <td>Scan Bukti Pembayaran* (JPG/PNG/PDF) (Max 2MB)</td>
-                            <td><input type="file" name="byr" required  accept=".jpg,.jpeg,.png,.pdf"></td>
-                        </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td>Laporan Skripsi* (PDF) (Max 20MB)</td>
-                            <td><input type="file" name="laporan" required  accept=".jpg,.jpeg,.png,.pdf"></td>
-                        </tr>
-                        <tr>
-                            <td>3.</td>
-                            <td>Scan Transkrip Nilai* (JPG/PNG/PDF) (Max 2MB)</td>
-                            <td><input type="file" name="transkrip" required  accept=".jpg,.jpeg,.png,.pdf"></td>
-                        </tr>
-                        <tr>
-                            <td>4.</td>
-                            <td>Scan Surat Keterangan Telah Mengumpulkan Proposal* (JPG/PNG/PDF) (Max 2MB)</td>
-                            <td><input type="file" name="ketpengumpulan" required  accept=".jpg,.jpeg,.png,.pdf"></td>
-                        </tr>
-                        <tr>
-                            <td>5.</td>
-                            <td>Scan Hasil Turnitin* (JPG/PNG/PDF) (Max 2MB)</td>
-                            <td><input type="file" name="turnitin" required  accept=".jpg,.jpeg,.png,.pdf"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary mr-2" <?=$dataprop === null ? 'disabled' : '' ?>>
-                        Daftar
-                    </button>
-                    <a href="{{url()->previous()}}" class="btn btn-secondary">Batal</a>
+                    
                 </div>
             </div>
         </form>

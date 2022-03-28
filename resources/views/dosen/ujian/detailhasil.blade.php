@@ -457,12 +457,12 @@
                               </select>
                             </th>
                             </tr> --}}
-                            <tr>
+                            {{-- <tr>
                               <td><hr class="sidebar-divider"></td>
                               <td></td>
                               <td><hr class="sidebar-divider"></td>
-                            </tr>
-                            <tr>
+                            </tr> --}}
+                            {{-- <tr>
                               <td>Revisi</td>
                               <td>:</td>
                               <th><textarea class="form-control" name="revisi4" placeholder="Masukkan Revisi" <?=$item->dosbing2==$user->no_induk ? '' : 'disabled'?> rows="5">{{ $item->revisi4 }}</textarea></th>
@@ -471,7 +471,7 @@
                               <td>File Pendukung (DOC, DOCX, PDF) (Max 30MB)</td>
                               <td>:</td>
                               <th><input type="file" name="file_pendukung4" placeholder="Masukkan File Pendukung (DOC, DOCX, PDF) (Max 30MB)" accept=".doc, .docx, .pdf"><a href="/download/{{$item->nim}}/ujian/revisi dari dosen/{{$item->file4}}"><?=$item->file4 == null ? '-' : 'Download file'?></a></th>
-                            </tr>
+                            </tr> --}}
                             <tr>
                               <td></td>
                               <td></td>

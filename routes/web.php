@@ -58,6 +58,9 @@ Route::get('/sempro/jadwal/cetak/{id}', 'DosenController@cetakUndanganSempro')->
 Route::get('/ujian/hasil/cetak/{id}', 'DosenController@cetakDokumenUjian')->name('cetakdokumenujian');
 Route::get('/ujian/jadwal/cetak/{id}', 'DosenController@cetakUndanganUjian')->name('cetakundanganujian');
 
+Route::get('/admin/hapusberkassempro/{nim}/{file}', 'AdminController@hapusBerkasSempro');
+Route::get('/admin/hapusberkasujian/{nim}/{file}', 'AdminController@hapusBerkasUjian');
+
 Route::middleware(['auth'])->group(function () {
  
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

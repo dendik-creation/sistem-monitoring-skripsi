@@ -34,6 +34,16 @@
                         <input type="text" class="form-control" name="hp" placeholder="Masukkan No. HP/WA" value="{{ $datamhs->hp }}" required readonly>
                     </div>
                     
+                    <div class="form-group">
+                        <label for="" class="small">Berkas* (ZIP) (Max 20MB)</label><br>
+                        <input type="file" name="berkassempro" placeholder="Masukkan Berkas Seminar" required  accept=".zip,.rar,.7zip">
+                    </div>
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary mr-2" <?=$dataprop === null ? 'disabled' : '' ?>>
+                            Daftar
+                        </button>
+                        <a href="{{url()->previous()}}" class="btn btn-secondary">Batal</a>
+                    </div>
                     
                 </div>
                 <div class="col-md-6">
@@ -75,13 +85,10 @@
                         <input type="text" class="form-control" name="judul" placeholder="Masukkan Judul Skripsi" value="<?=$dataprop === null ? 'Belum di ACC' : $dataprop->judul ?>" required readonly>
                     </div>
 
-                    {{-- <div class="form-group">
-                        <label for="" class="small">Berkas* (ZIP) (Max 20MB)</label><br>
-                        <input type="file" name="berkas_sempro" placeholder="Masukkan Berkas Seminar" required  accept=".zip,.rar,.7zip">
-                    </div> --}}
+                    
                 </div>
             </div>
-            <div class="row mt-2">
+            {{-- <div class="row mt-2">
                 <table class="table table-bordered mt-2">
                     <thead>
                         <th>No.</th>
@@ -117,7 +124,7 @@
                     </button>
                     <a href="{{url()->previous()}}" class="btn btn-secondary">Batal</a>
                 </div>
-            </div>
+            </div> --}}
         </form>
 
     </div>

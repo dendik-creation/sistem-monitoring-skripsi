@@ -26,11 +26,11 @@
 
 <body id="page-top">
 
-    <nav class="navbar navbar-expand-md py-3 navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-md py-4 navbar-dark bg-primary mb-4">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/">Sistem Monitoring Skripsi</a>
+          <a class="navbar-brand ml-5" href="/">Sistem Monitoring Skripsi</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            {{-- <span class="navbar-toggler-icon"></span> --}}
           </button>
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
@@ -46,18 +46,32 @@
       
       
       <main class="col-md-10 mx-auto">
-          <div class="mt-2 mb-5 text-center">
+        <div class="row mt-2 mb-5 mt-5">
+
+          <div class="col-md-12 ">
+            <div class="row align-items-center p-3 mb-4">
+              <img class="img-responsive mr-5" src="{{ url('TI UMK.jpg') }}" height="auto" width="45%">
+              <div class="row-md-12">
+                <h1 class="align-middle ml-5">Sistem Monitoring Skripsi Prodi Teknik<br>Informatika Universitas Muria Kudus</h1>
+                  <a class="btn btn-primary btn-lg ml-5 mt-4" href="/login">Login</a>
+              </div>
+          </div>
+          </div>
+
+        </div>
+
+          <div class=" mb-5 text-center">
               <h1>Pengumuman</h1>
           </div>
         
           @foreach ($data as $item)
             <div class="row-md-12 bg-light p-4 rounded mb-5">
               
-              <div class="row ml-4">
+              <div class="row px-4">
                 <div class="col-md-9">
                   <div class="row align-items-center p-3 mb-4">
-                    <img class="img-profile rounded-circle" src="{{ url('photo/undraw_profile.svg') }}" height="40" width="auto">
-                    <span class="align-middle ml-4">Koordinator Skripsi . <?=tgl_indo(substr($item->created_at, 0, 10), false);?></span>
+                    <img class="img-profile rounded-circle mr-3" src="{{ url('photo/undraw_profile.svg') }}" height="40" width="auto">
+                    <span class="align-middle">Koordinator Skripsi . <?=tgl_indo(substr($item->created_at, 0, 10), false);?></span>
                 </div>
                   <h4 class="mb-3 text-left">{{ $item->judul }}</h4>
                   @php
@@ -72,7 +86,9 @@
               </div>
             </div>
           @endforeach
-      </main>
+
+        </main>
+        <img class="img-responsive mt-5" src="{{ url('footer template.png') }}" alt="" sizes="" srcset="" width="100%" height="auto">
     
     
 </body>

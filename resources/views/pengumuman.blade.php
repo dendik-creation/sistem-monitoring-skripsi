@@ -32,28 +32,31 @@
 
 <body id="page-top">
 
-    <nav class="navbar navbar-expand-md py-3 navbar-dark bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">Sistem Monitoring Skripsi</a>
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/login">Login</a>
-                    </li>
-                </ul>
-            </div>
-          </div>
+  <nav class="navbar navbar-expand-md py-4 navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand ml-5" href="/">Sistem Monitoring Skripsi</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        {{-- <span class="navbar-toggler-icon"></span> --}}
+      </button>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/login">Login</a>
+                </li>
+            </ul>
         </div>
-      </nav>
+      </div>
+    </div>
+  </nav>
 
       
       
         <div class="row ">
           <div class="col-md-8">
             <div class="row ml-4 align-items-center p-3 mb-4 mt-4">
-              <a href="{{ url()->previous() }}" class="mr-5"><i class="fas fa-fw fa-2x fa-arrow-left"></i></a>
-              <img class="img-profile rounded-circle" src="{{ url('photo/undraw_profile.svg') }}" height="40" width="auto">
-              <span class="align-middle ml-4">Koordinator Skripsi . <?=tgl_indo(substr($data->created_at, 0, 10), false);?></span>
+              <a href="/" class="mr-3"><i class="fas fa-fw fa-2x fa-arrow-left"></i></a>
+              <img class="img-profile rounded-circle mr-3" src="{{ url('photo/undraw_profile.svg') }}" height="40" width="auto">
+              <span class="align-middle">Koordinator Skripsi . <?=tgl_indo(substr($data->created_at, 0, 10), false);?></span>
             </div>
             <h2 class="text-left mt-2 mb-5 ml-5">{{ $data->judul }}</h2>
               <center>
@@ -73,8 +76,8 @@
                 @foreach ($pengumuman as $item)
                 <div class="row bg-white p-2 rounded mb-4">
                   <div class="row ml-4 align-items-center p-3 mb-2">
-                      <img class="img-profile rounded-circle" src="{{ url('photo/undraw_profile.svg') }}" height="40" width="auto">
-                      <span class="align-middle ml-4">Koordinator Skripsi . <?=tgl_indo(substr($item->created_at, 0, 10), false);?></span>
+                      <img class="img-profile rounded-circle mr-3" src="{{ url('photo/undraw_profile.svg') }}" height="40" width="auto">
+                      <span class="align-middle">Koordinator Skripsi . <?=tgl_indo(substr($item->created_at, 0, 10), false);?></span>
                   </div>
                   <div class="row ml-4 mr-4">
                     <div class="col-md-12">

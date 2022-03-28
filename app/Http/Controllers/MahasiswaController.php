@@ -19,6 +19,8 @@ use App\PesanBimbinganModel;
 use App\BerkasUjianModel;
 use App\PlotPengujiModel;
 use App\BidangModel;
+use ZipArchive;
+use File;
 
 class MahasiswaController extends Controller
 {
@@ -330,16 +332,10 @@ class MahasiswaController extends Controller
     }
     public function insertBerkas(Request $request){
         $this->validate($request, [
-			'byr' => 'max:2048',
-            'proposal' => 'max:10240',
-            'krs' => 'max:2048',
-            'transkrip' => 'max:2048',
+			'berkassempro' => 'max:20480',
 		],
         [
-            'byr.max' => 'File bukti pembayaran terlalu besar, maksimal 2 mb',
-            'proposal.max' => 'File proposal terlalu besar, maksimal 10 mb',
-            'krs.max' => 'File KRS terlalu besar, maksimal 2 mb',
-            'transkrip.max' => 'File transkrip nilai terlalu besar, maksimal 2 mb',
+            'berkassempro.max' => 'File terlalu besar, maksimal 20 mb',
         ]);
 
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
@@ -352,31 +348,37 @@ class MahasiswaController extends Controller
         $bsModel->id_proposal = $request->id_proposal;
         $bsModel->id_plot_dosbing = $request->id_plot_dosbing;
 
-		$byr = $request->file('byr');
-        $proposal = $request->file('proposal');
-        $krs = $request->file('krs');
-        $transkrip = $request->file('transkrip');
+		$berkassempro = $request->file('berkassempro');
+        // $proposal = $request->file('proposal');
+        // $krs = $request->file('krs');
+        // $transkrip = $request->file('transkrip');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_sempro';
 
-        $namabyr = rand().$byr->getClientOriginalName();
-        $namaproposal = rand().$proposal->getClientOriginalName();
-        $namakrs = rand().$krs->getClientOriginalName();
-        $namatranskrip = rand().$transkrip->getClientOriginalName();
+        $berkas = rand().$berkassempro->getClientOriginalName();
+        // $namaproposal = rand().$proposal->getClientOriginalName();
+        // $namakrs = rand().$krs->getClientOriginalName();
+        // $namatranskrip = rand().$transkrip->getClientOriginalName();
 
-        $byr->move($tujuan_upload,$namabyr);
-        $proposal->move($tujuan_upload,$namaproposal);
-        $krs->move($tujuan_upload,$namakrs);
-        $transkrip->move($tujuan_upload,$namatranskrip);
+        $berkassempro->move($tujuan_upload,$berkas);
+        // $proposal->move($tujuan_upload,$namaproposal);
+        // $krs->move($tujuan_upload,$namakrs);
+        // $transkrip->move($tujuan_upload,$namatranskrip);
 
-        $bsModel->scan_bukti_bayar = $namabyr;
-        $bsModel->proposal = $namaproposal;
-        $bsModel->krs = $namakrs;
-        $bsModel->transkrip = $namatranskrip;
+        $bsModel->berkas_sempro = $berkas;
+        // $bsModel->proposal = $namaproposal;
+        // $bsModel->krs = $namakrs;
+        // $bsModel->transkrip = $namatranskrip;
 
         $bsModel->created_at = Carbon::now('GMT+7');
 
         $bsModel->save();
+
+        $zip = new ZipArchive;
+        $res = $zip->open('filemhs/'.$request->nim.'/berkas_sempro/'.$berkas);
+        $zip->extractTo('filemhs/'.$request->nim.'/berkas_sempro/extract');
+        $zip->close();
+       
 
         return redirect('mahasiswa/proposal/daftarsempro')->with(['success' => 'Berhasil']);
     }
@@ -395,31 +397,36 @@ class MahasiswaController extends Controller
 
         // unlink('filemhs/'.$request->nim.'/berkas_sempro'.'/'.$delberkaslama->berkas_sempro);
 
-        $byr = $request->file('byr');
-        $proposal = $request->file('proposal');
-        $krs = $request->file('krs');
-        $transkrip = $request->file('transkrip');
+        $berkassempro = $request->file('berkassempro');
+        // $proposal = $request->file('proposal');
+        // $krs = $request->file('krs');
+        // $transkrip = $request->file('transkrip');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_sempro';
 
-        $namabyr = rand().$byr->getClientOriginalName();
-        $namaproposal = rand().$proposal->getClientOriginalName();
-        $namakrs = rand().$krs->getClientOriginalName();
-        $namatranskrip = rand().$transkrip->getClientOriginalName();
+        $berkas = rand().$berkassempro->getClientOriginalName();
+        // $namaproposal = rand().$proposal->getClientOriginalName();
+        // $namakrs = rand().$krs->getClientOriginalName();
+        // $namatranskrip = rand().$transkrip->getClientOriginalName();
 
-        $byr->move($tujuan_upload,$namabyr);
-        $proposal->move($tujuan_upload,$namaproposal);
-        $krs->move($tujuan_upload,$namakrs);
-        $transkrip->move($tujuan_upload,$namatranskrip);
+        $berkassempro->move($tujuan_upload,$berkas);
+        // $proposal->move($tujuan_upload,$namaproposal);
+        // $krs->move($tujuan_upload,$namakrs);
+        // $transkrip->move($tujuan_upload,$namatranskrip);
 
         $data = DB::table('berkas_sempro')
             ->where('id', $id)
             ->update(
-            ['scan_bukti_bayar' => $namabyr,
-            'proposal' => $namaproposal,
-            'krs' => $namakrs,
-            'transkrip' => $namatranskrip,
-            'status' => 'Menunggu Dijadwalkan']);
+            ['berkas_sempro' => $berkas,
+            // 'proposal' => $namaproposal,
+            // 'krs' => $namakrs,
+            // 'transkrip' => $namatranskrip,
+            'status' => 'Menunggu Verifikasi']);
+
+        $zip = new ZipArchive;
+        $res = $zip->open('filemhs/'.$request->nim.'/berkas_sempro/'.$berkas);
+        $zip->extractTo('filemhs/'.$request->nim.'/berkas_sempro/extract');
+        $zip->close();
         
         return redirect('mahasiswa/proposal/daftarsempro')->with(['success' => 'Berhasil']);
     }
@@ -853,18 +860,10 @@ class MahasiswaController extends Controller
     }
     public function insertBerkasUjian(Request $request){
         $this->validate($request, [
-			'byr' => 'max:2048',
-            'laporan' => 'max:20480',
-            'transkrip' => 'max:2048',
-            'ketpengumpulan' => 'max:2048',
-            'turnitin' => 'max:2048',
+			'berkasujian' => 'max:3072',
 		],
         [
-            'byr.max' => 'File bukti pembayaran terlalu besar, maksimal 2 mb',
-            'laporan.max' => 'File laporan terlalu besar, maksimal 20 mb',
-            'transkrip.max' => 'File transkrip nilai terlalu besar, maksimal 2 mb',
-            'ketpengumpulan.max' => 'File keterangan terlalu besar, maksimal 2 mb',
-            'turnitin.max' => 'File turnitin terlalu besar, maksimal 2 mb',
+            'berkasujian.max' => 'File terlalu besar, maksimal 30 mb',
         ]);
 
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
@@ -877,35 +876,17 @@ class MahasiswaController extends Controller
         $buModel->id_proposal = $request->id_proposal;
         // $buModel->id_plot_penguji = $request->id_plot_penguji;
 
-        
-
-        $byr = $request->file('byr');
-        $laporan = $request->file('laporan');
-        $transkrip = $request->file('transkrip');
-        $ketpengumpulan = $request->file('ketpengumpulan');
-        $turnitin = $request->file('turnitin');
+        $berkasujian = $request->file('berkasujian');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_ujian';
 
-        $namabyr = rand().$byr->getClientOriginalName();
-        $namalaporan = rand().$laporan->getClientOriginalName();
-        $namatranskrip = rand().$transkrip->getClientOriginalName();
-        $namaketpengumpulan = rand().$ketpengumpulan->getClientOriginalName();
-        $namaturnitin = rand().$turnitin->getClientOriginalName();
+        $berkas = rand().$berkasujian->getClientOriginalName();
 
-        $byr->move($tujuan_upload,$namabyr);
-        $laporan->move($tujuan_upload,$namalaporan);
-        $transkrip->move($tujuan_upload,$namatranskrip);
-        $ketpengumpulan->move($tujuan_upload,$namaketpengumpulan);
-        $turnitin->move($tujuan_upload,$namaturnitin);
+        $berkasujian->move($tujuan_upload,$berkas);
 
-        $buModel->scan_bukti_bayar = $namabyr;
-        $buModel->laporan = $namalaporan;
-        $buModel->transkrip = $namatranskrip;
-        $buModel->ketpengumpulan = $namaketpengumpulan;
-        $buModel->turnitin = $namaturnitin;
+        $buModel->berkas_ujian = $berkas;
 
-
+        
 
 		// $file = $request->file('berkas_ujian');
 
@@ -920,6 +901,11 @@ class MahasiswaController extends Controller
         $buModel->created_at = Carbon::now('GMT+7');
 
         $buModel->save();
+
+        $zip = new ZipArchive;
+        $res = $zip->open('filemhs/'.$request->nim.'/berkas_ujian/'.$berkas);
+        $zip->extractTo('filemhs/'.$request->nim.'/berkas_ujian/extract');
+        $zip->close();
 
         return redirect('mahasiswa/skripsi/daftarujian')->with(['success' => 'Berhasil']);
     }
@@ -938,35 +924,24 @@ class MahasiswaController extends Controller
 
         // unlink('filemhs/'.$request->nim.'/berkas_ujian'.'/'.$delberkaslama->berkas_ujian);
 
-        $byr = $request->file('byr');
-        $laporan = $request->file('laporan');
-        $transkrip = $request->file('transkrip');
-        $ketpengumpulan = $request->file('ketpengumpulan');
-        $turnitin = $request->file('turnitin');
+        $berkasujian = $request->file('berkasujian');
 
         $tujuan_upload = 'filemhs/'.$request->nim.'/berkas_ujian';
 
-        $namabyr = rand().$byr->getClientOriginalName();
-        $namalaporan = rand().$laporan->getClientOriginalName();
-        $namatranskrip = rand().$transkrip->getClientOriginalName();
-        $namaketpengumpulan = rand().$ketpengumpulan->getClientOriginalName();
-        $namaturnitin = rand().$turnitin->getClientOriginalName();
+        $berkas = rand().$berkasujian->getClientOriginalName();
 
-        $byr->move($tujuan_upload,$namabyr);
-        $laporan->move($tujuan_upload,$namalaporan);
-        $transkrip->move($tujuan_upload,$namatranskrip);
-        $ketpengumpulan->move($tujuan_upload,$namaketpengumpulan);
-        $turnitin->move($tujuan_upload,$namaturnitin);
+        $berkasujian->move($tujuan_upload,$berkas);
 
         $data = DB::table('berkas_ujian')
             ->where('id', $id)
             ->update(
-            ['scan_bukti_bayar' => $namabyr,
-            'laporan' => $namalaporan,
-            'transkrip' => $namatranskrip,
-            'ketpengumpulan' => $namaketpengumpulan,
-            'turnitin' => $namaturnitin,
-            'status' => 'Menunggu Dijadwalkan']);
+            ['berkas_ujian' => $berkas,
+            'status' => 'Menunggu Verifikasi']);
+
+        $zip = new ZipArchive;
+        $res = $zip->open('filemhs/'.$request->nim.'/berkas_ujian/'.$berkas);
+        $zip->extractTo('filemhs/'.$request->nim.'/berkas_ujian/extract');
+        $zip->close();
         
         return redirect('mahasiswa/skripsi/daftarujian')->with(['success' => 'Berhasil']);
     }

@@ -28,7 +28,7 @@
                     <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat">
                         <i class="fa fa-plus"></i> Daftar
                     </a>
-                @elseif($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
+                @elseif($cek->status == "Menunggu Verifikasi" || $cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
                     <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat disabled">
                         <i class="fa fa-plus"></i> Daftar
                     </a>
@@ -81,10 +81,7 @@
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item -> judul }}</td>
                                     <td>
-                                        <a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->scan_bukti_bayar}}"><?=$item->scan_bukti_bayar == null ? '' : 'Download bukti pembayaran'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->proposal}}"><?=$item->proposal == null ? '' : 'Download proposal'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->krs}}"><?=$item->krs == null ? '' : 'Download KRS'?><br>
-                                        <a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->transkrip}}"><?=$item->transkrip == null ? '' : 'Download transkrip nilai'?><br>
+                                        <a href="/download/{{ $item->nim }}/berkas_sempro/{{$item->berkas_sempro}}"><?=$item->berkas_sempro == null ? '' : 'Download berkas sempro'?><br>
                                     </td>
                                     <td>
                                         @php
@@ -155,10 +152,10 @@
                                                     {{method_field('PUT')}}
                                                     <div class="modal-body">
                                                       <div class="form-group">
-                                                        <label for="" class="small">Scan Bukti Pembayaran (JPG/PNG/PDF) (Max 2MB)</label><br>
-                                                        <input type="file" name="byr" accept=".jpg,.jpeg,.png,.pdf">
+                                                        <label for="" class="small">Berkas* (ZIP) (Max 20MB)</label><br>
+                                                        <input type="file" name="berkassempro" accept=".zip,.rar,.7zip">
                                                       </div>
-                                                      <div class="form-group">
+                                                      {{-- <div class="form-group">
                                                         <label for="" class="small">Proposal Skripsi (PDF) (Max 10MB)</label><br>
                                                         <input type="file" name="proposal" accept=".jpg,.jpeg,.png,.pdf">
                                                       </div>
@@ -169,7 +166,7 @@
                                                       <div class="form-group">
                                                         <label for="" class="small">Scan Transkrip Nilai (JPG/PNG/PDF) (Max 2MB)</label><br>
                                                         <input type="file" name="transkrip" accept=".jpg,.jpeg,.png,.pdf">
-                                                      </div>
+                                                      </div> --}}
                                                       <input type="hidden" name="nim" value="{{$item->nim}}" id="">
                                                     </div>
                                                     <div class="modal-footer">
