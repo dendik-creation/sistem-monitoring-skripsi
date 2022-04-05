@@ -330,7 +330,7 @@
                             <td>${element.judul}</td>
                             ${ket}
                             <td>
-                                <a href="/dosen/monitoring/proposal/detail/${element.id}" class="btn btn-sm btn-primary">Detail</a>
+                                <a href="/dosen/monitoring/proposal/detail/${element.id}" class="btn btn-sm btn-primary">Lihat detail</a>
                             </td>
                         </tr>
                         `)
@@ -450,7 +450,7 @@
                             <td>${bimbingan_kepada}</td>
                             <td>${status}</td>
                             <td>
-                                <a href="/dosen/monitoring/bimbingan/detail/${element.nim}/${element.id}" class="btn btn-sm btn-primary">Lihat Detail</a>
+                                <a href="/dosen/monitoring/bimbingan/detail/${element.nim}/${element.id}" class="btn btn-sm btn-primary">Lihat detail</a>
                             </td>
                         </tr>
                         `)
@@ -517,7 +517,7 @@
                             ${status_skripsi}
                             ${status_ujian}
                             <td>
-                                <a href="/dosen/mahasiswa/detail/${element.nim}" class="btn btn-sm btn-primary">Lihat Detail</a>
+                                <a href="/dosen/mahasiswa/detail/${element.nim}" class="btn btn-sm btn-primary">Lihat detail</a>
                             </td>
                         </tr>
                         `)

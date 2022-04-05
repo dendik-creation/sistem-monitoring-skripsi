@@ -50,10 +50,10 @@
 
           <div class="col-md-12 ">
             <div class="row align-items-center p-3 mb-4">
-              <img class="img-responsive mr-5" src="{{ url('TI UMK.jpg') }}" height="auto" width="45%">
+              <img class="img-responsive mr-5" src="{{ url('TI UMK.jpg') }}" height="auto" width="40%">
               <div class="row-md-12">
-                <h1 class="align-middle ml-5">Sistem Monitoring Skripsi Prodi Teknik<br>Informatika Universitas Muria Kudus</h1>
-                  <a class="btn btn-primary btn-lg ml-5 mt-4" href="/login">Login</a>
+                <h4 class="align-middle ml-5">Sistem Monitoring Skripsi Prodi Teknik<br>Informatika Universitas Muria Kudus</h4>
+                  <a class="btn btn-primary ml-5 mt-2" href="/login">Login</a>
               </div>
           </div>
           </div>
@@ -61,7 +61,7 @@
         </div>
 
           <div class=" mb-5 text-center">
-              <h1>Pengumuman</h1>
+              <h4>Pengumuman</h4>
           </div>
         
           @foreach ($data as $item)

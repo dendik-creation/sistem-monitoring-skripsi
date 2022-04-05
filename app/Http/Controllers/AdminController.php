@@ -721,7 +721,7 @@ class AdminController extends Controller
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data[0]->dosbing2)->first();
         
-        return view('admin.proposal.pendaftar.detail', compact('data', 'user', 'dosen1', 'dosen2', 'heh'));
+        return view('admin.proposal.pendaftar.detail', compact('data', 'user', 'dosen1', 'dosen2',));
     }
 
     public function insertJadwalSempro(Request $request){

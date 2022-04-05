@@ -417,6 +417,7 @@
                             <td>${element.judul}</td>
                             <td>${element.nilai_akhir}</td>
                             <td>${element.grade_akhir}</td>
+                            <td><a href="/sempro/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
                     
@@ -446,6 +447,7 @@
                             <td>${element.judul}</td>
                             <td>${element.nilai_akhir}</td>
                             <td>${element.grade_akhir}</td>
+                            <td><a href="/ujian/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
                     

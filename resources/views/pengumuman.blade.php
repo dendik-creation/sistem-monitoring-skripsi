@@ -63,7 +63,7 @@
               <img src="{{ url('pengumuman/'.$data->gambar) }}" alt="" srcset="" height="auto" width="70%" class="img-responsive">
               </center>
             <div class="row mt-4 mb-5 ml-5 mr-5">
-              <p class="text-left ">{!! $data->deskripsi !!}</p>
+              <span class="text-left h5">{!! $data->deskripsi !!}</span>
             </div>
           </div>
 
