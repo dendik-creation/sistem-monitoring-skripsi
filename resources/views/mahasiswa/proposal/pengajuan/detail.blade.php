@@ -46,9 +46,13 @@
                     </tbody>
                   </table>
                 <div class="ml-2 mt-4">
-                  @if ($item->ket1 =="Ditolak" || $item->ket2 =="Ditolak")
+                  @if($item->ket1 =="Menunggu ACC" || $item->ket2 =="Menunggu ACC")
+                  <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modalrev{{$item->id}}" disabled>
+                    Upload Revisi Proposal
+                  </button>
+                  @elseif ($item->ket1 =="Ditolak" || $item->ket2 =="Ditolak")
                   <a class="btn btn-danger mr-2" style="pointer-events: none">
-                    Proposal ditolak, silahkan ajukan proposal baru
+                    Proposal ditolak, silakan ajukan proposal baru
                   </a>
                   @elseif($item->ket1 =="Revisi" && $item->ket2 =="Revisi")
                   <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modalrev{{$item->id}}">

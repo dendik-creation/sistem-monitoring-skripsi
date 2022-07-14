@@ -70,7 +70,10 @@
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
                     <i class="fa fa-plus"></i> Daftar
                 </a> 
-                
+                @else
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
+                    <i class="fa fa-plus"></i> Daftar
+                </a>
                 
                 @endif
             </div>
@@ -123,7 +126,7 @@
                                         @php
                                             $jadwal = DB::table('jadwal_ujian')
                                             ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
-                                            ->select('jadwal_ujian.id as id', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3')
+                                            ->select('jadwal_ujian.id as id', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'jadwal_ujian.tanggal as tanggal')
                                             ->where('berkas_ujian.id', $item->id)
                                             ->first();
                                         @endphp
@@ -146,8 +149,18 @@
                                             @endphp
                                             <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian</p> 
                                             {{-- - <p style="pointer-events: none;" class="btn btn-sm <?=//($ba->berita_acara == "Lulus" ? 'btn-success' : ($ba->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p> --}}
-                                            @else
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Terjadwal</p> 
+                                            @elseif ($jadwal->status1 == "Belum" && $jadwal->status2 == "Belum" && $jadwal->status3 == "Belum")
+                                                
+                                                @php
+                                                    $row_date = strtotime($jadwal->tanggal);
+                                                    $today = strtotime(date('Y-m-d'));
+
+                                                @endphp
+                                                    @if ($row_date<$today)
+                                                    <p style="pointer-events: none;" class="btn btn-sm btn-danger">Belum ujian</p>
+                                                    @else
+                                                    <p style="pointer-events: none;" class="btn btn-sm btn-success">Terjadwal</p>
+                                                    @endif
                                             @endif
                                             @endif
                                         @endif

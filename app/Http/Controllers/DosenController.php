@@ -111,13 +111,15 @@ class DosenController extends Controller
                 $user = Auth::user();
                 $dosen = $user -> no_induk;
                 $query ->where('plot_dosbing.dosbing1', $dosen)
-                        ->where('jadwal_sempro.status1', 'Belum');
+                        ->where('jadwal_sempro.status1', 'Belum')
+                        ->whereDate('jadwal_sempro.tanggal', '>', Carbon::now());;
             })
             ->orWhere(function ($query) {
                 $user = Auth::user();
                 $dosen = $user -> no_induk;
                 $query->where('jadwal_sempro.status2', 'Belum')
-                        ->where('plot_dosbing.dosbing2', $dosen);
+                        ->where('plot_dosbing.dosbing2', $dosen)
+                        ->whereDate('jadwal_sempro.tanggal', '>', Carbon::now());;
             })
             ->count();
 
@@ -134,25 +136,29 @@ class DosenController extends Controller
                 $user = Auth::user();
                 $dosen = $user -> no_induk;
                 $query ->where('jadwal_ujian.ketua_penguji', $dosen)
-                        ->where('jadwal_ujian.status1', 'Belum');
+                        ->where('jadwal_ujian.status1', 'Belum')
+                        ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());;
             })
             ->orWhere(function ($query) {
                 $user = Auth::user();
                 $dosen = $user -> no_induk;
                 $query->where('jadwal_ujian.anggota_penguji_1', $dosen)
-                      ->where('jadwal_ujian.status2', 'Belum');
+                      ->where('jadwal_ujian.status2', 'Belum')
+                      ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());;
             })
             ->orWhere(function ($query) {
                 $user = Auth::user();
                 $dosen = $user -> no_induk;
                 $query->where('jadwal_ujian.anggota_penguji_2', $dosen)
-                      ->where('jadwal_ujian.status3', 'Belum');
+                      ->where('jadwal_ujian.status3', 'Belum')
+                      ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());;
             })
             ->orWhere(function ($query) {
                 $user = Auth::user();
                 $dosen = $user -> no_induk;
                 $query->where('plot_dosbing.dosbing2', $dosen)
-                        ->where('jadwal_ujian.status4', 'Belum');
+                        ->where('jadwal_ujian.status4', 'Belum')
+                        ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());;
             })
             ->count();
 
@@ -513,6 +519,10 @@ class DosenController extends Controller
             ['ket2' => 'Ditolak',
             'komentar2' => $komentar]);
         }
+        $data = DB::table('mahasiswa')
+            ->where('nim', $request->nim)
+            ->update(
+            ['status_proposal' => 'Sudah mengajukan proposal - Ditolak']);
 
         return redirect('dosen/monitoring/proposal')->with(['success' => 'Berhasil']);
     }
@@ -614,13 +624,15 @@ class DosenController extends Controller
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query ->where('plot_dosbing.dosbing1', $dosen)
-                    ->where('jadwal_sempro.status1', 'Belum');
+                    ->where('jadwal_sempro.status1', 'Belum')
+                    ->whereDate('jadwal_sempro.tanggal', '>', Carbon::now());
         })
         ->orWhere(function ($query) {
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query->where('jadwal_sempro.status2', 'Belum')
-                    ->where('plot_dosbing.dosbing2', $dosen);
+                    ->where('plot_dosbing.dosbing2', $dosen)
+                    ->whereDate('jadwal_sempro.tanggal', '>', Carbon::now());
         })
         ->orderByRaw('jadwal_sempro.tanggal ASC')
         // ->orderByRaw('jadwal_sempro.id DESC')
@@ -1463,17 +1475,29 @@ class DosenController extends Controller
         ->where('bimbingan.id', $id)
         ->first();
 
-        $cek = DB::table('bimbingan')
+        // $cek = DB::table('bimbingan')
+        //             ->where('bimbingan.nim', $getid->nim)
+        //             ->orderByRaw('bimbingan.bimbingan_ke DESC')
+        //             ->first();
+
+        $cek1 = DB::table('bimbingan')
                     ->where('bimbingan.nim', $getid->nim)
+                    ->where('bimbingan.bimbingan_kepada', $dosen1->dosbing1)
                     ->orderByRaw('bimbingan.bimbingan_ke DESC')
                     ->first();
+
+        $cek2 = DB::table('bimbingan')
+        ->where('bimbingan.nim', $getid->nim)
+        ->where('bimbingan.bimbingan_kepada', $dosen2->dosbing2)
+        ->orderByRaw('bimbingan.bimbingan_ke DESC')
+        ->first();
 
         // dd($cek);
 
         $data = DB::table('mahasiswa')
-        ->where('nim', $cek->nim)
+        ->where('nim', $getid->nim)
         ->update(
-        ['status_bimbingan' => 'Bimbingan Ke-'.$cek->bimbingan_ke]);
+        ['status_bimbingan' => 'Bimbingan Ke-'.$cek1->bimbingan_ke.' & Bimbingan Ke-'.$cek2->bimbingan_ke]);
         
 
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
@@ -1560,15 +1584,27 @@ class DosenController extends Controller
         ->where('bimbingan.id', $id)
         ->first();
 
-        $cek = DB::table('bimbingan')
+        $cek1 = DB::table('bimbingan')
                     ->where('bimbingan.nim', $getid->nim)
+                    ->where('bimbingan.bimbingan_kepada', $dosen1->dosbing1)
                     ->orderByRaw('bimbingan.bimbingan_ke DESC')
                     ->first();
 
-        $data = DB::table('mahasiswa')
-        ->where('nim', $cek->nim)
-        ->update(
-        ['status_bimbingan' => 'Siap ujian']);
+        $cek2 = DB::table('bimbingan')
+        ->where('bimbingan.nim', $getid->nim)
+        ->where('bimbingan.bimbingan_kepada', $dosen2->dosbing2)
+        ->orderByRaw('bimbingan.bimbingan_ke DESC')
+        ->first();
+
+                    // dd($cek2);
+
+                    if($cek1->ket1 == "Siap ujian" && $cek2->ket2 == "Siap ujian"){
+                        $data = DB::table('mahasiswa')
+                        ->where('nim', $getid->nim)
+                        ->update(
+                        ['status_bimbingan' => 'Siap ujian']);
+                    }
+
 
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
     }
@@ -1647,25 +1683,29 @@ class DosenController extends Controller
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query ->where('jadwal_ujian.ketua_penguji', $dosen)
-                    ->where('jadwal_ujian.status1', 'Belum');
+                    ->where('jadwal_ujian.status1', 'Belum')
+                    ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());
         })
         ->orWhere(function ($query) {
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query->where('jadwal_ujian.anggota_penguji_1', $dosen)
-                    ->where('jadwal_ujian.status2', 'Belum');
+                    ->where('jadwal_ujian.status2', 'Belum')
+                    ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());
         })
         ->orWhere(function ($query) {
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query->where('jadwal_ujian.anggota_penguji_2', $dosen)
-                    ->where('jadwal_ujian.status3', 'Belum');
+                    ->where('jadwal_ujian.status3', 'Belum')
+                    ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());
         })
         ->orWhere(function ($query) {
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query->where('plot_dosbing.dosbing2', $dosen)
-                    ->where('jadwal_ujian.status4', 'Belum');
+                    ->where('jadwal_ujian.status4', 'Belum')
+                    ->whereDate('jadwal_ujian.tanggal', '>', Carbon::now());
         })
         ->orderByRaw('jadwal_ujian.tanggal ASC')
         // ->orderByRaw('jadwal_ujian.id DESC')
@@ -1879,7 +1919,36 @@ class DosenController extends Controller
         return view('dosen.ujian.readhasil', compact('data', 'user'));
     }
 
-    public function viewHasilujianFilter($id){
+    public function viewHasilSemproFilter($id){
+        if($id==0){
+            $data = DB::table('hasil_sempro')
+            ->join('mahasiswa', 'hasil_sempro.nim', '=', 'mahasiswa.nim')
+            ->join('proposal', 'hasil_sempro.id_proposal', '=', 'proposal.id')
+            ->join('jadwal_sempro', 'hasil_sempro.id_jadwal_sempro', '=', 'jadwal_sempro.id')
+            ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+            ->join('semester', 'hasil_sempro.id_semester', '=', 'semester.id')
+            ->select('hasil_sempro.id as id', 'hasil_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'hasil_sempro.berita_acara as berita_acara',
+            'jadwal_sempro.tanggal as tanggal', 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'semester.semester as semester', 'semester.tahun as tahun', 'hasil_sempro.*')
+            ->orderByRaw('hasil_sempro.id DESC')
+            ->get();
+        }else{
+            $data = DB::table('hasil_sempro')
+            ->join('mahasiswa', 'hasil_sempro.nim', '=', 'mahasiswa.nim')
+            ->join('proposal', 'hasil_sempro.id_proposal', '=', 'proposal.id')
+            ->join('jadwal_sempro', 'hasil_sempro.id_jadwal_sempro', '=', 'jadwal_sempro.id')
+            ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
+            ->join('semester', 'hasil_sempro.id_semester', '=', 'semester.id')
+            ->select('hasil_sempro.id as id', 'hasil_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'hasil_sempro.berita_acara as berita_acara',
+            'jadwal_sempro.tanggal as tanggal', 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'semester.semester as semester', 'semester.tahun as tahun', 'hasil_sempro.*')
+            ->where('semester.id', $id)
+            ->orderByRaw('hasil_sempro.id DESC')
+            ->get();
+        }
+
+        return $data;
+    }
+
+    public function viewHasilUjianFilter($id){
         if($id==0){
             $data = DB::table('hasil_ujian')
             ->join('mahasiswa', 'hasil_ujian.nim', '=', 'mahasiswa.nim')
@@ -1887,33 +1956,34 @@ class DosenController extends Controller
             ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
+            ->join('semester', 'hasil_ujian.id_semester', '=', 'semester.id')
             // ->join('jadwal_ujian', 'berkas_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
             ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'jadwal_ujian.ketua_penguji as ketua_penguji', 'jadwal_ujian.anggota_penguji_1 as anggota_penguji_1', 'jadwal_ujian.anggota_penguji_2 as anggota_penguji_2',
-            'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara', 'hasil_ujian.*')
-            ->where(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query ->where('jadwal_ujian.ketua_penguji', $dosen)
-                        ->where('jadwal_ujian.status1', 'Sudah');
-            })
-            ->orWhere(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query->where('jadwal_ujian.anggota_penguji_1', $dosen)
-                        ->where('jadwal_ujian.status2', 'Sudah');
-            })
-            ->orWhere(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query->where('jadwal_ujian.anggota_penguji_2', $dosen)
-                        ->where('jadwal_ujian.status3', 'Sudah');
-            })
-            ->orWhere(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query->where('plot_dosbing.dosbing2', $dosen)
-                        ->where('jadwal_ujian.status4', 'Sudah');
-            })
+            'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara','semester.semester as semester', 'semester.tahun as tahun', 'hasil_ujian.*')
+            // ->where(function ($query) {
+            //     $user = Auth::user();
+            //     $dosen = $user -> no_induk;
+            //     $query ->where('jadwal_ujian.ketua_penguji', $dosen)
+            //             ->where('jadwal_ujian.status1', 'Sudah');
+            // })
+            // ->orWhere(function ($query) {
+            //     $user = Auth::user();
+            //     $dosen = $user -> no_induk;
+            //     $query->where('jadwal_ujian.anggota_penguji_1', $dosen)
+            //             ->where('jadwal_ujian.status2', 'Sudah');
+            // })
+            // ->orWhere(function ($query) {
+            //     $user = Auth::user();
+            //     $dosen = $user -> no_induk;
+            //     $query->where('jadwal_ujian.anggota_penguji_2', $dosen)
+            //             ->where('jadwal_ujian.status3', 'Sudah');
+            // })
+            // ->orWhere(function ($query) {
+            //     $user = Auth::user();
+            //     $dosen = $user -> no_induk;
+            //     $query->where('plot_dosbing.dosbing2', $dosen)
+            //             ->where('jadwal_ujian.status4', 'Sudah');
+            // })
             ->orderByRaw('hasil_ujian.id DESC')
             ->get();
         }else{
@@ -1923,34 +1993,13 @@ class DosenController extends Controller
             ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
+            ->join('semester', 'hasil_ujian.id_semester', '=', 'semester.id')
             // ->join('jadwal_ujian', 'berkas_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
             ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'jadwal_ujian.ketua_penguji as ketua_penguji', 'jadwal_ujian.anggota_penguji_1 as anggota_penguji_1', 'jadwal_ujian.anggota_penguji_2 as anggota_penguji_2',
-            'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara', 'hasil_ujian.*')
-            ->where(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query ->where('jadwal_ujian.ketua_penguji', $dosen)
-                        ->where('jadwal_ujian.status1', 'Sudah');
-            })
-            ->orWhere(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query->where('jadwal_ujian.anggota_penguji_1', $dosen)
-                        ->where('jadwal_ujian.status2', 'Sudah');
-            })
-            ->orWhere(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query->where('jadwal_ujian.anggota_penguji_2', $dosen)
-                        ->where('jadwal_ujian.status3', 'Sudah');
-            })
-            ->orWhere(function ($query) {
-                $user = Auth::user();
-                $dosen = $user -> no_induk;
-                $query->where('plot_dosbing.dosbing2', $dosen)
-                        ->where('jadwal_ujian.status4', 'Sudah');
-            })
+            'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara','semester.semester as semester', 'semester.tahun as tahun', 'hasil_ujian.*')
             ->where('semester.id', $id)
+        
+            
             ->orderByRaw('hasil_ujian.id DESC')
             ->get();
         }

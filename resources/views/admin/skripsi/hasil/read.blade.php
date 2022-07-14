@@ -45,6 +45,7 @@
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
+                                <th>Status</th>
                                 <th>Total Nilai</th>
                                 <th>Grade</th>
                                 <th>Opsi</th>
@@ -59,6 +60,8 @@
                                     <td>{{ $item -> nim}}</td>
                                     <td>{{ $item -> nama}}</td>
                                     <td>{{ $item -> judul}}</td>
+                                    <td><a style="pointer-events: none;" class="btn btn-sm <?=($item->berita_acara == "Lulus" ? 'btn-success' : ($item->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</a></td>
+
                                     {{-- <td>{{ tgl_indo($item->tanggal, true)}}</td> --}}
                                     {{-- @php
                                     $ba = DB::table('hasil_sempro')

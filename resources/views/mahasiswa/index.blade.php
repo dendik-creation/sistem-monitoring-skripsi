@@ -23,6 +23,53 @@
         </div>
         @endif
 
+        @php
+        $cek = DB::table('bimbingan')
+                    ->where('bimbingan.nim', $user->no_induk)
+                    ->count();
+                    // dd($cek);
+        
+        
+        if($cek>1){
+        $cek1 = DB::table('bimbingan')
+                    ->where('bimbingan.nim', $user->no_induk)
+                    ->where('bimbingan.bimbingan_kepada', $dosen1->nidn)
+                    ->orderByRaw('bimbingan.bimbingan_ke DESC')
+                    ->first();
+
+        $cek2 = DB::table('bimbingan')
+        ->where('bimbingan.nim', $user->no_induk)
+        ->where('bimbingan.bimbingan_kepada', $dosen2->nidn)
+        ->orderByRaw('bimbingan.bimbingan_ke DESC')
+        ->first();
+        // dd($cek1);
+
+        $row_date1 = new DateTime($cek1->created_at);
+        $row_date2 = new DateTime($cek2->created_at);
+        $today = new DateTime();
+        $tgl1 = $row_date1->diff($today)->format("%d");
+        $tgl2 = $row_date2->diff($today)->format("%d");
+        }
+
+        @endphp
+            @if ($cek>1)
+                @if ($tgl1>14 && $cek1->ket1 != "Siap ujian")
+                <div class="alert alert-warning alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>Anda terakhir bimbingan pada <?=tgl_indo(substr($cek1->created_at, 0, 10), true);?> kepada Dosen Pembimbing Utama, silakan melakukan bimbingan lagi. <a href="/mahasiswa/skripsi/bimbingan/tambah">Tambah Bimbingan</a></strong>
+                </div>  
+                @endif          
+                @if($tgl2>14 && $cek2->ket2 != "Siap ujian")
+                <div class="alert alert-warning alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button> 
+                <strong>Anda terakhir bimbingan pada <?=tgl_indo(substr($cek2->created_at, 0, 10), true);?> kepada Dosen Pembimbing Pembantu, silakan melakukan bimbingan lagi. <a href="/mahasiswa/skripsi/bimbingan/tambah/2">Tambah Bimbingan</a></strong>
+                </div>
+                @endif
+            @endif
+    
+       
+        
+
         <!-- Content Row -->
         <div class="row">
             <div class="col-md-12">
@@ -56,8 +103,10 @@
                                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">Pengajuan Proposal</div>
                                     {{-- hhhh --}}
                                     <div class="h5 mb-0 font-weight-bold text-gray-800 mb-4"> 
-                                        @if ($mhs -> status_proposal == "Belum mengajukan proposal")
-                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum mengajukan proposal</h5>
+                                        @if ($mhs -> status_proposal == "Belum mengajukan proposal" || $mhs -> status_proposal == "Sudah mengajukan proposal - Ditolak")
+                                            <h5 style="pointer-events: none;" class="text-danger font-weight-bold">{{ $mhs -> status_proposal }}</h5>
+                                        @elseif($mhs -> status_proposal == "Sudah mengajukan proposal - Menunggu ACC")
+                                        <h5 style="pointer-events: none;" class="text-warning font-weight-bold">Sudah mengajukan proposal - Menunggu ACC</h5>
                                         @else
                                             <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah mengajukan proposal</h5>
                                         @endif
@@ -68,6 +117,8 @@
                                             <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum seminar proposal</h5>
                                         @elseif($mhs -> status_sempro == "Sudah seminar proposal - Ditolak")
                                             <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Sudah seminar proposal - Ditolak</h5>
+                                            @elseif($mhs -> status_sempro == "Menunggu Seminar Proposal")
+                                    <h5 style="pointer-events: none;" class="text-warning font-weight-bold">Menunggu seminar proposal</h5>
                                         @elseif($mhs -> status_sempro == "Sudah seminar proposal - Diterima")
                                         <h5 style="pointer-events: none;" class="text-success font-weight-bold">Sudah seminar proposal - Diterima</h5>
                                         @endif
@@ -85,6 +136,8 @@
                                         
                                         @if($mhs -> status_ujian == 'Belum ujian')
                                             <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Belum ujian</h5>
+                                            @elseif($mhs -> status_ujian == "Menunggu Ujian")
+                              <h5 style="pointer-events: none;" class="text-warning font-weight-bold">Menunggu Ujian</h5>
                                         @elseif($mhs -> status_ujian == "Sudah ujian - Tidak Lulus")
                                         <h5 style="pointer-events: none;" class="text-danger font-weight-bold">Sudah ujian - Tidak Lulus</h5>
                                         @elseif($mhs -> status_ujian == "Sudah ujian - Lulus")

@@ -86,13 +86,29 @@ class AdminController extends Controller
         ['aktif' => 'N']
         );
 
-        $sModel = new SemesterModel;
+        $cek = DB::table('semester')
+        ->where('semester', $semester)
+        ->where('tahun', $tahun)->first();
 
-        $sModel->semester = $request->semester;
-        $sModel->tahun = $request->tahun;
-        $sModel->aktif = 'Y';
+        // dd($cek->id);
 
-        $sModel->save();
+        if($cek){
+            $data = DB::table('semester')
+        ->where('id', $cek->id)
+        ->update(
+        ['aktif' => 'Y']
+        );
+        }else{
+            $sModel = new SemesterModel;
+    
+            $sModel->semester = $request->semester;
+            $sModel->tahun = $request->tahun;
+            $sModel->aktif = 'Y';
+    
+            $sModel->save();
+
+        }
+
 
         return redirect('admin/semester')->with(['success' => 'Berhasil']);
     }
@@ -403,11 +419,48 @@ class AdminController extends Controller
         $user = DB::table('users')
             ->where('no_induk', $id)->delete();
         
-        $data = DB::table('mahasiswa')
+            
+            $del = DB::table('hasil_ujian')
+            ->where('nim', $id)->delete();
+            $del = DB::table('jadwal_ujian')
+            ->where('nim', $id)->delete();
+            $del = DB::table('berkas_ujian')
+            ->where('nim', $id)->delete();
+            $delb = DB::table('pesan_bimbingan')
+            ->join('bimbingan', 'pesan_bimbingan.id_bimbingan', '=', 'bimbingan.id')
+            ->where('bimbingan.nim', $id)->delete();
+            // dd($delb);
+            $del = DB::table('bimbingan')
+            // ->join('pesan_bimbingan', 'bimbingan.id', '=', 'pesan_bimbingan.id_bimbingan')
+            ->where('bimbingan.nim', $id)->delete();
+            $del = DB::table('status_skripsi')
+            ->where('nim', $id)->delete();
+            $del = DB::table('hasil_sempro')
+            ->where('nim', $id)->delete();
+            $del = DB::table('jadwal_sempro')
+            ->where('nim', $id)->delete();
+            $del = DB::table('berkas_sempro')
+            ->where('nim', $id)->delete();
+            // // $ambil = 
+            
+            $del = DB::table('proposal')
+            ->where('nim', $id)->delete();
+            $del = DB::table('plot_dosbing')
+            ->where('nim', $id)->delete();
+            $data = DB::table('mahasiswa')
             ->where('nim', $id)->delete();
 
         return back()->with(['success' => 'Berhasil']);
     }
+
+    // public function resetMahasiswa($id){
+    //     // $nim = $request->nim;
+    //     $data = DB::table('users')
+    //     ->where('no_induk', $id)
+    //     ->update(
+    //     ['password' => Hash::make($id),]
+    //     );
+    // }
     //End Mahasiswa
 
 

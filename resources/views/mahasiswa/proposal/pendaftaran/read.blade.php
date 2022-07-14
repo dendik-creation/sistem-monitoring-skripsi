@@ -87,7 +87,7 @@
                                         @php
                                             $jadwal = DB::table('jadwal_sempro')
                                             ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
-                                            ->select('jadwal_sempro.id as id', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2')
+                                            ->select('jadwal_sempro.id as id', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'jadwal_sempro.tanggal as tanggal')
                                             ->where('berkas_sempro.id', $item->id)
                                             ->first();
                                             // dd($jadwal);
@@ -118,8 +118,22 @@
                                                 {{-- - <p style="pointer-events: none;" class="btn btn-sm <?=//($ba->berita_acara == "Diterima" ? 'btn-success' : ($ba->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p> --}}
                                                 {{-- <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
                                                 <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a> --}}
-                                                @else
-                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Terjadwal</p> 
+                                                
+                                                @elseif ($jadwal->status1 == "Belum" && $jadwal->status2 == "Belum")
+                                                
+                                                @php
+                                                    $row_date = strtotime($jadwal->tanggal);
+                                                    $today = strtotime(date('Y-m-d'));
+
+                                                    @endphp
+                                                    @if ($row_date<$today)
+                                                    <p style="pointer-events: none;" class="btn btn-sm btn-danger">Belum seminar proposal</p>
+                                                    @else
+                                                    <p style="pointer-events: none;" class="btn btn-sm btn-success">Terjadwal</p>                                                     @endif
+                                                {{-- @elseif($jarak->d)
+                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Belum seminar proposal</p> --}}
+                                                {{-- @else --}}
+                                                
                                                 @endif
                                             @endif
                                         @endif

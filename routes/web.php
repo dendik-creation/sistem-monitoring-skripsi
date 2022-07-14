@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/mahasiswa/edit/{id}', 'AdminController@formEditMahasiswa')->name('formeditmahasiswa');
         Route::put('/admin/mahasiswa/{id}', 'AdminController@updateMahasiswa')->name('updatemahasiswa');
         Route::delete('/admin/mahasiswa/{id}', 'AdminController@deleteMahasiswa')->name('deletemahasiswa');
+        // Route::put('/admin/mahasiswa/reset/{id}', 'AdminController@resetMahasiswa')->name('resetmahasiswa');
         //End Mahasiswa
 
         //Proposal Plotting

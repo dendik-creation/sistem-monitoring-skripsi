@@ -537,7 +537,12 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                
+                    
+                    if(element.berita_acara ==  "Ditolak"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-danger">Ditolak`
+                    }else if(element.berita_acara ==  "Diterima"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">Diterima`
+                    }
 
                     $('#datatabel').append(`
                         <tr>
@@ -546,6 +551,7 @@
                             <td>${element.nim}</td>
                             <td>${element.nama}</td>
                             <td>${element.judul}</td>
+                            <td>${status}</td>
                             <td>${element.nilai_akhir}</td>
                             <td>${element.grade_akhir}</td>
                             <td><a href="/sempro/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
@@ -568,6 +574,11 @@
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
                 
+                    if(element.berita_acara ==  "Tidak Lulus"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-danger">Tidak Lulus`
+                    }else if(element.berita_acara ==  "Lulus"){
+                        var status = `<p style="pointer-events: none;" class="btn btn-sm btn-success">Lulus`
+                    }
 
                     $('#datatabel').append(`
                         <tr>
@@ -576,6 +587,7 @@
                             <td>${element.nim}</td>
                             <td>${element.nama}</td>
                             <td>${element.judul}</td>
+                            <td>${status}</td>
                             <td>${element.nilai_akhir}</td>
                             <td>${element.grade_akhir}</td>
                             <td><a href="/ujian/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>

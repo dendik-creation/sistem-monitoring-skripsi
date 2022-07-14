@@ -45,6 +45,7 @@
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
+                                <th>Status</th>
                                 <th>Total Nilai</th>
                                 <th>Grade</th>
                                 <th>Opsi</th>
@@ -59,6 +60,8 @@
                                     <td>{{ $item -> nim}}</td>
                                     <td>{{ $item -> nama}}</td>
                                     <td>{{ $item -> judul}}</td>
+                                    <td><a style="pointer-events: none;" class="btn btn-sm <?=($item->berita_acara == "Lulus" ? 'btn-success' : ($item->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</a></td>
+
                                     {{-- @php
                                     $ba = DB::table('hasil_ujian')
                                     ->join('jadwal_ujian', 'hasil_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')

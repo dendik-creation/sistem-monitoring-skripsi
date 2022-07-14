@@ -55,7 +55,7 @@
                                     <td>{{ $item -> nama }}</td>
                                     <td>{{ $item-> judul }}</td>
                                     <td><p style="pointer-events: none;" class="btn btn-sm <?=$item -> status_skripsi == 'Sedang dikerjakan' ? 'btn-warning' : 'btn-success'?>">{{ $item -> status_skripsi }}</td>
-                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=($item -> status_ujian == 'Belum ujian' ? 'btn-danger' : ($item -> status_ujian == 'Lulus' ? 'btn-success' : 'btn-danger'))?>">{{ $item -> status_ujian }}</td>
+                                    <td><p style="pointer-events: none;" class="btn btn-sm <?=($item -> status_ujian == 'Belum ujian' ? 'btn-danger' : ($item -> status_ujian == 'Sudah ujian - Lulus' ? 'btn-success' : 'btn-danger'))?>">{{ $item -> status_ujian }}</td>
                                 </tr>
                            @endforeach
                         </tbody>

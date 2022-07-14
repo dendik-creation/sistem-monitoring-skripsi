@@ -222,6 +222,11 @@ class MahasiswaController extends Controller
                 $pModel->save();
             }
 
+            $data = DB::table('mahasiswa')
+            ->where('nim', $request->nim)
+            ->update(
+            ['status_proposal' => 'Sudah mengajukan proposal - Menunggu ACC']);
+
         }
 
         return redirect('mahasiswa/proposal/pengajuan')->with(['success' => 'Berhasil']);
@@ -285,6 +290,7 @@ class MahasiswaController extends Controller
             'ket1' => 'Menunggu ACC']
             );
         }
+        //tambah kondisi ketikas salah satu menunggu acc
             return redirect('mahasiswa/proposal/pengajuan')->with(['success' => 'Berhasil']);
     }
 
@@ -378,6 +384,11 @@ class MahasiswaController extends Controller
         $res = $zip->open('filemhs/'.$request->nim.'/berkas_sempro/'.$berkas);
         $zip->extractTo('filemhs/'.$request->nim.'/berkas_sempro/extract');
         $zip->close();
+
+        $data = DB::table('mahasiswa')
+            ->where('nim', $request->nim)
+            ->update(
+            ['status_sempro' => 'Menunggu Seminar Proposal']);
        
 
         return redirect('mahasiswa/proposal/daftarsempro')->with(['success' => 'Berhasil']);
@@ -906,6 +917,11 @@ class MahasiswaController extends Controller
         $res = $zip->open('filemhs/'.$request->nim.'/berkas_ujian/'.$berkas);
         $zip->extractTo('filemhs/'.$request->nim.'/berkas_ujian/extract');
         $zip->close();
+
+        $data = DB::table('mahasiswa')
+            ->where('nim', $request->nim)
+            ->update(
+            ['status_ujian' => 'Menunggu Ujian']);
 
         return redirect('mahasiswa/skripsi/daftarujian')->with(['success' => 'Berhasil']);
     }

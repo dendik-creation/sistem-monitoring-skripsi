@@ -52,8 +52,8 @@
                                 <th>Skripsi</th>
                                 <th>Ujian</th>
                                 {{-- <th>Edit</th> --}}
-                                {{-- <th>Hapus</th> --}}
                                 <th>Reset</th>
+                                <th>Hapus</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,11 +65,11 @@
                                     <td>{{ $item -> name }}</td>
                                     <td>{{ $item -> email }}</td>
                                     <td>{{ $item -> hp }}</td>
-                                    <td class="<?=$item -> status_proposal == "Belum mengajukan proposal" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_proposal }}</td>
-                                    <td class="<?=$item -> status_sempro == "Sudah seminar proposal - Diterima" ? 'text-success' : 'text-danger'?>"><strong>{{ $item -> status_sempro }}</td>
+                                    <td class="<?=($item -> status_proposal == "Belum mengajukan proposal" || $item -> status_proposal == "Sudah mengajukan proposal - Ditolak" ? 'text-danger' : ($item -> status_proposal == "Sudah mengajukan proposal - Menunggu ACC" ? 'text-warning' : 'text-success'))?>"><strong>{{ $item -> status_proposal }}</td>
+                                    <td class="<?=($item -> status_sempro == "Sudah seminar proposal - Diterima" ? 'text-success' : ($item -> status_sempro == "Menunggu Seminar Proposal" ? 'text-warning' : 'text-danger'))?>"><strong>{{ $item -> status_sempro }}</td>
                                     <td class="<?=$item -> status_bimbingan == "Belum melakukan bimbingan" ? 'text-danger' : 'text-success'?>"><strong>{{ $item -> status_bimbingan }}</td>
                                     <td class="<?=($item -> status_skripsi == "Belum mengerjakan" ? 'text-danger' : ($item -> status_skripsi == "Sedang dikerjakan" ? 'text-warning' : 'text-success'))?>"><strong>{{ $item -> status_skripsi }}</td>
-                                    <td class="<?=$item -> status_ujian == "Sudah ujian - Lulus" ? 'text-success' : 'text-danger'?>"><strong>{{ $item -> status_ujian }}</td>
+                                    <td class="<?=($item -> status_ujian == "Sudah ujian - Lulus" ? 'text-success' : ($item -> status_ujian == "Menunggu Ujian" ? 'text-warning' : 'text-danger'))?>"><strong>{{ $item -> status_ujian }}</td>
                                     {{-- <td>
                                         <a href="/admin/mahasiswa/edit/{{$item->nim}}" class="btn btn-primary btn-sm">Edit</a>
                                     </td> --}}
@@ -96,10 +96,12 @@
                                                 </div>
                                                 <form class="user" method="POST" action="{{ route('password.email') }}">
                                                     @csrf
+                                                    {{-- {{csrf_field()}}
+                                                    {{method_field('PUT')}} --}}
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label for="" class="small">Email*</label>
-                                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $item->email }}" required autocomplete="email" placeholder="Masukkan Email">
+                                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $item->email }}" required autocomplete="email" placeholder="Masukkan Email" readonly>
 
                                                             @error('email')
                                                                 <span class="invalid-feedback" role="alert">
@@ -107,15 +109,23 @@
                                                                 </span>
                                                             @enderror
                                                         </div>
+                                                        {{-- <p>Yakin ingin mereset password?</p> --}}
                                                     </div>
                                                     <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     <button type="submit" name="submit" class="btn btn-primary">Reset</button>
                                                     </div>
-                                                </form>
+                                                </form> 
                                             </div>
                                             </div>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/mahasiswa/{{$item->nim}}" method="post">
+                                            {{csrf_field()}}
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" value="delete" class="btn btn-danger btn-sm">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                            @endforeach

@@ -45,6 +45,7 @@
                                 <th>NIM</th>
                                 <th>Nama</th>
                                 <th>Judul</th>
+                                <th>Status</th>
                                 <th>Total Nilai</th>
                                 <th>Grade</th>
                                 <th>Opsi</th>
@@ -68,7 +69,9 @@
                                     @endphp --}}
                                     {{-- <td><p style="pointer-events: none;" class="btn btn-sm <?=//($item->berita_acara == "Diterima" ? 'btn-success' : ($item->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</td> --}}
                                         {{-- <td><a href="/dosen/sempro/hasil/detail/{{ $item->id }}" class="btn btn-sm btn-primary">Detail</a></td> --}}
-                                    <td>{{ $item -> nilai_akhir}}</td>
+                                        <td><a style="pointer-events: none;" class="btn btn-sm <?=($item->berita_acara == "Diterima" ? 'btn-success' : ($item->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $item -> berita_acara }}</a></td>
+
+                                        <td>{{ $item -> nilai_akhir}}</td>
                                     <td>{{ $item -> grade_akhir}}</td>
                                     <td><a href="/sempro/hasil/cetak/{{ $item->id }}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                                 </tr>
