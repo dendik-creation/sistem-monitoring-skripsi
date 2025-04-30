@@ -27,8 +27,8 @@ class CreateProposalTable extends Migration
             $table->unsignedBigInteger('id_plot_dosbing');
             $table->foreign('id_plot_dosbing')->references('id')->on('plot_dosbing');
             $table->text('komentar')->nullable();
-            $table->text('komentar1')->default('-')->nullable();
-            $table->text('komentar2')->default('-')->nullable();
+            $table->text('komentar1')->nullable();
+            $table->text('komentar2')->nullable();
             $table->string('file1')->nullable();
             $table->string('file2')->nullable();
             $table->timestamps();
