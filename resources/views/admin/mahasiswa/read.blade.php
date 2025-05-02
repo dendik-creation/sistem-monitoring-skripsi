@@ -6,30 +6,30 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Data Mahasiswa</h1>
-            {{-- <div class="pull-right">
+            <div class="pull-right">
                 <a href="/admin/mahasiswa/tambah" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Tambah Mahasiswa
                 </a>
-            </div> --}}
+            </div>
         </div>
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if (session('status'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ session('status') }}</strong>
         </div>
     @endif
@@ -94,11 +94,11 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 </div>
-                                                <form class="user" method="POST" action="{{ route('password.email') }}">
-                                                    @csrf
-                                                    {{-- {{csrf_field()}}
-                                                    {{method_field('PUT')}} --}}
+                                                <form class="user" method="POST" action="{{ route('resetmahasiswa', ['id' => $item->id]) }}">
+                                                    {{csrf_field()}}
+                                                    {{method_field('PUT')}}
                                                     <div class="modal-body">
+                                                        <input type="hidden" name="nim" value="{{$item->nim}}">
                                                         <div class="form-group">
                                                             <label for="" class="small">Email*</label>
                                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $item->email }}" required autocomplete="email" placeholder="Masukkan Email" readonly>
@@ -115,7 +115,7 @@
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     <button type="submit" name="submit" class="btn btn-primary">Reset</button>
                                                     </div>
-                                                </form> 
+                                                </form>
                                             </div>
                                             </div>
                                         </div>
@@ -132,10 +132,10 @@
                         </tbody>
                     </table>
                 </div>
-    
+
             </div>
         </div>
 
-        
+
     </div>
 @endsection

@@ -13,6 +13,7 @@
                 <form class="user" action="/admin/semester/{{$data->id}}" method="POST">
                     {{csrf_field()}}
                     {{method_field('PUT')}}
+                    @include('partials.alert')
                     <div class="form-group">
                         <label for="" class="small">Semester*</label>
                         <select class="form-control" name="semester">

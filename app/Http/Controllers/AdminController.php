@@ -78,9 +78,18 @@ class AdminController extends Controller
         return view ('admin.semester.edit',  compact('data', 'user'));
     }
     public function updateSemester(Request $request, $id){
+        $request->validate([
+            'semester' => 'required',
+            'tahun' => ['required', 'regex:/^\d{4}\/\d{4}$/'],
+        ],
+        [
+            'semester.required' => 'Semester tidak boleh kosong',
+            'tahun.required' => 'Tahun tidak boleh kosong',
+            'tahun.regex' => 'Format tahun tidak sesuai',
+        ]);
+
         $semester = $request->semester;
         $tahun = $request->tahun;
-
         $data = DB::table('semester')
         ->where('id', $id)
         ->update(
@@ -141,12 +150,35 @@ class AdminController extends Controller
         return view ('admin.dosen.add', compact('user', 'gelar1', 'gelar2', 'gelar3depan', 'gelar3belakang', 'bidang'));
     }
     public function insertDosen(Request $request){
-        $this->validate($request, [
-			'ttd' => 'max:2048',
-		],
+        $request->validate([
+            'nidn' => 'required|numeric',
+            'name' => 'required',
+            'email' => 'required|email',
+            'gelar1' => 'required',
+            'jabatan' => 'required',
+            'id_bidang' => 'required',
+            'ttd' => 'max:2048',
+        ],
         [
+            'ttd.required' => 'Tanda tangan tidak boleh kosong',
             'ttd.max' => 'File terlalu besar, maksimal 2 mb',
+            'nidn.required' => 'NIDN tidak boleh kosong',
+            'nidn.numeric' => 'NIDN harus berupa angka',
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email tidak sesuai',
+            'gelar1.required' => 'Gelar 1 tidak boleh kosong',
+            'jabatan.required' => 'Jabatan tidak boleh kosong',
+            'id_bidang.required' => 'Bidang tidak boleh kosong',
         ]);
+
+        // Flash old input values to session
+        session()->flash('nidn', $request->nidn);
+        session()->flash('name', $request->name);
+        session()->flash('email', $request->email);
+        session()->flash('gelar1', $request->gelar1);
+        session()->flash('jabatan', $request->jabatan);
+        session()->flash('id_bidang', $request->id_bidang);
 
         $ttd = $request->file('ttd');
 
@@ -263,6 +295,26 @@ class AdminController extends Controller
         return view ('admin.dosen.edit',  compact('data', 'user', 'gelar1', 'gelar2', 'gelar3depan', 'gelar3belakang', 'bidang'));
     }
     public function updateDosen(Request $request, $id){
+        $request->validate([
+            'nidn' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+            'gelar1' => 'required',
+            'jabatan' => 'required',
+            'id_bidang' => 'required',
+            'ttd' => 'max:2048',
+        ],
+        [
+            'ttd.required' => 'Tanda tangan tidak boleh kosong',
+            'ttd.max' => 'File terlalu besar, maksimal 2 mb',
+            'nidn.required' => 'NIDN tidak boleh kosong',
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email tidak sesuai',
+            'gelar1.required' => 'Gelar 1 tidak boleh kosong',
+            'jabatan.required' => 'Jabatan tidak boleh kosong',
+            'id_bidang.required' => 'Bidang tidak boleh kosong',
+        ]);
         $ttd = $request->file('ttd');
 
         $nidn = $request->nidn;
@@ -381,8 +433,27 @@ class AdminController extends Controller
         return view ('admin.mahasiswa.add', compact('user'));
     }
     public function insertMahasiswa(Request $request){
-        $mModel = new MahasiswaModel;
+        $request->validate([
+            'nim' => 'required|numeric',
+            'name' => 'required',
+            'email' => 'required|email',
+            'hp' => 'required|numeric',
+        ], [
+            'nim.required' => 'NIM tidak boleh kosong',
+            'nim.numeric' => 'NIM harus berupa angka',
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email tidak sesuai',
+            'hp.required' => 'No HP tidak boleh kosong',
+            'hp.numeric' => 'No HP harus berupa angka',
+        ]);
 
+        session()->flash('nim', $request->nim);
+        session()->flash('name', $request->name);
+        session()->flash('email', $request->email);
+        session()->flash('hp', $request->hp);
+
+        $mModel = new MahasiswaModel;
         $mModel->nim = $request->nim;
         $mModel->name = $request->name;
         $mModel->email = $request->email;
@@ -401,6 +472,21 @@ class AdminController extends Controller
         return view ('admin.mahasiswa.edit',  compact('data', 'user'));
     }
     public function updateMahasiswa(Request $request, $id){
+        $request->validate([
+            'nim' => 'required|numeric',
+            'name' => 'required',
+            'email' => 'required|email',
+            'hp' => 'required|numeric',
+        ], [
+            'nim.required' => 'NIM tidak boleh kosong',
+            'nim.numeric' => 'NIM harus berupa angka',
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email tidak sesuai',
+            'hp.required' => 'No HP tidak boleh kosong',
+            'hp.numeric' => 'No HP harus berupa angka',
+        ]);
+
         $nim = $request->nim;
         $name = $request->name;
         $email = $request->email;
@@ -451,17 +537,24 @@ class AdminController extends Controller
             $data = DB::table('mahasiswa')
             ->where('nim', $id)->delete();
 
-        return back()->with(['success' => 'Berhasil']);
+        return back()->with(['success' => 'Berhasil Hapus Data']);
     }
 
-    // public function resetMahasiswa($id){
-    //     // $nim = $request->nim;
-    //     $data = DB::table('users')
-    //     ->where('no_induk', $id)
-    //     ->update(
-    //     ['password' => Hash::make($id),]
-    //     );
-    // }
+    public function resetMahasiswa(Request $request, $id){
+        $request->validate([
+            'nim' => 'required|numeric',
+        ], [
+            'nim.required' => 'NIM tidak boleh kosong',
+            'nim.numeric' => 'NIM harus berupa angka',
+        ]);
+        $nim = $request->nim;
+        $data = DB::table('users')
+        ->where('no_induk', $id)
+        ->update(
+        ['password' => Hash::make($nim)]
+        );
+        return back()->with(['success' => 'Berhasil Reset Password']);
+    }
     //End Mahasiswa
 
 
