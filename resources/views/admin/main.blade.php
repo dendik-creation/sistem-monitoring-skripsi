@@ -162,7 +162,7 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-            
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -326,7 +326,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                    
+
                     if(element.status ==  "Berkas OK"){
                         var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan`
                     }else if(element.status ==  "Terjadwal"){
@@ -350,7 +350,7 @@
                             <td>${opsi}</td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -366,7 +366,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                    
+
                     if(element.status ==  "Berkas OK"){
                         var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan`
                     }else if(element.status ==  "Terjadwal"){
@@ -390,7 +390,7 @@
                             <td>${opsi}</td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -406,7 +406,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                
+
                     if(element.berita_acara ==  "Ditolak"){
                         var status = `<p style="pointer-events: none;" class="btn btn-sm btn-danger">Ditolak`
                     }else if(element.berita_acara ==  "Diterima"){
@@ -426,7 +426,7 @@
                             <td><a href="/sempro/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -442,7 +442,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                
+
                     if(element.berita_acara ==  "Tidak Lulus"){
                         var status = `<p style="pointer-events: none;" class="btn btn-sm btn-danger">Tidak Lulus`
                     }else if(element.berita_acara ==  "Lulus"){
@@ -462,14 +462,16 @@
                             <td><a href="/ujian/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
     });
 
 </script>
-<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+{{-- <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script> --}}
+<script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
+{{--
 <script>
     tinymce.init({
         selector:'textarea.deskripsi',
@@ -483,6 +485,23 @@
         width: 610,
         height: 300
     });
+</script> --}}
+
+<script>
+    tinymce.init({
+        selector: 'textarea.deskripsi',
+        menubar: false,
+        plugins: 'lists link image preview',
+        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat',
+        height: 300
+    }); tinymce.init({
+        selector: 'textarea.keterangan',
+        menubar: false,
+        plugins: 'lists link image preview',
+        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat',
+        height: 300
+    });
 </script>
+
 
 </html>

@@ -2,43 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
-use Response;
-use Illuminate\Validation\Rule;
-use ZipArchive;
 use File;
-
-use App\DosenModel;
-use App\MahasiswaModel;
-use App\PlotDosbingModel;
-use App\PlotPengujiModel;
-use App\Imports\PlotDosbingImport;
-use App\Imports\PlotPengujiImport;
-use App\Imports\UserImport;
-use App\Imports\MahasiswaImport;
-use Maatwebsite\Excel\Facades\Excel;
-use App\ProposalModel;
-use App\SemesterModel;
-use App\BerkasSemproModel;
-use App\JadwalSemproModel;
-use App\HasilSemproModel;
-use App\JadwalUjianModel;
-use App\HasilUjianModel;
+use Response;
+use ZipArchive;
 use App\S1Model;
 use App\S2Model;
 use App\S3Model;
+use Carbon\Carbon;
+use App\DosenModel;
 use App\BidangModel;
-use App\Exports\PendaftarSemproExport;
-use App\Imports\PendaftarSemproImport;
+
+use App\ProposalModel;
+use App\SemesterModel;
+use App\MahasiswaModel;
+use App\HasilUjianModel;
+use App\PengumumanModel;
+use App\HasilSemproModel;
+use App\JadwalUjianModel;
+use App\PlotDosbingModel;
+use App\PlotPengujiModel;
+use App\BerkasSemproModel;
+use App\JadwalSemproModel;
+use App\Imports\UserImport;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Imports\MahasiswaImport;
+use App\Imports\HasilUjianImport;
 use App\Imports\HasilSemproImport;
+use App\Imports\PlotDosbingImport;
+use App\Imports\PlotPengujiImport;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PendaftarUjianExport;
 use App\Imports\PendaftarUjianImport;
-use App\Imports\HasilUjianImport;
-use App\PengumumanModel;
+use App\Exports\PendaftarSemproExport;
+use App\Imports\PendaftarSemproImport;
 
 class AdminController extends Controller
 {
@@ -79,7 +80,7 @@ class AdminController extends Controller
     public function updateSemester(Request $request, $id){
         $semester = $request->semester;
         $tahun = $request->tahun;
-        
+
         $data = DB::table('semester')
         ->where('id', $id)
         ->update(
@@ -100,11 +101,11 @@ class AdminController extends Controller
         );
         }else{
             $sModel = new SemesterModel;
-    
+
             $sModel->semester = $request->semester;
             $sModel->tahun = $request->tahun;
             $sModel->aktif = 'Y';
-    
+
             $sModel->save();
 
         }
@@ -148,22 +149,22 @@ class AdminController extends Controller
         ]);
 
         $ttd = $request->file('ttd');
-        
+
 
         $cek = DosenModel::where('nidn', $request->nidn)->first();
+        $dModel = new DosenModel;
 
         if($cek){
             return back()->with('error','Data Dosen '.$cek->nidn.' sudah ada');
         }else{
-            // Kalo ganti gambar 
+            // Kalo ganti gambar
         if($ttd) {
             $tujuan_upload = 'ttd/'.$request->nidn;
-    
+
             $ttd->move($tujuan_upload,$ttd->getClientOriginalName());
-            
+
             $ttd = $ttd->getClientOriginalName();
 
-            $dModel = new DosenModel;
 
             if($request->gelar3d == null){
                 $dModel->nidn = $request->nidn;
@@ -175,9 +176,9 @@ class AdminController extends Controller
                 $dModel->jabatan_fungsional = $request->jabatan;
                 $dModel->id_bidang = $request->id_bidang;
                 $dModel->ttd = $ttd;
-                
+
                 $dModel->save();
-                
+
             }else{
                 $dModel->nidn = $request->nidn;
                 $dModel->name = $request->name;
@@ -188,7 +189,7 @@ class AdminController extends Controller
                 $dModel->jabatan_fungsional = $request->jabatan;
                 $dModel->id_bidang = $request->id_bidang;
                 $dModel->ttd = $ttd;
-                
+
                 $dModel->save();
             }
         }else{
@@ -201,9 +202,9 @@ class AdminController extends Controller
                 $dModel->gelar3 = $request->gelar3b;
                 $dModel->jabatan_fungsional = $request->jabatan;
                 $dModel->id_bidang = $request->id_bidang;
-                
+
                 $dModel->save();
-                
+
             }else{
                 $dModel->nidn = $request->nidn;
                 $dModel->name = $request->name;
@@ -213,7 +214,7 @@ class AdminController extends Controller
                 $dModel->gelar3 = $request->gelar3d;
                 $dModel->jabatan_fungsional = $request->jabatan;
                 $dModel->id_bidang = $request->id_bidang;
-                
+
                 $dModel->save();
             }
         }
@@ -242,7 +243,7 @@ class AdminController extends Controller
         return redirect('admin/dosen')->with(['success' => 'Berhasil']);
         }
 
-        
+
     }
     public function formEditDosen($id){
         $user = Auth::user();
@@ -263,7 +264,7 @@ class AdminController extends Controller
     }
     public function updateDosen(Request $request, $id){
         $ttd = $request->file('ttd');
-        
+
         $nidn = $request->nidn;
         $name = $request->name;
         $gelar1 = $request->gelar1;
@@ -278,7 +279,7 @@ class AdminController extends Controller
             $tujuan_upload = 'ttd/'.$request->nidn;
             $ttd->move($tujuan_upload,$ttd->getClientOriginalName());
             $ttd = $ttd->getClientOriginalName();
-            
+
             if($gelar3d == null){
                 $data = DB::table('dosen')
                 ->where('nidn', $id)
@@ -341,13 +342,13 @@ class AdminController extends Controller
         ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $nidn)->first();
-        
+
         if($get->depan == "Y"){
             $fullname = $get->gelar3." ".$get->name.", ".$get->gelar1.", ".$get->gelar2;
         }else{
             $fullname = $get->name.", ".$get->gelar1.", ".$get->gelar2.", ".$get->gelar3;
         }
-        
+
         $update = DB::table('users')
         ->where('no_induk', $nidn)
         ->update(
@@ -404,7 +405,7 @@ class AdminController extends Controller
         $name = $request->name;
         $email = $request->email;
         $hp = $request->hp;
-        
+
         $data = DB::table('mahasiswa')
         ->where('nim', $id)
         ->update(
@@ -418,8 +419,8 @@ class AdminController extends Controller
     public function deleteMahasiswa($id){
         $user = DB::table('users')
             ->where('no_induk', $id)->delete();
-        
-            
+
+
             $del = DB::table('hasil_ujian')
             ->where('nim', $id)->delete();
             $del = DB::table('jadwal_ujian')
@@ -441,8 +442,8 @@ class AdminController extends Controller
             ->where('nim', $id)->delete();
             $del = DB::table('berkas_sempro')
             ->where('nim', $id)->delete();
-            // // $ambil = 
-            
+            // // $ambil =
+
             $del = DB::table('proposal')
             ->where('nim', $id)->delete();
             $del = DB::table('plot_dosbing')
@@ -470,7 +471,7 @@ class AdminController extends Controller
         $data = DB::table('plot_dosbing')
         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
         ->leftJoin('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-        
+
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -479,7 +480,7 @@ class AdminController extends Controller
         ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
         ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        ->select('plot_dosbing.id as id', 'plot_dosbing.smt as smt', 'plot_dosbing.nim as nim', 'plot_dosbing.name as name', 
+        ->select('plot_dosbing.id as id', 'plot_dosbing.smt as smt', 'plot_dosbing.nim as nim', 'plot_dosbing.name as name',
         'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's31.depan as depan1', 's32.depan as depan2')
         ->orderByRaw('plot_dosbing.id DESC')
@@ -495,7 +496,7 @@ class AdminController extends Controller
         // ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
         // ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
         // ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-        // ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.status as status', 'proposal.judul as judul', 
+        // ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.status as status', 'proposal.judul as judul',
         // 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal',
         // 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket')
         // ->get();
@@ -503,22 +504,22 @@ class AdminController extends Controller
         return view('admin.proposal.plotting.read', compact('data', 'user'));
     }
 
-    public function plotDosbingImportExcel(Request $request) 
+    public function plotDosbingImportExcel(Request $request)
 	{
 		// validasi
 		// $this->validate($request, [
 		// 	'file' => 'required|mimes:csv,xls,xlsx'
 		// ]);
- 
+
 		// menangkap file excel
 		$file = $request->file('file');
- 
+
 		// membuat nama file unik
 		$nama_file = rand().$file->getClientOriginalName();
- 
+
 		// upload ke folder file_siswa di dalam folder public
 		$file->move('file_excel',$nama_file);
- 
+
         //1
         $import1 = new plotDosbingImport;
         $import2 = new mahasiswaImport;
@@ -532,7 +533,7 @@ class AdminController extends Controller
             return back()->withFailures($import1->failures());
         }
 
- 
+
 		return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
 	}
 
@@ -540,7 +541,7 @@ class AdminController extends Controller
         $user = Auth::user();
         $smt = DB::table('semester')
                 ->where('aktif', 'Y')->first();
-                
+
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -583,7 +584,7 @@ class AdminController extends Controller
         $user = Auth::user();
         $data = DB::table('plot_dosbing')
                 ->where('id', $id)->first();
-                
+
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -607,7 +608,7 @@ class AdminController extends Controller
     public function updatePlotDosbing(Request $request, $id){
         $dosbing1 = $request->dosbing1;
         $dosbing2 = $request->dosbing2;
-        
+
         $data = DB::table('plot_dosbing')
         ->where('id', $id)
         ->update(
@@ -627,7 +628,7 @@ class AdminController extends Controller
 
         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
         ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-        
+
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -667,19 +668,19 @@ class AdminController extends Controller
     //berkasok
     public function berkasSemproOk($id){
         $user = Auth::user();
-        
+
         $data = DB::table('berkas_sempro')
             ->where('id', $id)
             ->update(
             ['status' => 'Berkas OK']);
-        
+
             return redirect('admin/proposal/penjadwalan');
     }
 
     //berkaskurang
     public function berkasSemproKurang(Request $request, $id){
         $user = Auth::user();
-        
+
         $data = DB::table('berkas_sempro')
             ->where('id', $id)
             ->update(
@@ -700,7 +701,7 @@ class AdminController extends Controller
         ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
-        ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'proposal.id as id_proposal', 
+        ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'proposal.id as id_proposal',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'berkas_sempro.*', 'berkas_sempro.created_at as tgl_daftar')
         ->where('berkas_sempro.id', $id)
         ->get();
@@ -734,7 +735,7 @@ class AdminController extends Controller
         $allFiles = scandir($path);
         $files = array_diff($allFiles, array('.', '..'));
     //   dd($files);
-    
+
 
         return view('admin.proposal.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2', 'files'));
     }
@@ -755,7 +756,7 @@ class AdminController extends Controller
         ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
-        ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'proposal.id as id_proposal', 
+        ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'proposal.judul as judul', 'proposal.id as id_proposal',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'berkas_sempro.*', 'berkas_sempro.created_at as tgl_daftar')
         ->where('berkas_sempro.id', $id)
         ->get();
@@ -773,7 +774,7 @@ class AdminController extends Controller
         ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data[0]->dosbing2)->first();
-        
+
         return view('admin.proposal.pendaftar.detail', compact('data', 'user', 'dosen1', 'dosen2',));
     }
 
@@ -811,22 +812,22 @@ class AdminController extends Controller
         return redirect('admin/proposal/penjadwalan')->with(['success' => 'Berhasil']);
     }
 
-    public function penjadwalanSemproImportExcel(Request $request) 
+    public function penjadwalanSemproImportExcel(Request $request)
 	{
 		// validasi
 		$this->validate($request, [
 			'file' => 'required|mimes:csv,xls,xlsx'
 		]);
- 
+
 		// menangkap file excel
 		$file = $request->file('file');
- 
+
 		// membuat nama file unik
 		$nama_file = rand().$file->getClientOriginalName();
- 
+
 		// upload ke folder file_siswa di dalam folder public
 		$file->move('file_excel',$nama_file);
- 
+
 		// import data
 		Excel::import(new PendaftarSemproImport, public_path('/file_excel/'.$nama_file));
         Excel::import(new HasilSemproImport, public_path('/file_excel/'.$nama_file));
@@ -837,7 +838,7 @@ class AdminController extends Controller
         ['status' => 'Terjadwal',
         'komentar_admin' => 'Terjadwal']
         );
- 
+
 		return redirect('admin/proposal/penjadwalan')->with(['success' => 'Berhasil']);
 	}
 
@@ -855,7 +856,7 @@ class AdminController extends Controller
 
         // ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
         // ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-        
+
         // ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         // ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         // ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -864,7 +865,7 @@ class AdminController extends Controller
         // ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
         // ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        // ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'proposal.judul as judul', 
+        // ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'proposal.judul as judul',
         // 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal', 'semester.semester as semester', 'semester.tahun as tahun',
         // 'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2',
         // 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -892,7 +893,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->leftJoin('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -901,7 +902,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_sempro.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -930,7 +931,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -939,7 +940,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_sempro.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -956,7 +957,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -965,7 +966,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_sempro.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -982,7 +983,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -991,7 +992,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_sempro.id as id', 'berkas_sempro.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_sempro.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1014,7 +1015,7 @@ class AdminController extends Controller
 
         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
         ->leftJoin('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-        
+
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1023,7 +1024,7 @@ class AdminController extends Controller
         ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
         ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'berkas_sempro.id as id_berkas_sempro', 'proposal.judul as judul', 
+        ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'berkas_sempro.id as id_berkas_sempro', 'proposal.judul as judul',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal',
         'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2',
         'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1095,7 +1096,7 @@ class AdminController extends Controller
             ->join('proposal', 'status_skripsi.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'semester.semester as semester', 'semester.tahun as tahun', 'mahasiswa.status_skripsi as status_skripsi', 'mahasiswa.status_ujian as status_ujian',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'mahasiswa.status_bimbingan as status_bimbingan')
             ->orderByRaw('status_skripsi.id DESC')
@@ -1114,7 +1115,7 @@ class AdminController extends Controller
         ->join('dosen as dos1', 'jadwal_ujian.ketua_penguji', '=', 'dos1.nidn')
         ->join('dosen as dos2', 'jadwal_ujian.anggota_penguji_1', '=', 'dos2.nidn')
         ->join('dosen as dos3', 'jadwal_ujian.anggota_penguji_2', '=', 'dos3.nidn')
-        
+
         ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1127,32 +1128,32 @@ class AdminController extends Controller
         ->leftJoin('s2 as s23', 'dos3.gelar2', '=', 's23.id')
         ->leftJoin('s3 as s33', 'dos3.gelar3', '=', 's33.id')
 
-        ->select('jadwal_ujian.id as id', 'semester.semester as semester', 'semester.tahun as tahun', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 
+        ->select('jadwal_ujian.id as id', 'semester.semester as semester', 'semester.tahun as tahun', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama',
         'dos1.name as dosen1', 'dos2.name as dosen2', 'dos3.name as dosen3', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's13.gelar as gelar13', 's23.gelar as gelar23', 's33.gelar as gelar33',
         's31.depan as depan1', 's32.depan as depan2', 's33.depan as depan3')
         ->orderByRaw('jadwal_ujian.id DESC')
         ->get();
-        
+
         return view('admin.skripsi.plotting.read', compact('data', 'user'));
     }
 
-    public function plotPengujiImportExcel(Request $request) 
+    public function plotPengujiImportExcel(Request $request)
 	{
 		// validasi
 		// $this->validate($request, [
 		// 	'file' => 'required|mimes:csv,xls,xlsx'
 		// ]);
- 
+
 		// menangkap file excel
 		$file = $request->file('file');
- 
+
 		// membuat nama file unik
 		$nama_file = rand().$file->getClientOriginalName();
- 
+
 		// upload ke folder file_siswa di dalam folder public
 		$file->move('file_excel',$nama_file);
- 
+
 		// import data
 		// Excel::import(new PlotPengujiImport, public_path('/file_excel/'.$nama_file));
         $import = new plotPengujiImport;
@@ -1162,7 +1163,7 @@ class AdminController extends Controller
         if($import->failures()->isNotEmpty()){
             return back()->withFailures($import->failures());
         }
- 
+
 		return redirect('admin/skripsi/plotting')->with(['success' => 'Berhasil']);
 	}
 
@@ -1170,7 +1171,7 @@ class AdminController extends Controller
         $user = Auth::user();
         $smt = DB::table('semester')
                 ->where('aktif', 'Y')->first();
-                
+
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -1217,7 +1218,7 @@ class AdminController extends Controller
         $smt = DB::table('semester')
         ->where('id', $data->id_semester)->first();
         // dd($data->ketua_penguji);
-                
+
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -1247,7 +1248,7 @@ class AdminController extends Controller
         $ketua = $request->ketua;
         $anggota1 = $request->anggota1;
         $anggota2 = $request->anggota2;
-        
+
         $data = DB::table('jadwal_ujian')
         ->where('id', $id)
         ->update(
@@ -1278,19 +1279,19 @@ class AdminController extends Controller
     //berkasok
     public function berkasUjianOk($id){
         $user = Auth::user();
-        
+
         $data = DB::table('berkas_ujian')
             ->where('id', $id)
             ->update(
             ['status' => 'Berkas OK']);
-        
+
             return redirect('admin/skripsi/penjadwalan');
     }
 
     //berkaskurang
     public function berkasUjianKurang(Request $request, $id){
         $user = Auth::user();
-        
+
         $data = DB::table('berkas_ujian')
             ->where('id', $id)
             ->update(
@@ -1305,22 +1306,22 @@ class AdminController extends Controller
 		return Excel::download(new PendaftarUjianExport, 'Pendaftar Ujian Berkas OK.xlsx');
 	}
 
-    public function penjadwalanUjianImportExcel(Request $request) 
+    public function penjadwalanUjianImportExcel(Request $request)
 	{
 		// validasi
 		$this->validate($request, [
 			'file' => 'required|mimes:csv,xls,xlsx'
 		]);
- 
+
 		// menangkap file excel
 		$file = $request->file('file');
- 
+
 		// membuat nama file unik
 		$nama_file = rand().$file->getClientOriginalName();
- 
+
 		// upload ke folder file_siswa di dalam folder public
 		$file->move('file_excel',$nama_file);
- 
+
 		// import data
 		Excel::import(new PendaftarUjianImport, public_path('/file_excel/'.$nama_file));
         Excel::import(new HasilUjianImport, public_path('/file_excel/'.$nama_file));
@@ -1331,7 +1332,7 @@ class AdminController extends Controller
         ['status' => 'Terjadwal',
         'komentar_admin' => 'Terjadwal']
         );
- 
+
 		return redirect('admin/skripsi/penjadwalan')->with(['success' => 'Berhasil']);
 	}
 
@@ -1342,8 +1343,8 @@ class AdminController extends Controller
         // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'mahasiswa.email as email', 'proposal.judul as judul', 'proposal.id as id_proposal', 
-        'berkas_ujian.*', 
+        ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'mahasiswa.email as email', 'proposal.judul as judul', 'proposal.id as id_proposal',
+        'berkas_ujian.*',
         'berkas_ujian.created_at as tgl_daftar', 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
         ->where('berkas_ujian.id', $id)
         ->get();
@@ -1400,7 +1401,7 @@ class AdminController extends Controller
         // ->join('plot_penguji', 'berkas_ujian.id_plot_penguji', '=', 'plot_penguji.id')
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'mahasiswa.email as email', 'proposal.judul as judul', 'proposal.id as id_proposal', 
+        ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'mahasiswa.hp as hp', 'mahasiswa.email as email', 'proposal.judul as judul', 'proposal.id as id_proposal',
         'berkas_ujian.created_at as tgl_daftar', 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
         ->where('berkas_ujian.id', $id)
         ->get();
@@ -1500,7 +1501,7 @@ class AdminController extends Controller
         // ->join('dosen as dos3', 'plot_penguji.ketua_penguji', '=', 'dos3.nidn')
         // ->join('dosen as dos4', 'jadwal_ujian.anggota_penguji_1', '=', 'dos4.nidn')
         // ->join('dosen as dos5', 'jadwal_ujian.anggota_penguji_2', '=', 'dos5.nidn')
-        
+
         // ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         // ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         // ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1521,7 +1522,7 @@ class AdminController extends Controller
         // ->leftJoin('s2 as s25', 'dos5.gelar2', '=', 's25.id')
         // ->leftJoin('s3 as s35', 'dos5.gelar3', '=', 's35.id')
 
-        // ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'proposal.judul as judul', 
+        // ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'proposal.judul as judul',
         // 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_ujian.tanggal as tanggal', 'semester.semester as semester', 'semester.tahun as tahun',
         // 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2',
         // 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1553,7 +1554,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->leftJoin('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1562,7 +1563,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_ujian.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1589,7 +1590,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1598,7 +1599,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_ujian.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1616,7 +1617,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1625,7 +1626,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_ujian.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1643,7 +1644,7 @@ class AdminController extends Controller
 
                 ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                 ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                
+
                 ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
                 ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
                 ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1652,7 +1653,7 @@ class AdminController extends Controller
                 ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
                 ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+                ->select('berkas_ujian.id as id', 'berkas_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
                 'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'semester.semester as semester', 'semester.tahun as tahun',
                 'berkas_ujian.status as status',
                 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
@@ -1774,7 +1775,7 @@ class AdminController extends Controller
             ->orderByRaw('hasil_ujian.id DESC')
             ->get();
         }
-        
+
         return $data;
     }
 
@@ -1787,14 +1788,14 @@ class AdminController extends Controller
     }
     public function formAddS1(){
         $user = Auth::user();
-        
+
         return view ('admin.dosen.s1.add', compact('user'));
     }
     public function insertS1(Request $request){
         $s1Model = new S1Model;
 
         $s1Model->gelar = $request->gelar;
-                
+
         $s1Model->save();
 
         return redirect('admin/dosen/s1')->with(['success' => 'Berhasil']);
@@ -1807,8 +1808,8 @@ class AdminController extends Controller
     }
     public function updateS1(Request $request, $id){
         $gelar = $request->gelar;
-        
-        
+
+
         $data = DB::table('s1')
         ->where('id', $id)
         ->update(
@@ -1827,14 +1828,14 @@ class AdminController extends Controller
     }
     public function formAddS2(){
         $user = Auth::user();
-        
+
         return view ('admin.dosen.s2.add', compact('user'));
     }
     public function insertS2(Request $request){
         $s2Model = new S2Model;
 
         $s2Model->gelar = $request->gelar;
-                
+
         $s2Model->save();
 
         return redirect('admin/dosen/s2')->with(['success' => 'Berhasil']);
@@ -1847,8 +1848,8 @@ class AdminController extends Controller
     }
     public function updateS2(Request $request, $id){
         $gelar = $request->gelar;
-        
-        
+
+
         $data = DB::table('s2')
         ->where('id', $id)
         ->update(
@@ -1867,7 +1868,7 @@ class AdminController extends Controller
     }
     public function formAddS3(){
         $user = Auth::user();
-        
+
         return view ('admin.dosen.s3.add', compact('user'));
     }
     public function insertS3(Request $request){
@@ -1875,7 +1876,7 @@ class AdminController extends Controller
 
         $s3Model->gelar = $request->gelar;
         $s3Model->depan = $request->depan;
-                
+
         $s3Model->save();
 
         return redirect('admin/dosen/s3')->with(['success' => 'Berhasil']);
@@ -1888,8 +1889,8 @@ class AdminController extends Controller
     }
     public function updateS3(Request $request, $id){
         $gelar = $request->gelar;
-        
-        
+
+
         $data = DB::table('s3')
         ->where('id', $id)
         ->update(
@@ -1899,7 +1900,7 @@ class AdminController extends Controller
 
         return redirect('admin/dosen/s3')->with(['success' => 'Berhasil']);
     }
-    
+
 
     //Bidang
     public function viewBidang(){
@@ -1909,14 +1910,14 @@ class AdminController extends Controller
     }
     public function formAddBidang(){
         $user = Auth::user();
-        
+
         return view ('admin.dosen.bidang.add', compact('user'));
     }
     public function insertBidang(Request $request){
         $bidangModel = new BidangModel;
 
         $bidangModel->nama_bidang = $request->nama_bidang;
-                
+
         $bidangModel->save();
 
         return redirect('admin/dosen/bidang')->with(['success' => 'Berhasil']);
@@ -1929,8 +1930,8 @@ class AdminController extends Controller
     }
     public function updateBidang(Request $request, $id){
         $nama_bidang = $request->nama_bidang;
-        
-        
+
+
         $data = DB::table('bidang')
         ->where('id', $id)
         ->update(
@@ -1970,7 +1971,7 @@ class AdminController extends Controller
         // $data = DB::table('plot_dosbing')
         // ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
         // ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-        
+
         // ->join('s1 as s11', 'dos1.gelar1', '=', 's11.id')
         // ->leftJoin('s2 as s21', 'dos1.gelar2', '=', 's21.id')
         // ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
@@ -1979,7 +1980,7 @@ class AdminController extends Controller
         // ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
         // ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
 
-        // ->select('plot_dosbing.id as id', 'plot_dosbing.smt as smt', 'plot_dosbing.nim as nim', 'plot_dosbing.name as name', 
+        // ->select('plot_dosbing.id as id', 'plot_dosbing.smt as smt', 'plot_dosbing.nim as nim', 'plot_dosbing.name as name',
         // 'dos1.name as dosbing1', 'dos2.name as dosbing2', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         // 's12.gelar as gelar12', 's22.gelar as gelar22', 's32.gelar as gelar32', 's31.depan as depan1', 's32.depan as depan2')
         // ->orderByRaw('plot_dosbing.id DESC')
@@ -2136,6 +2137,8 @@ class AdminController extends Controller
     }
     public function insertPengumuman(Request $request){
         $this->validate($request, [
+            'judul'=> 'required',
+            'deskripsi'=> 'required',
 			'gambar' => 'max:2048',
 		],
         [
@@ -2143,11 +2146,11 @@ class AdminController extends Controller
         ]);
 
         $gambar = $request->file('gambar');
-        
+
         $tujuan_upload = 'pengumuman/';
 
         $namagambar = $gambar->getClientOriginalName();
-        
+
         $gambar->move($tujuan_upload,$namagambar);
 
         $pModel = new PengumumanModel;
@@ -2156,13 +2159,12 @@ class AdminController extends Controller
         $pModel->deskripsi = $request->deskripsi;
         $pModel->gambar = $namagambar;
         $pModel->created_at = Carbon::now('GMT+7');
-        
-        $pModel->save();
-             
-        return redirect('admin/pengumuman')->with(['success' => 'Berhasil']);
 
+        $pModel->save();
+
+        return redirect('admin/pengumuman')->with(['success' => 'Berhasil']);
     }
-    
+
     public function formEditPengumuman($id){
         $user = Auth::user();
         $data = DB::table('pengumuman')
@@ -2174,6 +2176,8 @@ class AdminController extends Controller
     }
     public function updatePengumuman(Request $request, $id){
         $this->validate($request, [
+			'judul'=> 'required',
+            'deskripsi'=> 'required',
 			'gambar' => 'max:2048',
 		],
         [
@@ -2185,12 +2189,12 @@ class AdminController extends Controller
         $judul = $request->judul;
         $deskripsi = $request->deskripsi;
         $updated_at = Carbon::now('GMT+7');
-        
+
         if($gambar != null){
             $tujuan_upload = 'pengumuman/';
 
             $namagambar = $gambar->getClientOriginalName();
-            
+
             $gambar->move($tujuan_upload,$namagambar);
 
             $data = DB::table('pengumuman')
@@ -2211,7 +2215,7 @@ class AdminController extends Controller
                     );
         }
 
-             
+
         return redirect('admin/pengumuman')->with(['success' => 'Berhasil']);
     }
 

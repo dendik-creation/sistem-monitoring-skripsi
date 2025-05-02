@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +64,7 @@ Route::get('/admin/hapusberkassempro/{nim}/{file}', 'AdminController@hapusBerkas
 Route::get('/admin/hapusberkasujian/{nim}/{file}', 'AdminController@hapusBerkasUjian');
 
 Route::middleware(['auth'])->group(function () {
- 
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //ADMIN
@@ -211,7 +213,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/pengumuman/{id}', 'AdminController@updatePengumuman')->name('updatepengumuman');
         Route::delete('/admin/pengumuman/{id}', 'AdminController@deletePengumuman')->name('deletepengumuman');
     });
- 
+
     //DOSEN
     Route::group(['middleware' => 'dosen'], function () {
         Route::get('/dosen', 'DosenController@index')->name('dosen');
@@ -252,7 +254,7 @@ Route::middleware(['auth'])->group(function () {
         //Jadwal Seminar
         Route::get('/dosen/sempro/jadwal', 'DosenController@viewJadwalSempro')->name('datajadwalsemprodosen');
         Route::get('/dosen/sempro/jadwal/detail/{id}', 'DosenController@viewDetailJadwalSempro')->name('detailjadwalsemprodosen');
-        
+
         //Hasil Seminar
         Route::post('/dosen/sempro/inserthasil', 'DosenController@insertHasilSempro')->name('inserthasilsempro');
         Route::get('/dosen/sempro/hasil', 'DosenController@viewHasilSempro')->name('datahasilsemprodosen');
@@ -266,7 +268,7 @@ Route::middleware(['auth'])->group(function () {
         //Jadwal Ujian Skripsi
         Route::get('/dosen/skripsi/jadwal', 'DosenController@viewJadwalUjian')->name('datajadwalujiandosen');
         Route::get('/dosen/skripsi/jadwal/detail/{id}', 'DosenController@viewDetailJadwalUjian')->name('detailjadwalujiandosen');
-        
+
         //Hasil Ujian Skripsi
         Route::post('/dosen/skripsi/inserthasil', 'DosenController@insertHasilUjian')->name('inserthasilujian');
         Route::get('/dosen/skripsi/hasil', 'DosenController@viewHasilUjian')->name('datahasilujiandosen');
@@ -296,14 +298,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mahasiswa/proposal/tambah', 'MahasiswaController@formAddProposal')->name('formaddproposal');
         Route::post('/mahasiswa/insertproposal', 'MahasiswaController@insertProposal')->name('insertproposal');
         Route::put('/mahasiswa/proposal/revisi/{id}', 'MahasiswaController@editProposal')->name('updatepropmhs');
-        
+
 
         //Pendaftaran Seminar
         Route::get('/mahasiswa/proposal/daftarsempro', 'MahasiswaController@viewDaftarSempro')->name('datadaftarsempro');
         Route::get('/mahasiswa/proposal/tambahsempro', 'MahasiswaController@formAddSempro')->name('formaddsempro');
         Route::post('/mahasiswa/insertsempro', 'MahasiswaController@insertBerkas')->name('insertsempro');
         Route::put('/mahasiswa/editsempro/{id}', 'MahasiswaController@editBerkas')->name('editsempro');
-        
+
 
         //Penjadwalan Seminar
         Route::get('/mahasiswa/proposal/jadwalsempro/{id}', 'MahasiswaController@viewJadwalSempro')->name('datajadwalsempro');
@@ -323,7 +325,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mahasiswa/skripsi/bimbingan/tambah/2', 'MahasiswaController@formAddBimbingan2')->name('formaddbimbingan2');
         Route::post('/mahasiswa/insertbimbingan', 'MahasiswaController@insertBimbingan')->name('insertbimbingan');
         Route::post('/mahasiswa/insertbimbingan/2', 'MahasiswaController@insertBimbingan2')->name('insertbimbingan2');
-        
+
         Route::post('/mahasiswa/balas/pesan', 'MahasiswaController@insertPesan')->name('insertpesan');
 
         //Pendaftaran Ujian
@@ -347,10 +349,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mahasiswa/skripsi/bimbingan/cetak', 'MahasiswaController@cetakBimbinganMhs')->name('cetakbimbinganmhs');
 
     });
- 
+
     Route::get('/logout', function() {
         Auth::logout();
         redirect('/');
     })->name('logout');
- 
+
 });

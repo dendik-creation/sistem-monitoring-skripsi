@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use SebastianBergmann\Environment\Console;
 
 class LoginController extends Controller
 {
@@ -44,15 +45,15 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {   
+    {
         $input = $request->all();
-  
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
         ]);
-  
+
         $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
         if(Auth::attempt((array($fieldType => $input['username'], 'password' => $input['password']))))
         {
             return redirect()->route('home');
@@ -60,8 +61,8 @@ class LoginController extends Controller
             return redirect()->route('login')
                 ->with('error','Gagal : Username dan atau Password salah.');
         }
-        
 
-          
+
+
     }
 }

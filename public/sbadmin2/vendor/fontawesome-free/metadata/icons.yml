@@ -16605,7 +16605,6 @@ sim-card:
       - portable
       - storage
       - technology
-      - tiny
   styles:
     - solid
   unicode: f7c4

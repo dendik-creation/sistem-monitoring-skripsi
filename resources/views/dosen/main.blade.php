@@ -15,10 +15,10 @@
      <link href="{{ url('sbadmin2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
      <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
          rel="stylesheet">
- 
+
      <!-- Custom styles for this template-->
      <link href="{{ url('sbadmin2/css/sb-admin-2.min.css') }}" rel="stylesheet">
- 
+
      {{-- Datatables --}}
      <link href="{{  url('sbadmin2/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
@@ -120,7 +120,7 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-            
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -228,7 +228,7 @@
         </div>
     </div>
 
-    
+
 </body>
 
 <!-- Bootstrap core JavaScript-->
@@ -334,7 +334,7 @@
                             </td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -350,15 +350,15 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     var dosen = {!! json_encode($user->no_induk) !!};
-                    
 
-                    
+
+
                     if(element.status_skripsi == 'Sedang Dikerjakan'){
                         var skripsi = `<td><p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.status_skripsi}</td>`
                     }else{
                         var skripsi = `<td><p style="pointer-events: none;" class="btn btn-sm btn-success">${element.status_skripsi}</td>`
                     }
-                
+
                     if(element.status_ujian == 'Belum Ujian'){
                         var ujian = `<td><p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.status_ujian}</td>`
                     }else if(element.status_ujian == 'Lulus'){
@@ -366,7 +366,7 @@
                     }else{
                         var ujian = `<td><p style="pointer-events: none;" class="btn btn-sm btn-danger">${element.status_ujian}</td>`
                     }
-                    
+
 
                     $('#datatabel').append(`
                         <tr>
@@ -379,7 +379,7 @@
                             ${ujian}
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -395,7 +395,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     var dosen = {!! json_encode($user->no_induk) !!};
-                    
+
                     if(element.depan1 ==  "Y"){
                         if(element.gelar31 == null){
                         var bimbingan_kepada = `${element.dosen}, ${element.gelar11}, ${element.gelar21}`
@@ -409,7 +409,7 @@
                         var bimbingan_kepada = `${element.dosen}, ${element.gelar11}, ${element.gelar21}, ${element.gelar31}`
                         }
                     }
-                    
+
 
                     if(element.bimbingan_kepada == dosen && element.dosbing1 == dosen){
                         if(element.ket1 == 'Ok'  || element.ket1 == 'Siap ujian'){
@@ -436,7 +436,7 @@
                             var status = `<p style="pointer-events: none;" class="btn btn-sm btn-warning">${element.ket1}`
                         }
                     }
-                    
+
 
 
                     $('#datatabel').append(`
@@ -454,7 +454,7 @@
                             </td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -498,7 +498,7 @@
                     }else{
                         var status_skripsi = `<td class="text-success"><strong>${element.status_skripsi}</td>`
                     }
-                
+
                     if(element.status_ujian == 'Lulus'){
                         var status_ujian = `<td class="text-success"><strong>${element.status_ujian}</td>`
                     }else{
@@ -521,7 +521,7 @@
                             </td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -537,7 +537,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                    
+
                     if(element.berita_acara ==  "Ditolak"){
                         var status = `<p style="pointer-events: none;" class="btn btn-sm btn-danger">Ditolak`
                     }else if(element.berita_acara ==  "Diterima"){
@@ -557,7 +557,7 @@
                             <td><a href="/sempro/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -573,7 +573,7 @@
                 $.each(data, function(index, element){
                     var myIndex = index+1;
                     // var dosen = {!! json_encode($user->no_induk) !!};
-                
+
                     if(element.berita_acara ==  "Tidak Lulus"){
                         var status = `<p style="pointer-events: none;" class="btn btn-sm btn-danger">Tidak Lulus`
                     }else if(element.berita_acara ==  "Lulus"){
@@ -593,7 +593,7 @@
                             <td><a href="/ujian/hasil/cetak/${element.id}" target="_blank" class="btn btn-primary btn-sm">Cetak Dokumen</a></td>
                         </tr>
                         `)
-                    
+
                 });
             });
         });
@@ -667,13 +667,28 @@
 
 
 </script>
-<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-<script>
+{{-- <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+ --}}
+
+ <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
+
+{{-- <script>
     tinymce.init({
         selector:'textarea.deskripsi',
         width: 900,
         height: 300
     });
+</script> --}}
+
+<script>
+    tinymce.init({
+        selector: 'textarea.deskripsi',
+        menubar: false,
+        plugins: 'lists link image preview',
+        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat',
+        height: 300
+    });
 </script>
+
 
 </html>

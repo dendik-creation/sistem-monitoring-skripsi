@@ -32,19 +32,19 @@
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             {{-- <span class="navbar-toggler-icon"></span> --}}
           </button>
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            {{-- <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/login">Login</a>
+                        <a class="nav-link text-white" href="/">Login</a>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
           </div>
         </div>
       </nav>
 
-      
-      
+
+
       <main class="col-md-10 mx-auto">
         <div class="row mt-2 mb-5 mt-5">
 
@@ -63,10 +63,10 @@
           <div class=" mb-5 text-center">
               <h4>Pengumuman</h4>
           </div>
-        
+
           @foreach ($data as $item)
             <div class="row-md-12 bg-light p-4 rounded mb-5">
-              
+
               <div class="row px-4">
                 <div class="col-md-9">
                   <div class="row align-items-center p-3 mb-4">
@@ -89,8 +89,8 @@
 
         </main>
         <img class="img-responsive mt-5" src="{{ url('footer template.png') }}" alt="" sizes="" srcset="" width="100%" height="auto">
-    
-    
+
+
 </body>
 
 <!-- Bootstrap core JavaScript-->

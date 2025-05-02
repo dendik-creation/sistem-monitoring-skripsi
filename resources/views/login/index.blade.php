@@ -59,7 +59,7 @@
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
                                                 <label class="custom-control-label" for="customCheck">Ingat saya</label>
                                             </div>
-                                            
+
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login
@@ -77,7 +77,7 @@
 
     </div>
 
-    
+
 </body>
 
 <!-- Bootstrap core JavaScript-->

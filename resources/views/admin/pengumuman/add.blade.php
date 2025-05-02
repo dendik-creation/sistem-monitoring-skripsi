@@ -10,7 +10,7 @@
         @if (count($errors) > 0)
             @foreach ($errors->all() as $error)
                 <div class="alert alert-danger alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <button type="button" class="close" data-dismiss="alert">×</button>
                     <strong>{{ $error }}</strong>
                 </div>
             @endforeach
@@ -18,7 +18,7 @@
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -36,7 +36,7 @@
                         <label for="" class="small">Deskripsi*</label>
                         <textarea class="form-control deskripsi" name="deskripsi" id="" cols="30" rows="10" placeholder="Masukkan Deskripsi"></textarea>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="" class="small">Gambar* (JPG/PNG/PDF) (Max 2MB)</label><br>
                         <input type="file" name="gambar" placeholder="Masukkan Gambar" required accept=".png, .jpg, .jpeg">

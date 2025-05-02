@@ -22,7 +22,7 @@
     {{-- Datatables --}}
     <link href="{{  url('sbadmin2/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
-    body {    
+    body {
       margin: 0 !important;
       padding: 0 !important;
   }
@@ -49,8 +49,8 @@
     </div>
   </nav>
 
-      
-      
+
+
         <div class="row ">
           <div class="col-md-8">
             <div class="row ml-4 align-items-center p-3 mb-4 mt-4">
@@ -67,12 +67,12 @@
             </div>
           </div>
 
-          
+
           <div class="col-md-4 bg-light">
             <div class="row ml-4 mr-4 mb-5">
               <div class="col-md-12">
                 <h4 class="mb-4 mt-5">Pengumuman Terbaru</h4>
-                
+
                 @foreach ($pengumuman as $item)
                 <div class="row bg-white p-2 rounded mb-4">
                   <div class="row ml-4 align-items-center p-3 mb-2">
@@ -96,7 +96,7 @@
             </div>
         </div>
       </main>
-    
+
 </body>
 
 <!-- Bootstrap core JavaScript-->
