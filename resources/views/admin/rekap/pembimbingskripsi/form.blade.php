@@ -10,14 +10,14 @@
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -29,10 +29,10 @@
             <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="small">Pilih Semester*</label>
-                        <select class="custom-select" id="filtersemesterrekappemsem" name="idsmt">
-                            <option value="0" id="0">Pilih Semester --</option>
+                        <select class="custom-select" required id="filtersemesterrekappemsem" name="idsmt">
+                            <option value="" id="">Pilih Semester --</option>
                             @foreach ($data as $item)
-                            <option value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->semester }} {{ $item->tahun }}</option>    
+                            <option value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->semester }} {{ $item->tahun }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -46,6 +46,6 @@
             </div>
         </form>
 
-        
+
     </div>
 @endsection

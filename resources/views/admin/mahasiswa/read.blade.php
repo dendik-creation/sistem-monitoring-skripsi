@@ -6,11 +6,11 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Data Mahasiswa</h1>
-            <div class="pull-right">
+            {{-- <div class="pull-right">
                 <a href="/admin/mahasiswa/tambah" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Tambah Mahasiswa
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         @if ($message = Session::get('success'))

@@ -652,25 +652,56 @@ class AdminController extends Controller
 
         return view ('admin.proposal.plotting.add', compact('smt', 'dosen1', 'dosen2', 'user'));
     }
-    public function insertSatuMahasiswa(Request $request){
-        $cek = PlotDosbingModel::where('nim', $request->nim)->first();
+    public function insertSatuMahasiswa(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required|numeric|unique:plot_dosbing,nim',
+            'name' => 'required|string|max:255',
+            'smt' => 'required|string|max:255',
+            'dosbing1' => 'required|string|max:255',
+            'dosbing2' => 'nullable|string|max:255',
+        ], [
+            'nim.required' => 'NIM tidak boleh kosong',
+            'nim.numeric' => 'NIM harus berupa angka',
+            'nim.unique' => 'Data Mahasiswa dengan NIM ini sudah ada',
+            'name.required' => 'Nama tidak boleh kosong',
+            'smt.required' => 'Semester tidak boleh kosong',
+            'dosbing1.required' => 'Dosen pembimbing 1 tidak boleh kosong',
+        ]);
 
-        if($cek){
-            return back()->with('error','Data Mahasiswa '.$cek->nim.' sudah ada');
-        }else{
-            $mModel = new MahasiswaModel;
-
-            $mModel->nim = $request->nim;
-            $mModel->name = $request->name;
-
-            $mModel->save();
-
-            DB::insert('insert into users (no_induk, name, username, password, role) values (?, ?, ?, ?, ?)', [$request->nim, $request->name, $request->nim, Hash::make($request->nim), 'mahasiswa']);
-
-            DB::insert('insert into plot_dosbing (smt, nim, name, dosbing1, dosbing2) values (?, ?, ?, ?, ?)', [$request->smt, $request->nim, $request->name, $request->dosbing1, $request->dosbing2]);
-
-            return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
+        $existingMahasiswa = MahasiswaModel::where('nim', $request->nim)->first();
+        if($existingMahasiswa){
+            return back()->with('error', 'Data Mahasiswa dengan NIM ini sudah ada');
         }
+        $same_dosbing = $request->dosbing1 == $request->dosbing2;
+        if($same_dosbing){
+            return back()->with('error', 'Dosen pembimbing tidak boleh sama');
+        }
+
+        DB::transaction(function () use ($request) {
+            MahasiswaModel::create([
+                'nim' => $request->nim,
+                'name' => $request->name,
+            ]);
+
+            DB::table('users')->insert([
+                'no_induk' => $request->nim,
+                'name' => $request->name,
+                'username' => $request->nim,
+                'password' => Hash::make($request->nim),
+                'role' => 'mahasiswa',
+            ]);
+
+            PlotDosbingModel::create([
+                'smt' => $request->smt,
+                'nim' => $request->nim,
+                'name' => $request->name,
+                'dosbing1' => $request->dosbing1,
+                'dosbing2' => $request->dosbing2,
+            ]);
+        });
+
+        return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
     }
 
     public function formEditPlotDosbing($id){
@@ -701,6 +732,10 @@ class AdminController extends Controller
     public function updatePlotDosbing(Request $request, $id){
         $dosbing1 = $request->dosbing1;
         $dosbing2 = $request->dosbing2;
+
+        if($dosbing1 == $dosbing2){
+            return back()->with('error', 'Dosen pembimbing tidak boleh sama');
+        }
 
         $data = DB::table('plot_dosbing')
         ->where('id', $id)
@@ -2111,7 +2146,12 @@ class AdminController extends Controller
     public function tampilPembimbingSeminar(Request $request){
         $user = Auth::user();
 
-        $idsmt = $request->idsmt;
+        $idsmt = $request->input('idsmt');
+
+        if (empty($idsmt)) {
+            return redirect()->back()->with('error', 'Pilih Semester Dahulu');
+        }
+
         $data = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -2128,7 +2168,12 @@ class AdminController extends Controller
     public function tampilPembimbingSkripsi(Request $request){
         $user = Auth::user();
 
-        $idsmt = $request->idsmt;
+        $idsmt = $request->input('idsmt');
+
+        if (empty($idsmt)) {
+            return redirect()->back()->with('error', 'Pilih Semester Dahulu');
+        }
+
         $data = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -2145,7 +2190,12 @@ class AdminController extends Controller
     public function tampilPengujiSkripsi(Request $request){
         $user = Auth::user();
 
-        $idsmt = $request->idsmt;
+        $idsmt = $request->input('idsmt');
+
+        if (empty($idsmt)) {
+            return redirect()->back()->with('error', 'Pilih Semester Dahulu');
+        }
+
         $data = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
