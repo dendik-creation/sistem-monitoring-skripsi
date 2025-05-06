@@ -38,14 +38,14 @@
 							<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
 						</div>
 						<div class="modal-body">
- 
+
 							{{ csrf_field() }}
- 
+
 							<label for="" class="small">Pilih File Excel*</label>
 							<div class="form-group">
 								<input type="file" name="file" required>
 							</div>
- 
+
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -58,14 +58,14 @@
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -103,16 +103,16 @@
                                         ->join('semester', 'proposal.id_semester', '=', 'semester.id')
                                         ->join('dosen as dos1', 'plot_dosbing.dosbing1', '=', 'dos1.nidn')
                                         ->join('dosen as dos2', 'plot_dosbing.dosbing2', '=', 'dos2.nidn')
-                                        ->select('berkas_sempro.no:=@no+1 as no', 'berkas_sempro.id as id', 
+                                        ->select('berkas_sempro.no:=@no+1 as no', 'berkas_sempro.id as id',
                                         'proposal.id as id_proposal',
-                                        'semester.semester as semester', 
-                                        'semester.tahun as tahun', 
-                                        'berkas_sempro.nim as nim', 
-                                        'mahasiswa.name as nama', 
-                                        'dos1.name as dosbing1', 
+                                        'semester.semester as semester',
+                                        'semester.tahun as tahun',
+                                        'berkas_sempro.nim as nim',
+                                        'mahasiswa.name as nama',
+                                        'dos1.name as dosbing1',
                                         'dos2.name as dosbing2',
                                         'berkas_sempro.berkas_sempro as berkas_sempro',
-                                        'berkas_sempro.created_at as tgl_daftar', 
+                                        'berkas_sempro.created_at as tgl_daftar',
                                         'berkas_sempro.status as status')
                                         ->where('berkas_sempro.status', 'Berkas OK')
                                         ->get();
@@ -120,7 +120,7 @@
                                     @endphp --}}
                                     <td>
                                         {{-- @if ($item -> status1 == 'Belum' && $item -> status2 == 'Belum')
-                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum melakukan seminar</p> 
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum melakukan seminar</p>
                                         @else
                                         @php
                                             $ba = DB::table('hasil_sempro')->where('id_jadwal_sempro', $item->id)->first();
@@ -129,9 +129,9 @@
                                         <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar</p> - <p style="pointer-events: none;" class="btn btn-sm <?=$ba->berita_acara == "Diterima" ? 'btn-success' : 'btn-danger'?>">{{ $ba->berita_acara }}</p>
                                         @endif --}}
                                         @if ($item -> status == 'Berkas OK')
-                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan</p> 
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-warning">Belum dijadwalkan</p>
                                         @elseif($item -> status == 'Terjadwal')
-                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah dijadwalkan</p> 
+                                        <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah dijadwalkan</p>
                                         @endif
                                     </td>
                                     <td>
@@ -146,10 +146,10 @@
                         </tbody>
                     </table>
                 </div>
-    
+
             </div>
         </div>
 
-        
+
     </div>
 @endsection

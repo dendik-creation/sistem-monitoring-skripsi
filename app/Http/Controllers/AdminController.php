@@ -858,8 +858,11 @@ class AdminController extends Controller
         //     // $heh = "tidak";
         // }
 
+        //[Syahrul][05/05/2025] extract dihilangkan karena sudah ada file asli
+        // $path = public_path('filemhs/'.$data[0]->nim.'/berkas_sempro/extract');
+        // dd($data);
+        $path = public_path('filemhs/' . $data[0]->nim . '/berkas_sempro/');
 
-        $path = public_path('filemhs/'.$data[0]->nim.'/berkas_sempro/extract');
         $allFiles = scandir($path);
         $files = array_diff($allFiles, array('.', '..'));
     //   dd($files);

@@ -56,7 +56,7 @@
                           @if ($dosen2 -> depan == null)
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif
                           @endif
@@ -70,7 +70,7 @@
                       </tr>
                     </tbody>
                   </table>
-                
+
             </div>
         </div>
         <div class="row mt-2">
@@ -87,12 +87,14 @@
                   <td>{{ $no++ }}</td>
                   <td>{{ $file }}</td>
                   <td>
-                    <a class="btn btn-sm btn-primary" href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/extract/'.$file)?>" target="_blank">Lihat berkas</a>
+                    
+                    {{-- <a class="btn btn-sm btn-primary" href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/extract/'.$file)?>" target="_blank">Lihat berkas</a> --}}
+                    <a class="btn btn-sm btn-primary" href="<?=url('/filemhs/'.$item->nim.'/berkas_sempro/'.$file)?>" target="_blank">Lihat berkas</a>
                     <a class="btn btn-sm btn-danger" href="/admin/hapusberkassempro/{{ $item->nim }}/{{$file}}">Hapus berkas</a>
                   </td>
                 </tr>
                 @endforeach
-                
+
             </tbody>
         </table>
           <div class="ml-2 mt-4 mb-4 row">

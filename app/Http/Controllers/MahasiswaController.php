@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use File;
-// use Response;
-use Illuminate\Http\Response;
 use ZipArchive;
 use Carbon\Carbon;
 use App\BidangModel;
@@ -14,6 +12,7 @@ use App\BimbinganModel;
 use App\MahasiswaModel;
 use App\BerkasUjianModel;
 use App\PlotDosbingModel;
+use Illuminate\Support\Facades\Response;
 use App\PlotPengujiModel;
 use App\BerkasSemproModel;
 use App\PesanBimbinganModel;
@@ -65,9 +64,7 @@ class MahasiswaController extends Controller
                     'dosen.email as email'
                 )
                 ->where('nidn', $data->dosbing2)->first();
-        }
-        else
-        {
+        } else {
             session()->flash('info', 'Dosen pembimbing belum ditentukan.');
         }
 
@@ -282,12 +279,15 @@ class MahasiswaController extends Controller
         $bidang = DB::table('bidang')->get();
         return view('mahasiswa.proposal.pengajuan.add', compact('dosen1', 'dosen2', 'data', 'smt', 'user', 'bidang'));
     }
+
+    //[Syahrul][05/05/2025] penambahan proteksi judul
     public function insertProposal(Request $request)
     {
         $this->validate(
             $request,
             [
                 'proposal' => 'max:10240',
+                'judul' => 'required'
             ],
             [
                 'proposal.max' => 'File terlalu besar, maksimal 10 mb',
@@ -335,9 +335,16 @@ class MahasiswaController extends Controller
 
         return redirect('mahasiswa/proposal/pengajuan')->with(['success' => 'Berhasil']);
     }
+
+    //[Syahrul][05/05/2025] Handling file tidak ditemukan
     public function downloadProposal($nim, $id)
     {
-        $filepath = public_path('filemhs/' . $nim . '/proposal' . '/' . $id);
+        $filepath = public_path("filemhs/{$nim}/proposal/{$id}");
+
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
+
         return Response::download($filepath);
     }
 
@@ -480,7 +487,7 @@ class MahasiswaController extends Controller
             )
             ->where('nidn', $datadosbing->dosbing2)->first();
         $dataprop = ProposalModel::all()->where('nim', $user->no_induk)->where('ket1', 'Disetujui')->where('ket2', 'Disetujui')->first();
-        // dd($dataprop);
+
         return view('mahasiswa.proposal.pendaftaran.add', compact('dosen1', 'dosen2', 'datamhs', 'datadosbing', 'dataprop', 'user'));
     }
     public function insertBerkas(Request $request)
@@ -548,6 +555,9 @@ class MahasiswaController extends Controller
     public function downloadBerkasSempro($nim, $id)
     {
         $filepath = public_path('filemhs/' . $nim . '/berkas_sempro' . '/' . $id);
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('warning', 'Dokumen tidak ditemukan.');
+        }
         return Response::download($filepath);
     }
 

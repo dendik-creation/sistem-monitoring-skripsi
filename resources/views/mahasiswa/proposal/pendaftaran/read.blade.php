@@ -9,19 +9,15 @@
             <div class="pull-right">
                 @php
                     $tgl = date('Y-m-d');
-                    // echo $tgl;
-
                     $cek = DB::table('berkas_sempro')
                     ->join('mahasiswa', 'berkas_sempro.nim', '=', 'mahasiswa.nim')
                     ->select('berkas_sempro.*', 'mahasiswa.*')
                     ->where('berkas_sempro.nim', $user->no_induk)
                     ->orderByRaw('berkas_sempro.id DESC')
                     ->first();
-                    // dd($data);
                 @endphp
-                {{-- @if ($dataprop === null || $tgl != "2022-01-31") --}}
                 @if ($dataprop === null)
-                    <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat disabled">
+                    <a href="/mahasiswa/proposal/tambahsempro" class="btn btn-success btn-flat">
                         <i class="fa fa-plus"></i> Daftar
                     </a>
                 @elseif($cek == null)
@@ -42,14 +38,21 @@
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif
+
+        @if ($message = Session::get('warning'))
+        <div class="alert alert-warning alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -90,9 +93,7 @@
                                             ->select('jadwal_sempro.id as id', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2', 'jadwal_sempro.tanggal as tanggal')
                                             ->where('berkas_sempro.id', $item->id)
                                             ->first();
-                                            // dd($jadwal);
                                         @endphp
-                                        {{-- @if ($jadwal == null) --}}
                                         @if($jadwal === null && $item->status == "Menunggu Verifikasi")
                                         <p style="pointer-events: none;" class="btn btn-sm btn-warning">Menunggu Verifikasi Berkas
                                         @elseif (($jadwal === null && $item->status == "Menunggu Dijadwalkan") || ($jadwal === null && $item->status == "Berkas OK"))
@@ -101,8 +102,6 @@
 
                                             @if ($jadwal === null && $item->status == "Berkas tidak lengkap")
                                             <p style="pointer-events: none;" class="btn btn-sm btn-danger">Berkas tidak lengkap - {{ $item->komentar }}</p>
-                                            {{-- @elseif($item->status == "Terjadwal")
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Berkas tidak lengkap - {{ $item->komentar }}</p> --}}
                                             @else
                                                 @if ($jadwal->status1 == "Sudah" && $jadwal->status2 == "Belum" && $item->dosbing2==null)
                                                 @php
@@ -110,17 +109,13 @@
                                                 ->join('jadwal_sempro', 'hasil_sempro.id_jadwal_sempro', '=', 'jadwal_sempro.id')
                                                 ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
                                                 ->where('id_berkas_sempro', $item->id)->first();
-                                                // dd($ba);
                                                 @endphp
-                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</p> 
+                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</p>
                                                 @elseif ($jadwal->status1 == "Sudah" && $jadwal->status2 == "Sudah")
-                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</p> 
-                                                {{-- - <p style="pointer-events: none;" class="btn btn-sm <?=//($ba->berita_acara == "Diterima" ? 'btn-success' : ($ba->berita_acara == "Ditolak" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p> --}}
-                                                {{-- <a href="/mahasiswa/proposal/jadwalsempro/{{ $jadwal->id }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
-                                                <a href="/sempro/jadwal/cetak/{{ $jadwal->id }}" target="_blank" class="btn btn-primary btn-sm mt-1">Lihat Undangan</a> --}}
-                                                
+                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah seminar proposal</p>
+
                                                 @elseif ($jadwal->status1 == "Belum" && $jadwal->status2 == "Belum")
-                                                
+
                                                 @php
                                                     $row_date = strtotime($jadwal->tanggal);
                                                     $today = strtotime(date('Y-m-d'));
@@ -130,10 +125,7 @@
                                                     <p style="pointer-events: none;" class="btn btn-sm btn-danger">Belum seminar proposal</p>
                                                     @else
                                                     <p style="pointer-events: none;" class="btn btn-sm btn-success">Terjadwal</p>                                                     @endif
-                                                {{-- @elseif($jarak->d)
-                                                <p style="pointer-events: none;" class="btn btn-sm btn-success">Belum seminar proposal</p> --}}
-                                                {{-- @else --}}
-                                                
+
                                                 @endif
                                             @endif
                                         @endif
@@ -169,18 +161,6 @@
                                                         <label for="" class="small">Berkas* (ZIP) (Max 20MB)</label><br>
                                                         <input type="file" name="berkassempro" accept=".zip,.rar,.7zip">
                                                       </div>
-                                                      {{-- <div class="form-group">
-                                                        <label for="" class="small">Proposal Skripsi (PDF) (Max 10MB)</label><br>
-                                                        <input type="file" name="proposal" accept=".jpg,.jpeg,.png,.pdf">
-                                                      </div>
-                                                      <div class="form-group">
-                                                        <label for="" class="small">Scan KRS (JPG/PNG/PDF) (Max 2MB)</label><br>
-                                                        <input type="file" name="krs" accept=".jpg,.jpeg,.png,.pdf">
-                                                      </div>
-                                                      <div class="form-group">
-                                                        <label for="" class="small">Scan Transkrip Nilai (JPG/PNG/PDF) (Max 2MB)</label><br>
-                                                        <input type="file" name="transkrip" accept=".jpg,.jpeg,.png,.pdf">
-                                                      </div> --}}
                                                       <input type="hidden" name="nim" value="{{$item->nim}}" id="">
                                                     </div>
                                                     <div class="modal-footer">
@@ -203,10 +183,10 @@
                         </tbody>
                     </table>
                 </div>
-    
+
             </div>
         </div>
 
-        
+
     </div>
 @endsection

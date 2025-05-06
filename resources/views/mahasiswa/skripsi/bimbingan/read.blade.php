@@ -7,12 +7,14 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Bimbingan Skripsi</h1>
             <div class="pull-right">
-                
+
                 @php
                     $ceksempro = DB::table('hasil_sempro')->where('hasil_sempro.berita_acara', 'Diterima')->where('hasil_sempro.nim', $user->no_induk)->first();
                 @endphp
                 <div class="row">
-
+                    @php
+dd(ceksempro);
+@endphp
                     <div class="dropdown mr-2">
                         <button type="button" class="btn btn-success dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,20" <?=$cekbimbinganselesai != null || $ceksempro == null ? 'disabled' : '' ?>>
                           Tambah
@@ -32,14 +34,14 @@
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -86,9 +88,9 @@
                                                   {{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}</p>
                                               @else
                                               @if ($item->depan1==null)
-                                              {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}    
+                                              {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                                               @else
-                                                  
+
                                               {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}</p>
                                               @endif
                                               @endif
@@ -106,7 +108,7 @@
                               </tbody>
                           </table>
                       </div>
-          
+
                   </div>
               </div>
             </div>
@@ -143,9 +145,9 @@
                                                     {{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}</p>
                                                 @else
                                                 @if ($item->depan1==null)
-                                                {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}    
+                                                {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                                                 @else
-                                                    
+
                                                 {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}</p>
                                                 @endif
                                                 @endif
@@ -163,12 +165,12 @@
                                 </tbody>
                             </table>
                         </div>
-            
+
                     </div>
                 </div>
               </div>
           </div>
 
-        
+
     </div>
 @endsection
