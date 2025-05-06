@@ -538,10 +538,11 @@ class MahasiswaController extends Controller
 
         $bsModel->save();
 
-        $zip = new ZipArchive;
-        $res = $zip->open('filemhs/' . $request->nim . '/berkas_sempro/' . $berkas);
-        $zip->extractTo('filemhs/' . $request->nim . '/berkas_sempro/extract');
-        $zip->close();
+        //[Syahrul][06/05/2025] hilangkan extract zip karena yang disimpan secara database hanya 1
+        // $zip = new ZipArchive;
+        // $res = $zip->open('filemhs/' . $request->nim . '/berkas_sempro/' . $berkas);
+        // $zip->extractTo('filemhs/' . $request->nim . '/berkas_sempro/extract');
+        // $zip->close();
 
         $data = DB::table('mahasiswa')
             ->where('nim', $request->nim)
@@ -600,10 +601,10 @@ class MahasiswaController extends Controller
                 ]
             );
 
-        $zip = new ZipArchive;
-        $res = $zip->open('filemhs/' . $request->nim . '/berkas_sempro/' . $berkas);
-        $zip->extractTo('filemhs/' . $request->nim . '/berkas_sempro/extract');
-        $zip->close();
+        // $zip = new ZipArchive;
+        // $res = $zip->open('filemhs/' . $request->nim . '/berkas_sempro/' . $berkas);
+        // $zip->extractTo('filemhs/' . $request->nim . '/berkas_sempro/extract');
+        // $zip->close();
 
         return redirect('mahasiswa/proposal/daftarsempro')->with(['success' => 'Berhasil']);
     }

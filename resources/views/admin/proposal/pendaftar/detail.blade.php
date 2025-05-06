@@ -7,6 +7,16 @@
             <h1 class="h3 mb-2 text-gray-800">Detail Pendaftar</h1>
         </div>
 
+        {{-- [Syahrul][06/05/2025] penambahan pesan error --}}
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $error }}</strong>
+                </div>
+            @endforeach
+        @endif
+
         {{-- Form --}}
         <div class="row mt-5">
           @foreach($data as $item)
@@ -56,7 +66,7 @@
                           @if ($dosen2 -> depan == null)
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif
                           @endif

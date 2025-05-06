@@ -31,7 +31,7 @@ class DosenController extends Controller
         ->join('proposal', 'status_skripsi.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-        ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+        ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
         'semester.semester as semester', 'semester.tahun as tahun', 'status_skripsi.status_skripsi as status_skripsi', 'status_skripsi.status_ujian as status_ujian',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
         ->where(function ($query) {
@@ -47,12 +47,12 @@ class DosenController extends Controller
                     ->where('plot_dosbing.dosbing2', $dosen);
         })
         ->count();
-        
+
         $propwaitacc = DB::table('proposal')
         ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-        ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+        ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
         'proposal.proposal as proposal', 'proposal.ket1 as ket1' ,'proposal.ket2 as ket2', 'proposal.komentar as komentar', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'semester.semester as semester', 'semester.tahun as tahun',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
         ->where(function ($query) {
@@ -74,7 +74,7 @@ class DosenController extends Controller
             ->join('proposal', 'bimbingan.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'bimbingan.id_semester', '=', 'semester.id')
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where(function ($query) {
@@ -98,7 +98,7 @@ class DosenController extends Controller
             ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
             ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-            ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+            ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal',
             'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket')
             // ->where(function ($query) {
@@ -129,7 +129,7 @@ class DosenController extends Controller
             ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
             // ->join('jadwal_ujian', 'berkas_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-            ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+            ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
             'jadwal_ujian.ketua_penguji as ketua', 'jadwal_ujian.anggota_penguji_1 as anggota1', 'jadwal_ujian.anggota_penguji_2 as anggota2','jadwal_ujian.tanggal as tanggal',
             'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'plot_dosbing.dosbing2 as dosbing2')
             ->where(function ($query) {
@@ -174,12 +174,12 @@ class DosenController extends Controller
         //         ->leftJoin('jadwal_sempro', 'mahasiswa.nim', '=', 'jadwal_sempro.nim')
         //         ->leftJoin('bimbingan', 'mahasiswa.nim', '=', 'bimbingan.nim')
         //         ->leftJoin('status_skripsi', 'mahasiswa.nim', '=', 'status_skripsi.nim')
-        //         ->select('plot_dosbing.nim as nim', 'plot_dosbing.smt as smt', 'plot_dosbing.name as name', 
+        //         ->select('plot_dosbing.nim as nim', 'plot_dosbing.smt as smt', 'plot_dosbing.name as name',
         //         DB::raw('(SELECT COUNT(proposal.id) FROM proposal WHERE proposal.nim = plot_dosbing.nim AND proposal.ket1 = "Disetujui" AND proposal.ket2 = "Disetujui") as proposal'),
         //         DB::raw('(SELECT COUNT(jadwal_sempro.id) FROM proposal WHERE jadwal_sempro.nim = plot_dosbing.nim) as jadwal_sempro'),
         //         DB::raw('(SELECT COUNT(bimbingan.id) FROM bimbingan WHERE bimbingan.nim = plot_dosbing.nim) as bimbingan'),
         //         DB::raw('(SELECT COUNT(status_skripsi.id) FROM status_skripsi WHERE status_skripsi.nim = plot_dosbing.nim) as status'))
-                
+
 
         //         ->where('plot_dosbing.dosbing1', $dosen)
         //         ->orWhere('plot_dosbing.dosbing2', $dosen)
@@ -195,8 +195,8 @@ class DosenController extends Controller
                 ->orderByRaw('plot_dosbing.id DESC')
                 ->get();
                 // dd($data);
-                
-                
+
+
         return view ('dosen.mahasiswa.read',  compact('data', 'user'));
     }
 
@@ -289,19 +289,19 @@ class DosenController extends Controller
         [
             'photo.max' => 'File terlalu besar, maksimal 2 mb',
         ]);
-        
+
         $nidn = $request->nidn;
         $name = $request->name;
         $email = $request->email;
 
         $photo = $request->file('photo');
 
-        // Kalo ganti gambar 
+        // Kalo ganti gambar
         if($photo) {
             $tujuan_upload = 'photo';
-    
+
             $photo->move($tujuan_upload,$photo->getClientOriginalName());
-            
+
             $photo = $photo->getClientOriginalName();
 
             $data = DB::table('users')
@@ -310,7 +310,7 @@ class DosenController extends Controller
             ['photo' => $photo]
             );
         }
-        
+
         $data = DB::table('dosen')
         ->where('nidn', $id)
         ->update(
@@ -335,7 +335,7 @@ class DosenController extends Controller
             ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'proposal.proposal as proposal', 'proposal.ket1 as ket1' ,'proposal.ket2 as ket2', 'proposal.komentar as komentar', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing1', $dosen)
@@ -383,7 +383,7 @@ class DosenController extends Controller
             ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'proposal.proposal as proposal', 'proposal.ket1 as ket1' ,'proposal.ket2 as ket2', 'proposal.komentar as komentar', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing1', $dosen)
@@ -395,7 +395,7 @@ class DosenController extends Controller
             ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'proposal.proposal as proposal', 'proposal.ket1 as ket1' ,'proposal.ket2 as ket2', 'proposal.komentar as komentar', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing2', $dosen)
@@ -406,7 +406,7 @@ class DosenController extends Controller
             ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'proposal.proposal as proposal', 'proposal.ket1 as ket1' ,'proposal.ket2 as ket2', 'proposal.komentar as komentar', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing1', $dosen)
@@ -418,7 +418,7 @@ class DosenController extends Controller
             ->join('mahasiswa', 'proposal.nim', '=', 'mahasiswa.nim')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('proposal.id as id', 'proposal.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'proposal.proposal as proposal', 'proposal.ket1 as ket1' ,'proposal.ket2 as ket2', 'proposal.komentar as komentar', 'proposal.komentar1 as komentar1', 'proposal.komentar2 as komentar2', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where(function ($query) {
@@ -455,7 +455,7 @@ class DosenController extends Controller
         ->select('plot_dosbing.dosbing2 as dosbing2')
         ->where('proposal.id', $id)
         ->first();
-        
+
         if(($dosen1->dosbing1) == $dosen){
             $data = DB::table('proposal')
             ->where('id', $id)
@@ -505,7 +505,7 @@ class DosenController extends Controller
         ->select('plot_dosbing.dosbing2 as dosbing2')
         ->where('proposal.id', $id)
         ->first();
-        
+
         if(($dosen1->dosbing1) == $dosen){
             $data = DB::table('proposal')
             ->where('id', $id)
@@ -552,7 +552,7 @@ class DosenController extends Controller
         ->select('plot_dosbing.dosbing2 as dosbing2')
         ->where('proposal.id', $id)
         ->first();
-        
+
         if(($dosen1->dosbing1) == $dosen){
             if($file==null){
                 $data = DB::table('proposal')
@@ -563,13 +563,13 @@ class DosenController extends Controller
                 );
             }else{
                 $tujuan_upload = 'filemhs/'.$request->nim.'/proposal/revisi dari dosen';
-    
+
                 $namafile = rand().$file->getClientOriginalName();
-        
+
                 $file->move($tujuan_upload,$namafile);
-                
+
                 $file = $namafile;
-    
+
                 $data = DB::table('proposal')
                 ->where('id', $id)
                 ->update(
@@ -588,13 +588,13 @@ class DosenController extends Controller
                 );
             }else{
                 $tujuan_upload = 'filemhs/'.$request->nim.'/proposal/revisi dari dosen';
-    
+
                 $namafile = rand().$file->getClientOriginalName();
-        
+
                 $file->move($tujuan_upload,$namafile);
-                
+
                 $file = $namafile;
-    
+
                 $data = DB::table('proposal')
                 ->where('id', $id)
                 ->update(
@@ -610,6 +610,7 @@ class DosenController extends Controller
 
     //Seminar Proposal
     //Jadwal Seminar
+    //[Syahrul][06/05/2025] ubah filter data jadwal dari besok menjadi dari hari ini
     public function viewJadwalSempro(){
         $user = Auth::user();
         $data = DB::table('jadwal_sempro')
@@ -617,7 +618,7 @@ class DosenController extends Controller
         ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('jadwal_sempro.id as jadwal_sempro_id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+        ->select('jadwal_sempro.id as jadwal_sempro_id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal', 'jadwal_sempro.status1 as status1', 'jadwal_sempro.status2 as status2',
         'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket')
         ->where(function ($query) {
@@ -625,17 +626,16 @@ class DosenController extends Controller
             $dosen = $user -> no_induk;
             $query ->where('plot_dosbing.dosbing1', $dosen)
                     ->where('jadwal_sempro.status1', 'Belum')
-                    ->whereDate('jadwal_sempro.tanggal', '>', Carbon::now());
+                    ->whereDate('jadwal_sempro.tanggal', '>=', Carbon::now());
         })
         ->orWhere(function ($query) {
             $user = Auth::user();
             $dosen = $user -> no_induk;
             $query->where('jadwal_sempro.status2', 'Belum')
                     ->where('plot_dosbing.dosbing2', $dosen)
-                    ->whereDate('jadwal_sempro.tanggal', '>', Carbon::now());
+                    ->whereDate('jadwal_sempro.tanggal', '>=', Carbon::now());
         })
         ->orderByRaw('jadwal_sempro.tanggal ASC')
-        // ->orderByRaw('jadwal_sempro.id DESC')
         ->get();
         return view('dosen.sempro.readjadwal', compact('data', 'user'));
     }
@@ -647,7 +647,7 @@ class DosenController extends Controller
         ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('jadwal_sempro.id as id_jadwal_sempro', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+        ->select('jadwal_sempro.id as id_jadwal_sempro', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal',
         'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket',)
         ->where(function ($query) {
@@ -681,7 +681,7 @@ class DosenController extends Controller
         ->where('nim', $data[0]->nim)
         ->orderByRaw('hasil_sempro.id DESC')->first();
 
-        
+
 
         return view('dosen.sempro.detailjadwal', compact('data', 'user', 'dosen1', 'dosen2', 'id_hasil_sempro',));
     }
@@ -693,7 +693,7 @@ class DosenController extends Controller
         ->join('berkas_sempro', 'jadwal_sempro.id_berkas_sempro', '=', 'berkas_sempro.id')
         ->join('proposal', 'berkas_sempro.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'berkas_sempro.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+        ->select('jadwal_sempro.id as id', 'jadwal_sempro.nim as nim', 'mahasiswa.name as nama', 'berkas_sempro.id as id_berkas_sempro', 'berkas_sempro.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2' ,'jadwal_sempro.tanggal as tanggal',
         'jadwal_sempro.jam as jam', 'jadwal_sempro.tempat as tempat', 'jadwal_sempro.ket as ket',)
         ->where('jadwal_sempro.id', $id)
@@ -715,7 +715,7 @@ class DosenController extends Controller
         ->where('nidn', $data->dosbing2)->first();
 
         return view ('dosen.sempro.dokumen.undangan_sempro_pdf',  compact('user', 'data', 'dosen1', 'dosen2'));
-        
+
     }
 
     //nilai sempro
@@ -788,7 +788,7 @@ class DosenController extends Controller
         ->where('hasil_sempro.id', $id)
         ->get();
 
-        
+
         $dosen1 = DB::table('dosen')
         ->join('s1', 'dosen.gelar1', '=', 's1.id')
         ->leftJoin('s2', 'dosen.gelar2', '=', 's2.id')
@@ -803,7 +803,7 @@ class DosenController extends Controller
         ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data[0]->dosbing2)->first();
-        
+
         // dd($data);
         return view('dosen.sempro.detailhasil', compact('data', 'user', 'dosen1', 'dosen2'));
     }
@@ -836,7 +836,7 @@ class DosenController extends Controller
         ->first();
 
         // dd($dosen);
-        
+
         if(($dosen1->dosbing1) == $dosen){
             $file1 = $request->file('file_pendukung1');
 
@@ -854,7 +854,7 @@ class DosenController extends Controller
                 'grade1' => $request->grade1,
                 'revisi1' => $request->revisi1]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
@@ -865,13 +865,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload1 = 'filemhs/'.$request->nim.'/proposal/revisi dari dosen';
-    
+
                 $namafile1 = rand().$file1->getClientOriginalName();
-    
+
                 $file1->move($tujuan_upload1,$namafile1);
-                
+
                 $file1 = $namafile1;
-    
+
                 $data = DB::table('hasil_sempro')
                 ->where('id', $request->id_hasil_sempro)
                 ->update(
@@ -886,13 +886,13 @@ class DosenController extends Controller
                 'revisi1' => $request->revisi1,
                 'file1' => $file1]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
                 ['status1' => 'Sudah',]
                 );
-    
+
             }
 
 
@@ -912,7 +912,7 @@ class DosenController extends Controller
                 'grade2' => $request->grade2,
                 'revisi2' => $request->revisi2]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
@@ -922,13 +922,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload2 = 'filemhs/'.$request->nim.'/proposal/revisi dari dosen';
-    
+
                 $namafile2 = rand().$file2->getClientOriginalName();
-    
+
                 $file2->move($tujuan_upload2,$namafile2);
-                
+
                 $file2 = $namafile2;
-    
+
                 $data = DB::table('hasil_sempro')
                 ->where('id', $request->id_hasil_sempro)
                 ->update(
@@ -942,7 +942,7 @@ class DosenController extends Controller
                 'revisi2' => $request->revisi2,
                 'file2' => $file2]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
@@ -970,10 +970,10 @@ class DosenController extends Controller
             'status_ujian' => 'Belum ujian']);
 
             $ssModel = new StatusSkripsiModel;
-    
+
                 $ssModel->nim = $request->nim;
                 $ssModel->id_proposal = $request->id_proposal;
-    
+
                 $ssModel->save();
 
             $nilai_akhir = (int)$cek2->jumlah1;
@@ -1010,10 +1010,10 @@ class DosenController extends Controller
             'status_ujian' => 'Belum ujian']);
 
             $ssModel = new StatusSkripsiModel;
-    
+
                 $ssModel->nim = $request->nim;
                 $ssModel->id_proposal = $request->id_proposal;
-    
+
                 $ssModel->save();
 
             $nilai_akhir = (int)$cek2->jumlah1;
@@ -1052,10 +1052,10 @@ class DosenController extends Controller
             'status_ujian' => 'Belum ujian']);
 
             $ssModel = new StatusSkripsiModel;
-    
+
                 $ssModel->nim = $request->nim;
                 $ssModel->id_proposal = $request->id_proposal;
-    
+
                 $ssModel->save();
 
             $nilai1 = (int)$cek2->jumlah1;
@@ -1156,7 +1156,7 @@ class DosenController extends Controller
         ->where('nidn', $data->dosbing2)->first();
 
         return view ('dosen.sempro.dokumen.dokumen_sempro_pdf',  compact('user', 'data', 'dosen1', 'dosen2'));
-        
+
     }
 
 
@@ -1172,7 +1172,7 @@ class DosenController extends Controller
             ->join('proposal', 'status_skripsi.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'semester.semester as semester', 'semester.tahun as tahun', 'status_skripsi.status_skripsi as status_skripsi', 'status_skripsi.status_ujian as status_ujian',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing1', $dosen)
@@ -1194,7 +1194,7 @@ class DosenController extends Controller
             ->join('proposal', 'status_skripsi.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'semester.semester as semester', 'semester.tahun as tahun', 'status_skripsi.status_skripsi as status_skripsi', 'status_skripsi.status_ujian as status_ujian',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing1', $dosen)
@@ -1207,7 +1207,7 @@ class DosenController extends Controller
             ->join('proposal', 'status_skripsi.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'semester.semester as semester', 'semester.tahun as tahun', 'status_skripsi.status_skripsi as status_skripsi', 'status_skripsi.status_ujian as status_ujian',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing2', $dosen)
@@ -1219,7 +1219,7 @@ class DosenController extends Controller
             ->join('proposal', 'status_skripsi.id_proposal', '=', 'proposal.id')
             ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
             ->join('semester', 'proposal.id_semester', '=', 'semester.id')
-            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('status_skripsi.id as id', 'status_skripsi.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'semester.semester as semester', 'semester.tahun as tahun', 'status_skripsi.status_skripsi as status_skripsi', 'status_skripsi.status_ujian as status_ujian',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2')
             ->where('plot_dosbing.dosbing1', $dosen)
@@ -1249,7 +1249,7 @@ class DosenController extends Controller
             ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
 
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 'dos1.name as dosen', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
@@ -1270,7 +1270,7 @@ class DosenController extends Controller
             ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
 
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 'dos1.name as dosen', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
@@ -1304,7 +1304,7 @@ class DosenController extends Controller
             ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
 
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 'dos1.name as dosen', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
@@ -1327,7 +1327,7 @@ class DosenController extends Controller
             ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
 
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 'dos1.name as dosen', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
@@ -1350,7 +1350,7 @@ class DosenController extends Controller
             ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
 
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 'dos1.name as dosen', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
         's31.depan as depan1',)
@@ -1372,7 +1372,7 @@ class DosenController extends Controller
             ->leftJoin('s3 as s31', 'dos1.gelar3', '=', 's31.id')
 
 
-            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
+            ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
             'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'semester.semester as semester', 'semester.tahun as tahun',
             'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 'dos1.name as dosen', 's11.gelar as gelar11', 's21.gelar as gelar21', 's31.gelar as gelar31',
             's31.depan as depan1',)
@@ -1406,8 +1406,8 @@ class DosenController extends Controller
         ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
         ->join('proposal', 'bimbingan.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 
-        'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.bimbingan_kepada as bimbingan_kepada', 
+        ->select('bimbingan.id as id', 'bimbingan.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul',
+        'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'bimbingan.bimbingan_ke as bimbingan_ke', 'bimbingan.bimbingan_kepada as bimbingan_kepada',
         'bimbingan.file as file', 'bimbingan.ket1 as ket1', 'bimbingan.ket2 as ket2', 'bimbingan.komentar as komentar', 'bimbingan.created_at as tgl')
         ->where('bimbingan.nim', $nim)
         ->where('bimbingan.id', $id)
@@ -1427,7 +1427,7 @@ class DosenController extends Controller
         ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 's1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->dosbing2)->first();
-        
+
         // dd($data);
         $id_bim = $data->id;
 
@@ -1458,7 +1458,7 @@ class DosenController extends Controller
         ->select('plot_dosbing.dosbing2 as dosbing2')
         ->where('bimbingan.id', $id)
         ->first();
-        
+
         if(($dosen1->dosbing1) == $dosen){
             $data = DB::table('bimbingan')
             ->where('id', $id)
@@ -1498,7 +1498,7 @@ class DosenController extends Controller
         ->where('nim', $getid->nim)
         ->update(
         ['status_bimbingan' => 'Bimbingan Ke-'.$cek1->bimbingan_ke.' & Bimbingan Ke-'.$cek2->bimbingan_ke]);
-        
+
 
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
     }
@@ -1518,7 +1518,7 @@ class DosenController extends Controller
         ->select('plot_dosbing.dosbing2 as dosbing2')
         ->where('bimbingan.id', $id)
         ->first();
-        
+
         if(($dosen1->dosbing1) == $dosen){
             $data = DB::table('bimbingan')
             ->where('id', $id)
@@ -1546,7 +1546,7 @@ class DosenController extends Controller
         ->where('nim', $cek->nim)
         ->update(
         ['status_bimbingan' => 'Bimbingan Ke-'.$cek->bimbingan_ke]);
-        
+
 
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
     }
@@ -1566,8 +1566,8 @@ class DosenController extends Controller
         ->select('plot_dosbing.dosbing2 as dosbing2')
         ->where('bimbingan.id', $id)
         ->first();
-        
-        
+
+
         if(($dosen1->dosbing1) == $dosen){
             $data = DB::table('bimbingan')
             ->where('id', $id)
@@ -1647,7 +1647,7 @@ class DosenController extends Controller
             $pbModel->save();
         }
 
-        
+
 
         return redirect()->back()->with(['success' => 'Berhasil']);
     }
@@ -1662,7 +1662,7 @@ class DosenController extends Controller
         return view ('dosen.ujian.dokumen.undangan_ujian_pdf');
 
         // return $pdf->download('berita-acara-pdf');
-        
+
     }
 
 
@@ -1676,7 +1676,7 @@ class DosenController extends Controller
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         // ->join('jadwal_ujian', 'berkas_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+        ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
         'jadwal_ujian.ketua_penguji as ketua', 'jadwal_ujian.anggota_penguji_1 as anggota1', 'jadwal_ujian.anggota_penguji_2 as anggota2','jadwal_ujian.tanggal as tanggal',
         'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'plot_dosbing.dosbing2 as dosbing2')
         ->where(function ($query) {
@@ -1787,7 +1787,7 @@ class DosenController extends Controller
         ->join('proposal', 'berkas_ujian.id_proposal', '=', 'proposal.id')
         ->join('plot_dosbing', 'proposal.id_plot_dosbing', '=', 'plot_dosbing.id')
         // ->join('jadwal_ujian', 'berkas_ujian.id_jadwal_ujian', '=', 'jadwal_ujian.id')
-        ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal', 
+        ->select('jadwal_ujian.id as id', 'jadwal_ujian.nim as nim', 'mahasiswa.name as nama', 'berkas_ujian.id as id_berkas_ujian', 'berkas_ujian.*', 'proposal.id as id_proposal', 'proposal.judul as judul', 'proposal.proposal as proposal',
         'plot_dosbing.dosbing1 as dosbing1', 'plot_dosbing.dosbing2 as dosbing2', 'jadwal_ujian.ketua_penguji as ketua', 'jadwal_ujian.anggota_penguji_1 as anggota1', 'jadwal_ujian.anggota_penguji_2 as anggota2', 'jadwal_ujian.tanggal as tanggal',
         'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket',)
         ->where('jadwal_ujian.id', $id)
@@ -1832,7 +1832,7 @@ class DosenController extends Controller
         ->where('nidn', $data->anggota2)->first();
 
         return view ('dosen.ujian.dokumen.undangan_ujian_pdf',  compact('user', 'data', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2'));
-        
+
     }
 
     //nilai ujian
@@ -1998,12 +1998,12 @@ class DosenController extends Controller
             ->select('hasil_ujian.id as id', 'hasil_ujian.nim as nim', 'mahasiswa.name as nama', 'proposal.judul as judul', 'jadwal_ujian.ketua_penguji as ketua_penguji', 'jadwal_ujian.anggota_penguji_1 as anggota_penguji_1', 'jadwal_ujian.anggota_penguji_2 as anggota_penguji_2',
             'jadwal_ujian.tanggal as tanggal', 'jadwal_ujian.jam as jam', 'jadwal_ujian.tempat as tempat', 'jadwal_ujian.ket as ket', 'jadwal_ujian.status1 as status1', 'jadwal_ujian.status2 as status2', 'jadwal_ujian.status3 as status3', 'hasil_ujian.berita_acara as berita_acara','semester.semester as semester', 'semester.tahun as tahun', 'hasil_ujian.*')
             ->where('semester.id', $id)
-        
-            
+
+
             ->orderByRaw('hasil_ujian.id DESC')
             ->get();
         }
-        
+
         return $data;
     }
 
@@ -2102,7 +2102,7 @@ class DosenController extends Controller
         ->select('jadwal_ujian.anggota_penguji_1 as anggota1')
         ->where('jadwal_ujian.nim', $request->nim)
         ->first();
-        
+
         $anggota2 = DB::table('jadwal_ujian')
         ->select('jadwal_ujian.anggota_penguji_2 as anggota2')
         ->where('jadwal_ujian.nim', $request->nim)
@@ -2114,7 +2114,7 @@ class DosenController extends Controller
         ->first();
 
         // dd($ketua);
-        
+
         if(($ketua->ketua) == $dosen){
             $file1 = $request->file('file_pendukung1');
 
@@ -2133,24 +2133,24 @@ class DosenController extends Controller
                 'keterangan1' => $request->keterangan1,
                 'revisi1' => $request->revisi1]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
                 ['status1' => 'Sudah',]
                 );
-    
+
 
             }else{
 
                 $tujuan_upload1 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile1 = rand().$file1->getClientOriginalName();
-    
+
                 $file1->move($tujuan_upload1,$namafile1);
-                
+
                 $file1 = $namafile1;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -2166,14 +2166,14 @@ class DosenController extends Controller
                 'revisi1' => $request->revisi1,
                 'file1' => $file1]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
                 ['status1' => 'Sudah',]
                 );
-    
-                
+
+
             }
 
 
@@ -2195,7 +2195,7 @@ class DosenController extends Controller
                 'keterangan2' => $request->keterangan2,
                 'revisi2' => $request->revisi2]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -2205,13 +2205,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload2 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile2 = rand().$file2->getClientOriginalName();
-    
+
                 $file2->move($tujuan_upload2,$namafile2);
-                
+
                 $file2 = $namafile2;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -2226,7 +2226,7 @@ class DosenController extends Controller
                 'revisi2' => $request->revisi2,
                 'file2' => $file2]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -2251,7 +2251,7 @@ class DosenController extends Controller
                 'keterangan3' => $request->keterangan3,
                 'revisi3' => $request->revisi3]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -2261,13 +2261,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload3 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile3 = rand().$file3->getClientOriginalName();
-    
+
                 $file3->move($tujuan_upload3,$namafile3);
-                
+
                 $file3 = $namafile3;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -2282,7 +2282,7 @@ class DosenController extends Controller
                 'revisi3' => $request->revisi3,
                 'file3' => $file3]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -2307,7 +2307,7 @@ class DosenController extends Controller
                 'keterangan4' => $request->keterangan4,
                 'revisi4' => $request->revisi4]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -2317,13 +2317,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload4 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile4 = rand().$file4->getClientOriginalName();
-    
+
                 $file4->move($tujuan_upload4,$namafile4);
-                
+
                 $file4 = $namafile4;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -2338,7 +2338,7 @@ class DosenController extends Controller
                 'revisi4' => $request->revisi4,
                 'file4' => $file4]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -2453,7 +2453,7 @@ class DosenController extends Controller
                     ['status_skripsi' => 'Selesai',
                     'status_ujian' => 'Sudah ujian - Lulus',]
                     );
-        
+
                     ///update mhs kolom status skripsi dan status ujian
                     $data = DB::table('mahasiswa')
                     ->where('nim', $request->nim)
@@ -2498,7 +2498,7 @@ class DosenController extends Controller
                     ['status_skripsi' => 'Selesai',
                     'status_ujian' => 'Sudah ujian - Tidak Lulus',]
                     );
-        
+
                     ///update mhs kolom status skripsi dan status ujian
                     $data = DB::table('mahasiswa')
                     ->where('nim', $request->nim)
@@ -2599,10 +2599,10 @@ class DosenController extends Controller
         ->select('dosen.id as id', 'dosen.nidn as nidn', 'dosen.name as name', 'dosen.ttd as ttd','s1.gelar as gelar1', 's2.gelar as gelar2', 's3.gelar as gelar3', 's3.depan as depan',
         'dosen.jabatan_fungsional as jabatan', 'dosen.email as email')
         ->where('nidn', $data->anggota_2)->first();
-        
+
 
         return view ('dosen.ujian.dokumen.dokumen_ujian_pdf', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2', ));
-        
+
     }
 
     public function updateNilaiSempro(Request $request, $id){
@@ -2633,7 +2633,7 @@ class DosenController extends Controller
         ->first();
 
         // dd($dosen2->dosbing2);
-        
+
         if(($dosen1->dosbing1) == $dosen){
             $file1 = $request->file('file_pendukung1');
 
@@ -2651,7 +2651,7 @@ class DosenController extends Controller
                 'grade1' => $request->grade1,
                 'revisi1' => $request->revisi1]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
@@ -2662,13 +2662,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload1 = 'filemhs/'.$request->nim.'/proposal/revisi dari dosen';
-    
+
                 $namafile1 = rand().$file1->getClientOriginalName();
-    
+
                 $file1->move($tujuan_upload1,$namafile1);
-                
+
                 $file1 = $namafile1;
-    
+
                 $data = DB::table('hasil_sempro')
                 ->where('id', $request->id_hasil_sempro)
                 ->update(
@@ -2683,13 +2683,13 @@ class DosenController extends Controller
                 'revisi1' => $request->revisi1,
                 'file1' => $file1]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
                 ['status1' => 'Sudah',]
                 );
-    
+
             }
 
 
@@ -2709,7 +2709,7 @@ class DosenController extends Controller
                 'grade2' => $request->grade2,
                 'revisi2' => $request->revisi2]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
@@ -2719,13 +2719,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload2 = 'filemhs/'.$request->nim.'/proposal/revisi dari dosen';
-    
+
                 $namafile2 = rand().$file2->getClientOriginalName();
-    
+
                 $file2->move($tujuan_upload2,$namafile2);
-                
+
                 $file2 = $namafile2;
-    
+
                 $data = DB::table('hasil_sempro')
                 ->where('id', $request->id_hasil_sempro)
                 ->update(
@@ -2739,7 +2739,7 @@ class DosenController extends Controller
                 'revisi2' => $request->revisi2,
                 'file2' => $file2]
                 );
-    
+
                 $data = DB::table('jadwal_sempro')
                 ->where('id', $request->id_jadwal_sempro)
                 ->update(
@@ -2766,7 +2766,7 @@ class DosenController extends Controller
             'status_skripsi' => 'Sedang dikerjakan',
             'status_ujian' => 'Belum ujian']);
 
-           
+
 
             $nilai_akhir = (int)$cek2->jumlah1;
             if($nilai_akhir > 84){
@@ -2801,7 +2801,7 @@ class DosenController extends Controller
             'status_skripsi' => 'Sedang dikerjakan',
             'status_ujian' => 'Belum ujian']);
 
-            
+
 
             $nilai_akhir = (int)$cek2->jumlah1;
             if($nilai_akhir > 84){
@@ -2838,7 +2838,7 @@ class DosenController extends Controller
             'status_skripsi' => 'Sedang dikerjakan',
             'status_ujian' => 'Belum ujian']);
 
-            
+
 
             $nilai1 = (int)$cek2->jumlah1;
             $nilai2 = (int)$cek2->jumlah2;
@@ -2934,7 +2934,7 @@ class DosenController extends Controller
         ->select('jadwal_ujian.anggota_penguji_1 as anggota1')
         ->where('jadwal_ujian.nim', $request->nim)
         ->first();
-        
+
         $anggota2 = DB::table('jadwal_ujian')
         ->select('jadwal_ujian.anggota_penguji_2 as anggota2')
         ->where('jadwal_ujian.nim', $request->nim)
@@ -2946,7 +2946,7 @@ class DosenController extends Controller
         ->first();
 
         // dd($ketua);
-        
+
         if(($ketua->ketua) == $dosen){
             $file1 = $request->file('file_pendukung1');
 
@@ -2965,24 +2965,24 @@ class DosenController extends Controller
                 'keterangan1' => $request->keterangan1,
                 'revisi1' => $request->revisi1]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
                 ['status1' => 'Sudah',]
                 );
-    
+
 
             }else{
 
                 $tujuan_upload1 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile1 = rand().$file1->getClientOriginalName();
-    
+
                 $file1->move($tujuan_upload1,$namafile1);
-                
+
                 $file1 = $namafile1;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -2998,14 +2998,14 @@ class DosenController extends Controller
                 'revisi1' => $request->revisi1,
                 'file1' => $file1]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
                 ['status1' => 'Sudah',]
                 );
-    
-                
+
+
             }
 
 
@@ -3027,7 +3027,7 @@ class DosenController extends Controller
                 'keterangan2' => $request->keterangan2,
                 'revisi2' => $request->revisi2]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -3037,13 +3037,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload2 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile2 = rand().$file2->getClientOriginalName();
-    
+
                 $file2->move($tujuan_upload2,$namafile2);
-                
+
                 $file2 = $namafile2;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -3058,7 +3058,7 @@ class DosenController extends Controller
                 'revisi2' => $request->revisi2,
                 'file2' => $file2]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -3083,7 +3083,7 @@ class DosenController extends Controller
                 'keterangan3' => $request->keterangan3,
                 'revisi3' => $request->revisi3]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -3093,13 +3093,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload3 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile3 = rand().$file3->getClientOriginalName();
-    
+
                 $file3->move($tujuan_upload3,$namafile3);
-                
+
                 $file3 = $namafile3;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -3114,7 +3114,7 @@ class DosenController extends Controller
                 'revisi3' => $request->revisi3,
                 'file3' => $file3]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -3139,7 +3139,7 @@ class DosenController extends Controller
                 'keterangan4' => $request->keterangan4,
                 'revisi4' => $request->revisi4]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -3149,13 +3149,13 @@ class DosenController extends Controller
             }else{
 
                 $tujuan_upload4 = 'filemhs/'.$request->nim.'/ujian/revisi dari dosen';
-    
+
                 $namafile4 = rand().$file4->getClientOriginalName();
-    
+
                 $file4->move($tujuan_upload4,$namafile4);
-                
+
                 $file4 = $namafile4;
-    
+
                 $data = DB::table('hasil_ujian')
                 ->where('id', $request->id_hasil_ujian)
                 ->update(
@@ -3170,7 +3170,7 @@ class DosenController extends Controller
                 'revisi4' => $request->revisi4,
                 'file4' => $file4]
                 );
-    
+
                 $data = DB::table('jadwal_ujian')
                 ->where('id', $request->id_jadwal_ujian)
                 ->update(
@@ -3285,7 +3285,7 @@ class DosenController extends Controller
                     ['status_skripsi' => 'Selesai',
                     'status_ujian' => 'Sudah ujian - Lulus',]
                     );
-        
+
                     ///update mhs kolom status skripsi dan status ujian
                     $data = DB::table('mahasiswa')
                     ->where('nim', $request->nim)
@@ -3330,7 +3330,7 @@ class DosenController extends Controller
                     ['status_skripsi' => 'Selesai',
                     'status_ujian' => 'Sudah ujian - Tidak Lulus',]
                     );
-        
+
                     ///update mhs kolom status skripsi dan status ujian
                     $data = DB::table('mahasiswa')
                     ->where('nim', $request->nim)

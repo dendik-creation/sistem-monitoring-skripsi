@@ -39,9 +39,9 @@
                               {{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                           @else
                           @if ($item->depan1==null)
-                          {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}    
+                          {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                           @else
-                              
+
                           {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
                           @endif
                           @endif
@@ -58,9 +58,9 @@
                               {{ $item -> gelar32 }} {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
                           @else
                           @if ($item->depan2==null)
-                          {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}    
+                          {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
                           @else
-                              
+
                           {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
                           @endif
                           @endif
@@ -77,7 +77,7 @@
                   @else
                     {{-- <a href="/sempro/hasil/cetak/{{ $hasil_sempro->id }}" target="_blank" class="btn btn-primary">Cetak Dokumen</a> --}}
                   @endif
-                  
+
 
                 </div>
             </div>
@@ -99,11 +99,17 @@
                         <td>:</td>
                         <th>{{ $item->tempat }}</th>
                       </tr>
+                      {{-- [Syahrul][06/05/2025] ubah yang awalnya form menjadi teks biasa --}}
                       <tr>
                         <td>Keterangan</td>
                         <td>:</td>
-                        <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th>
+                        <th>{{ $item->ket }}</th>
                       </tr>
+                      {{-- <tr>
+                        <td>Keterangan</td>
+                        <td>:</td>
+                        <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th>
+                      </tr> --}}
                     </tbody>
                   </table>
             </div>
