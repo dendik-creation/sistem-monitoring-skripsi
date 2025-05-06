@@ -1152,36 +1152,54 @@ class MahasiswaController extends Controller
     public function downloadSkripsi($nim, $id)
     {
         $filepath = public_path('filemhs/' . $nim . '/bimbingan' . '/' . $id);
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
     public function downloadFormatPlottingDosbing()
     {
         $filepath = public_path('file_excel/Format Plotting Dosen Pembimbing.xlsx');
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
     public function downloadFormatPlottingPenguji()
     {
         $filepath = public_path('file_excel/Format Plotting Dosen Penguji.xlsx');
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
     public function downloadRevisiProposal($nim, $id)
     {
         $filepath = public_path('filemhs/' . $nim . '/proposal/revisi dari dosen' . '/' . $id);
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
     public function downloadRevisiBimbingan($nim, $id)
     {
         $filepath = public_path('filemhs/' . $nim . '/bimbingan/revisi dari dosen' . '/' . $id);
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
     public function downloadRevisiUjian($nim, $id)
     {
         $filepath = public_path('filemhs/' . $nim . '/ujian/revisi dari dosen' . '/' . $id);
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
@@ -1329,6 +1347,9 @@ class MahasiswaController extends Controller
     public function downloadBerkasUjian($nim, $id)
     {
         $filepath = public_path('filemhs/' . $nim . '/berkas_ujian' . '/' . $id);
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('info', 'Dokumen tidak ditemukan.');
+        }
         return response()->download($filepath);
     }
 
