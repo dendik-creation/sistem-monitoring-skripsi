@@ -9,21 +9,21 @@
               <div class="ml-2 row">
                 @if ($data->bimbingan_kepada == $user->no_induk)
                 <a href="{{ route('databimbinganmahasiswa') }}" class="btn btn-secondary btn-flat">
-                  Kembali 
+                  Kembali
                 </a>
                 <form action="/dosen/monitoring/bimbingan/selesai/{{ $data->id }}" method="post">
                     {{csrf_field()}}
                     {{method_field('PUT')}}
-  
-                    
+
+
                     @if ($data -> dosbing1 == $user -> no_induk)
                       @if ($data -> ket1 == 'Ok')
                         <button type="submit" class="btn btn-success ml-2" disabled>Bimbingan Ke-{{ $data->bimbingan_ke }} Selesai</button>
                         @elseif ($data -> ket1 == 'Selesai Bimbingan')
-                        
+
                         @else
                         @if ($data->ket1=='Lanjut ke bimbingan selanjutnya' || $data->ket1=='Ok' || $data->ket1=='Siap ujian')
-                            
+
                         @else
                         <button type="submit" value="Ok" class="btn btn-success ml-2">Ok</button>
                         @endif
@@ -34,7 +34,7 @@
                         @elseif ($data -> ket1 == 'Selesai Bimbingan')
                         @else
                         @if ($data->ket2=='Lanjut ke bimbingan selanjutnya' || $data->ket2=='Ok' || $data->ket2=='Siap ujian')
-                            
+
                         @else
                         <button type="submit" value="Ok" class="btn btn-success ml-2">Ok</button>
                         @endif
@@ -44,16 +44,16 @@
                 <form action="/dosen/monitoring/bimbingan/revisi/{{ $data->id }}" method="post">
                   {{csrf_field()}}
                   {{method_field('PUT')}}
-                  
+
                   @if ($data -> dosbing1 == $user -> no_induk)
                     @if ($data -> ket1 == 'Lanjut ke bimbingan selanjutnya')
                       <button type="submit" class="btn btn-warning ml-2" disabled>Lanjut ke bimbingan selanjutnya</button>
                       @elseif ($data -> ket1 == 'Selesai Bimbingan')
                       @else
                       @if ($data->ket1=='Ok' || $data->ket1=='Lanjut ke bimbingan selanjutnya' || $data->ket1=='Siap ujian')
-                          
+
                       @else
-                      <button type="submit" value="Ok" class="btn btn-warning ml-2">Revisi</button>    
+                      <button type="submit" value="Ok" class="btn btn-warning ml-2">Revisi</button>
                       @endif
                     @endif
                   @else
@@ -62,9 +62,9 @@
                       @elseif ($data -> ket1 == 'Selesai Bimbingan')
                       @else
                       @if ($data->ket2=='Ok' || $data->ket2=='Lanjut ke bimbingan selanjutnya' || $data->ket2=='Siap ujian')
-                          
+
                       @else
-                      <button type="submit" value="Ok" class="btn btn-warning ml-2">Revisi</button>    
+                      <button type="submit" value="Ok" class="btn btn-warning ml-2">Revisi</button>
                       @endif
                     @endif
                   @endif
@@ -72,18 +72,18 @@
               <form action="/dosen/monitoring/bimbingan/siapujian/{{ $data->id }}" method="post">
                 {{csrf_field()}}
                 {{method_field('PUT')}}
-              
-                
+
+
                 @if ($data -> dosbing1 == $user -> no_induk)
                           @if ($data -> ket1 == 'Siap ujian')
                             <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa siap ujian</button>
                           @else
                             @if ($data->ket1=='Ok' || $data->ket1=='Siap ujian' || $data->ket1=='Lanjut ke bimbingan selanjutnya')
-                                
+
                             @else
                             <button type="submit" class="btn btn-success btn-flat ml-2" onclick="return confirm('Yakin?');">
                               Siap ujian
-                            </button>                              
+                            </button>
                             @endif
                             @endif
                           @else
@@ -91,7 +91,7 @@
                           <button type="submit" class="btn btn-success ml-2" disabled>Mahasiswa siap ujian</button>
                         @else
                             @if ($data->ket2=='Ok' || $data->ket2=='Siap ujian' || $data->ket2=='Lanjut ke bimbingan selanjutnya')
-                                
+
                             @else
                             <button type="submit" class="btn btn-success btn-flat ml-2" onclick="return confirm('Yakin?');">
                               Siap ujian
@@ -107,8 +107,8 @@
                 </button>
                           @endif --}}
                         @endif
-      
-              </form>                
+
+              </form>
                 @else
                 <a href="{{ route('databimbinganmahasiswa') }}" class="btn btn-secondary btn-flat">
                   Kembali
@@ -118,16 +118,18 @@
             </div>
         </div>
 
+        @include('partials.alert')
+
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -159,9 +161,9 @@
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
                           @if ($dosen1 -> depan ==null)
-                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
                           @endif
                           @endif</th>
@@ -177,9 +179,9 @@
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
                           @if ($dosen2 -> depan ==null)
-                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif
                           @endif @endif</th>
@@ -222,11 +224,11 @@
           <h1 class="h3 mb-2 text-gray-800">Catatan Bimbingan</h1>
           <div class="pull-right">
             @if ($data->bimbingan_kepada != $user->no_induk)
-                
+
             @else
             <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modaldefault">
               Tambah Catatan Bimbingan
-            </button>                
+            </button>
             @endif
             <!-- Modal -->
             <div class="modal fade" id="modaldefault" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -282,7 +284,7 @@
           @endforeach
         </div>
 
-        
+
 
     </div>
 @endsection

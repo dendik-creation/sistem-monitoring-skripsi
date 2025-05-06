@@ -1445,60 +1445,39 @@ class DosenController extends Controller
 
     public function selesaiBimbinganMhs($id){
         $user = Auth::user();
-        $dosen = $user -> no_induk;
+        $dosen = $user->no_induk;
 
-        $dosen1 = DB::table('bimbingan')
-        ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('plot_dosbing.dosbing1 as dosbing1')
-        ->where('bimbingan.id', $id)
-        ->first();
+        $bimbingan = DB::table('bimbingan')
+            ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
+            ->select('plot_dosbing.dosbing1', 'plot_dosbing.dosbing2', 'bimbingan.nim', 'bimbingan.bimbingan_ke', 'bimbingan.bimbingan_kepada')
+            ->where('bimbingan.id', $id)
+            ->first();
 
-        $dosen2 = DB::table('bimbingan')
-        ->join('plot_dosbing', 'bimbingan.id_plot_dosbing', '=', 'plot_dosbing.id')
-        ->select('plot_dosbing.dosbing2 as dosbing2')
-        ->where('bimbingan.id', $id)
-        ->first();
-
-        if(($dosen1->dosbing1) == $dosen){
-            $data = DB::table('bimbingan')
-            ->where('id', $id)
-            ->update(
-            ['ket1' => 'Ok']);
-        }else if(($dosen2->dosbing2) == $dosen){
-            $data = DB::table('bimbingan')
-            ->where('id', $id)
-            ->update(
-            ['ket2' => 'Ok']);
+        if (!$bimbingan) {
+            return redirect('dosen/monitoring/bimbingan')->with(['error' => 'Data bimbingan tidak ditemukan']);
         }
 
-        $getid = DB::table('bimbingan')
-        ->where('bimbingan.id', $id)
-        ->first();
+        if ($bimbingan->dosbing1 == $dosen) {
+            DB::table('bimbingan')->where('id', $id)->update(['ket1' => 'Ok']);
+        } elseif ($bimbingan->dosbing2 == $dosen) {
+            DB::table('bimbingan')->where('id', $id)->update(['ket2' => 'Ok']);
+        }
 
-        // $cek = DB::table('bimbingan')
-        //             ->where('bimbingan.nim', $getid->nim)
-        //             ->orderByRaw('bimbingan.bimbingan_ke DESC')
-        //             ->first();
+        $latestBimbinganDosbing1 = DB::table('bimbingan')
+            ->where('bimbingan.nim', $bimbingan->nim)
+            ->where('bimbingan.bimbingan_kepada', $bimbingan->dosbing1)
+            ->orderByDesc('bimbingan.bimbingan_ke')
+            ->first();
 
-        $cek1 = DB::table('bimbingan')
-                    ->where('bimbingan.nim', $getid->nim)
-                    ->where('bimbingan.bimbingan_kepada', $dosen1->dosbing1)
-                    ->orderByRaw('bimbingan.bimbingan_ke DESC')
-                    ->first();
+        $latestBimbinganDosbing2 = DB::table('bimbingan')
+            ->where('bimbingan.nim', $bimbingan->nim)
+            ->where('bimbingan.bimbingan_kepada', $bimbingan->dosbing2)
+            ->orderByDesc('bimbingan.bimbingan_ke')
+            ->first();
 
-        $cek2 = DB::table('bimbingan')
-        ->where('bimbingan.nim', $getid->nim)
-        ->where('bimbingan.bimbingan_kepada', $dosen2->dosbing2)
-        ->orderByRaw('bimbingan.bimbingan_ke DESC')
-        ->first();
+        $statusBimbingan = 'Bimbingan Ke-' . ($latestBimbinganDosbing1->bimbingan_ke ?? '-') . ' & Bimbingan Ke-' . ($latestBimbinganDosbing2->bimbingan_ke ?? '0');
 
-        // dd($cek);
-
-        $data = DB::table('mahasiswa')
-        ->where('nim', $getid->nim)
-        ->update(
-        ['status_bimbingan' => 'Bimbingan Ke-'.$cek1->bimbingan_ke.' & Bimbingan Ke-'.$cek2->bimbingan_ke]);
-
+        DB::table('mahasiswa')->where('nim', $bimbingan->nim)->update(['status_bimbingan' => $statusBimbingan]);
 
         return redirect('dosen/monitoring/bimbingan')->with(['success' => 'Berhasil']);
     }
@@ -1613,9 +1592,11 @@ class DosenController extends Controller
     public function insertPesan(Request $request){
         $this->validate($request, [
 			'file_pendukung' => 'max:30720',
+            'pesan' => 'required',
 		],
         [
             'file_pendukung.max' => 'File terlalu besar, maksimal 30 mb',
+            'pesan.required' => 'Pesan tidak boleh kosong',
         ]);
 
 		$file = $request->file('file_pendukung');
