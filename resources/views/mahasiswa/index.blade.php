@@ -32,7 +32,6 @@
 
         @php
             $cek = DB::table('bimbingan')->where('bimbingan.nim', $user->no_induk)->count();
-            // dd($cek);
 
             if ($cek > 1) {
                 $cek1 = DB::table('bimbingan')
@@ -46,7 +45,6 @@
                     ->where('bimbingan.bimbingan_kepada', $dosen2->nidn)
                     ->orderByRaw('bimbingan.bimbingan_ke DESC')
                     ->first();
-                // dd($cek1);
 
                 $row_date1 = new DateTime($cek1->created_at);
                 $row_date2 = new DateTime($cek2->created_at);

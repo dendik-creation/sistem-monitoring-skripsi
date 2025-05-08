@@ -14,7 +14,6 @@
                     ->where('berkas_ujian.nim', $user->no_induk)
                     ->orderByRaw('berkas_ujian.id DESC')
                     ->first();
-                    // dd($cek);
 
                     $databim = DB::table('bimbingan')
                     ->join('mahasiswa', 'bimbingan.nim', '=', 'mahasiswa.nim')
@@ -22,40 +21,16 @@
                     ->where('bimbingan.nim', $user->no_induk)
                     ->orderByRaw('bimbingan.id DESC')
                     ->first();
-                    // dd($databim);
 
                     $mhs = DB::table('mahasiswa')
                     ->select('mahasiswa.*')
                     ->where('mahasiswa.nim', $user->no_induk)
                     ->first();
                     // dd($mhs);
-                @endphp
-                {{-- @if ($databim->ket1 == "Siap ujian" && $databim->ket2 == "Siap ujian")
-                    {{-- @if ($datapenguji === null) --}}
-                    {{-- <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat"> 
-                        <i class="fa fa-plus"></i> Daftar
-                    </a>
-                    @elseif ($cek == null)
-                    <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled"> 
-                        <i class="fa fa-plus"></i> Daftar
-                    </a>  
-                    @elseif($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
-                    <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
-                        <i class="fa fa-plus"></i> Daftar
-                    </a> 
-                    @else
-                    <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
-                        <i class="fa fa-plus"></i> Daftar
-                    </a>
-                    @endif --}}
-                {{-- @else
-                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
-                    <i class="fa fa-plus"></i> Daftar
-                </a> 
-                @endif --}}
+                    @endphp
 
                 @if($databim==null)
-                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
+                <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Daftar
                 </a>
                 @elseif($mhs->status_bimbingan != "Siap ujian")
@@ -65,30 +40,30 @@
                 @elseif($cek==null)
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Daftar
-                </a>  
+                </a>
                 @elseif ($cek->status == "Menunggu Dijadwalkan" || $cek->status == "Berkas OK" ||  $cek->status == "Berkas tidak lengkap")
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat disabled">
                     <i class="fa fa-plus"></i> Daftar
-                </a> 
+                </a>
                 @else
                 <a href="/mahasiswa/skripsi/tambahujian" class="btn btn-success btn-flat">
                     <i class="fa fa-plus"></i> Daftar
                 </a>
-                
+
                 @endif
             </div>
         </div>
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -138,7 +113,7 @@
 
                                             @if ($jadwal === null || $item->status == "Berkas tidak lengkap")
                                             <p style="pointer-events: none;" class="btn btn-sm btn-danger">Berkas tidak lengkap - {{ $item->komentar }}</p>
-                                            
+
                                             @else
                                             @if ($jadwal->status1 == "Sudah" && $jadwal->status2 == "Sudah" && $jadwal->status3 == "Sudah")
                                             @php
@@ -147,10 +122,10 @@
                                             ->join('berkas_ujian', 'jadwal_ujian.id_berkas_ujian', '=', 'berkas_ujian.id')
                                             ->where('id_berkas_ujian', $item->id)->first();
                                             @endphp
-                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian</p> 
+                                            <p style="pointer-events: none;" class="btn btn-sm btn-success">Sudah ujian</p>
                                             {{-- - <p style="pointer-events: none;" class="btn btn-sm <?=//($ba->berita_acara == "Lulus" ? 'btn-success' : ($ba->berita_acara == "Tidak Lulus" ? 'btn-danger' : 'btn-warning' ))?>">{{ $ba->berita_acara }}</p> --}}
                                             @elseif ($jadwal->status1 == "Belum" && $jadwal->status2 == "Belum" && $jadwal->status3 == "Belum")
-                                                
+
                                                 @php
                                                     $row_date = strtotime($jadwal->tanggal);
                                                     $today = strtotime(date('Y-m-d'));
@@ -234,10 +209,10 @@
                         </tbody>
                     </table>
                 </div>
-    
+
             </div>
         </div>
 
-        
+
     </div>
 @endsection

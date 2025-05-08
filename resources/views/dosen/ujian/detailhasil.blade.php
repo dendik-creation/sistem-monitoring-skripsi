@@ -13,7 +13,7 @@
         @if (count($errors) > 0)
             @foreach ($errors->all() as $error)
                 <div class="alert alert-danger alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <button type="button" class="close" data-dismiss="alert">×</button>
                     <strong>{{ $error }}</strong>
                 </div>
             @endforeach
@@ -124,7 +124,7 @@
                       </tr>
                     </tbody>
                   </table>
-                
+
             </div>
             <div class="col-md-6">
                 <table class="table table-borderless">
@@ -147,7 +147,8 @@
                       <tr>
                         <td>Keterangan</td>
                         <td>:</td>
-                        <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th>
+                        <th>{{ $item->ket }}</th>
+                        {{-- <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th> --}}
                       </tr>
                       <input type="hidden" value="{{ $item -> nim }}" name="nim">
                       <input type="hidden" value="{{ $item -> id_proposal }}" name="id_proposal">

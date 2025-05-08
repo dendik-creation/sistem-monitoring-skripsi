@@ -1087,7 +1087,8 @@ class AdminController extends Controller
 
     public function hapusBerkasUjian($nim, $file)
     {
-        unlink('filemhs/' . $nim . '/berkas_ujian/extract/' . $file);
+        // unlink('filemhs/' . $nim . '/berkas_ujian/extract/' . $file);
+        unlink('filemhs/' . $nim . '/berkas_ujian/' . $file);
         return back();
     }
 
@@ -1150,7 +1151,7 @@ class AdminController extends Controller
 
     public function insertJadwalSempro(Request $request)
     {
-        // [Syahrul][06/05/2025] penambahan validasi dan keterangan 
+        // [Syahrul][06/05/2025] penambahan validasi dan keterangan
         $this->validate(
             $request,
             [
@@ -1943,37 +1944,114 @@ class AdminController extends Controller
         return Excel::download(new PendaftarUjianExport, 'Pendaftar Ujian Berkas OK.xlsx');
     }
 
+    // public function penjadwalanUjianImportExcel(Request $request)
+    // {
+    //     // validasi
+    //     $request->validate([
+    //         'nim' => 'required|exists:mahasiswa,nim',
+    //         'id_berkas_ujian' => 'required|integer',
+    //         'id_semester' => 'required|integer',
+    //         'tanggal' => 'required|date',
+    //         'jam' => 'required|date_format:H:i',
+    //         'tempat' => 'required|string|max:255',
+    //         'ket' => 'nullable|string|max:500',
+    //         'ketua_penguji' => 'required|exists:dosen,id',
+    //         'anggota_penguji_1' => 'required|exists:dosen,id|different:ketua_penguji',
+    //         'anggota_penguji_2' => 'required|exists:dosen,id|different:ketua_penguji|different:anggota_penguji_1',
+    //     ], [
+    //         'nim.required' => 'NIM wajib diisi.',
+    //         'nim.exists' => 'NIM tidak terdaftar dalam data mahasiswa.',
+
+    //         'id_berkas_ujian.required' => 'Berkas ujian wajib diisi.',
+    //         'id_berkas_ujian.integer' => 'ID berkas ujian harus berupa angka.',
+
+    //         'id_semester.required' => 'Semester wajib diisi.',
+    //         'id_semester.integer' => 'ID semester harus berupa angka.',
+
+    //         'tanggal.required' => 'Tanggal wajib diisi.',
+    //         'tanggal.date' => 'Format tanggal tidak valid.',
+
+    //         'jam.required' => 'Jam wajib diisi.',
+    //         'jam.date_format' => 'Format jam harus dalam format HH:MM (contoh: 13:00).',
+
+    //         'tempat.required' => 'Tempat ujian wajib diisi.',
+    //         'tempat.string' => 'Tempat harus berupa teks.',
+    //         'tempat.max' => 'Tempat maksimal 255 karakter.',
+
+    //         'ket.string' => 'Keterangan harus berupa teks.',
+    //         'ket.max' => 'Keterangan maksimal 500 karakter.',
+
+    //         'ketua_penguji.required' => 'Ketua penguji wajib dipilih.',
+    //         'ketua_penguji.exists' => 'Ketua penguji tidak terdaftar.',
+
+    //         'anggota_penguji_1.required' => 'Anggota penguji 1 wajib dipilih.',
+    //         'anggota_penguji_1.exists' => 'Anggota penguji 1 tidak terdaftar.',
+    //         'anggota_penguji_1.different' => 'Anggota penguji 1 tidak boleh sama dengan ketua penguji.',
+
+    //         'anggota_penguji_2.required' => 'Anggota penguji 2 wajib dipilih.',
+    //         'anggota_penguji_2.exists' => 'Anggota penguji 2 tidak terdaftar.',
+    //         'anggota_penguji_2.different' => 'Anggota penguji 2 harus berbeda dari ketua dan anggota penguji 1.',
+    //     ]);
+
+    //     // menangkap file excel
+    //     $file = $request->file('file');
+
+    //     // membuat nama file unik
+    //     $nama_file = rand() . $file->getClientOriginalName();
+
+    //     // upload ke folder file_siswa di dalam folder public
+    //     $file->move('file_excel', $nama_file);
+
+    //     // import data
+    //     Excel::import(new PendaftarUjianImport, public_path('/file_excel/' . $nama_file));
+    //     Excel::import(new HasilUjianImport, public_path('/file_excel/' . $nama_file));
+
+    //     $data = DB::table('berkas_ujian')
+    //         ->where('status', 'Berkas OK')
+    //         ->update(
+    //             [
+    //                 'status' => 'Terjadwal',
+    //                 'komentar_admin' => 'Terjadwal'
+    //             ]
+    //         );
+
+    //     return redirect('admin/skripsi/penjadwalan')->with(['success' => 'Berhasil']);
+    // }
+
     public function penjadwalanUjianImportExcel(Request $request)
     {
-        // validasi
-        $this->validate($request, [
-            'file' => 'required|mimes:csv,xls,xlsx'
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
         ]);
 
-        // menangkap file excel
         $file = $request->file('file');
-
-        // membuat nama file unik
         $nama_file = rand() . $file->getClientOriginalName();
-
-        // upload ke folder file_siswa di dalam folder public
         $file->move('file_excel', $nama_file);
 
-        // import data
-        Excel::import(new PendaftarUjianImport, public_path('/file_excel/' . $nama_file));
-        Excel::import(new HasilUjianImport, public_path('/file_excel/' . $nama_file));
+        try {
+            Excel::import(new PendaftarUjianImport, public_path('/file_excel/' . $nama_file));
+            Excel::import(new HasilUjianImport, public_path('/file_excel/' . $nama_file));
 
-        $data = DB::table('berkas_ujian')
-            ->where('status', 'Berkas OK')
-            ->update(
-                [
+            DB::table('berkas_ujian')
+                ->where('status', 'Berkas OK')
+                ->update([
                     'status' => 'Terjadwal',
                     'komentar_admin' => 'Terjadwal'
-                ]
-            );
+                ]);
 
-        return redirect('admin/skripsi/penjadwalan')->with(['success' => 'Berhasil']);
+            return redirect('admin/skripsi/penjadwalan')->with(['success' => 'Import berhasil.']);
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $errorMessages[] = 'Baris ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+
+            return redirect()->back()->with('import_errors', $errorMessages);
+        }
     }
+
 
     public function viewSkripsiPendaftarCekBerkas($id)
     {
@@ -2082,11 +2160,20 @@ class AdminController extends Controller
             )
             ->get();
 
-        $path = public_path('filemhs/' . $data[0]->nim . '/berkas_ujian/extract');
-        $allFiles = scandir($path);
-        $files = array_diff($allFiles, array('.', '..'));
+        // $path = public_path('filemhs/' . $data[0]->nim . '/berkas_ujian/extract');
+        // $allFiles = scandir($path);
+        // $files = array_diff($allFiles, array('.', '..'));
 
-        return view('admin.skripsi.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2', 'files'));
+        $file = null;
+
+        $path = public_path('filemhs' . DIRECTORY_SEPARATOR . $data[0]->nim . DIRECTORY_SEPARATOR . 'berkas_ujian');
+        $filePath = $path . DIRECTORY_SEPARATOR . $data[0]->berkas_ujian;
+
+        if (File::exists($filePath)) {
+            $file = $data[0]->berkas_ujian;
+        }
+
+        return view('admin.skripsi.pendaftar.detailberkas', compact('data', 'user', 'dosen1', 'dosen2', 'ketua', 'anggota1', 'anggota2', 'file'));
     }
 
     public function viewSkripsiPendaftarDetail($id)
@@ -2199,6 +2286,52 @@ class AdminController extends Controller
 
     public function insertJadwalUjian(Request $request)
     {
+        // dd($request);
+        $this->validate(
+            $request,
+            [
+                'nim' => 'required|exists:mahasiswa,nim',
+                'tempat' => 'required|string|max:255',
+                'ket' => 'required|string|max:500',
+                'tanggal' => 'required|date',
+                'jam' => 'required|date_format:H:i',
+                'ketua' => 'required|exists:dosen,nidn',
+                'anggota1' => 'required|exists:dosen,nidn|different:7',
+                'anggota2' => 'required|exists:dosen,nidn|different:7|different:8',
+            ],
+            [
+                'nim.required' => 'NIM wajib diisi.',
+                'nim.exists' => 'NIM tidak ditemukan di tabel mahasiswa.',
+
+                'tanggal.required' => 'Tanggal wajib diisi.',
+                'tanggal.date' => 'Format tanggal tidak valid.',
+
+                'jam.required' => 'Jam wajib diisi.',
+                'jam.date_format' => 'Format jam harus dalam format HH:MM (contoh: 13:00).',
+
+                'tempat.required' => 'Tempat ujian wajib diisi.',
+                'tempat.string' => 'Tempat harus berupa teks.',
+                'tempat.max' => 'Tempat maksimal 255 karakter.',
+
+                'ket.strrequireding' => 'Keterangan wajib diisi.',
+                'ket.string' => 'Keterangan harus berupa teks.',
+                'ket.max' => 'Keterangan maksimal 500 karakter.',
+
+                'ketua.required' => 'Ketua penguji wajib dipilih.',
+                'ketua.exists' => 'Ketua penguji tidak terdaftar.',
+
+                'anggota1.required' => 'Anggota penguji 1 wajib dipilih.',
+                'anggota1.exists' => 'Anggota penguji 1 tidak terdaftar.',
+                'anggota1.different' => 'Anggota penguji 1 tidak boleh sama dengan ketua penguji.',
+
+                'anggota2.required' => 'Anggota penguji 2 wajib dipilih.',
+                'anggota2.exists' => 'Anggota penguji 2 tidak terdaftar.',
+                'anggota2.different' => 'Anggota penguji 2 harus berbeda dari ketua dan anggota penguji 1.',
+
+
+            ]
+        );
+
         $smt = SemesterModel::all()->where('aktif', 'Y')->first();
 
         $jsModel = new JadwalUjianModel;

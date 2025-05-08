@@ -35,9 +35,9 @@
                               {{ $dosen1 -> gelar3 }} {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
                           @if ($dosen1->depan==null)
-                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}    
+                          {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
                           @endif
                           @endif</th>
@@ -53,9 +53,9 @@
                               {{ $dosen2 -> gelar3 }} {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
                           @if ($dosen2->depan==null)
-                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}    
+                          {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif
                           @endif @endif</th>
@@ -87,7 +87,8 @@
                       <tr>
                         <td>Keterangan</td>
                         <td>:</td>
-                        <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th>
+                        <th>{{ $item->ket }}</th>
+                        {{-- <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th> --}}
                       </tr>
                     </tbody>
                   </table>

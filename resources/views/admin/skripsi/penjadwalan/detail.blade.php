@@ -50,7 +50,7 @@
                           @if ($dosen1->depan==null)
                           {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen1 -> name }}, {{ $dosen1 -> gelar1 }}, {{ $dosen1 -> gelar2 }}, {{ $dosen1 -> gelar3 }}
                           @endif
                           @endif</th>
@@ -68,7 +68,7 @@
                           @if ($dosen2->depan==null)
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif
                           @endif
@@ -90,9 +90,9 @@
                           {{ $ketua -> gelar3 }} {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
                       @else
                       @if ($ketua -> depan ==null)
-                      {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}    
+                      {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}
                       @else
-                          
+
                       {{ $ketua -> name }}, {{ $ketua -> gelar1 }}, {{ $ketua -> gelar2 }}, {{ $ketua -> gelar3 }}
                       @endif
                       @endif</th>
@@ -104,9 +104,9 @@
                           {{ $anggota1 -> gelar3 }} {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
                       @else
                       @if ($anggota1 -> depan ==null)
-                      {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}    
+                      {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}
                       @else
-                          
+
                       {{ $anggota1 -> name }}, {{ $anggota1 -> gelar1 }}, {{ $anggota1 -> gelar2 }}, {{ $anggota1 -> gelar3 }}
                       @endif
                       @endif</th>
@@ -118,9 +118,9 @@
                           {{ $anggota2 -> gelar3 }} {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
                       @else
                       @if ($anggota2 -> depan ==null)
-                      {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}    
+                      {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}
                       @else
-                          
+
                       {{ $anggota2 -> name }}, {{ $anggota2 -> gelar1 }}, {{ $anggota2 -> gelar2 }}, {{ $anggota2 -> gelar3 }}
                       @endif
                       @endif</th>
@@ -135,12 +135,12 @@
                         Kirim Pesan WA
                       </a>
                     @endif
-                    
-  
+
+
                   </div>
             </div>
             <div class="col-md-5 ml-4">
-              
+
                 <table class="table table-borderless">
                     <tbody>
                       <tr>
@@ -161,11 +161,12 @@
                       <tr>
                         <td>Keterangan</td>
                         <td>:</td>
-                        <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th>
+                        {{-- <th><textarea rows="10" class="form-control">{{ $item->ket }}</textarea></th> --}}
+                        <th>{{ $item->ket }}</th>
                       </tr>
                     </tbody>
                   </table>
-                      
+
             </div>
         </div>
         @endforeach

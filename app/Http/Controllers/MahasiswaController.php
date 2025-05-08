@@ -1332,10 +1332,11 @@ class MahasiswaController extends Controller
 
         $buModel->save();
 
-        $zip = new ZipArchive;
-        $res = $zip->open('filemhs/' . $request->nim . '/berkas_ujian/' . $berkas);
-        $zip->extractTo('filemhs/' . $request->nim . '/berkas_ujian/extract');
-        $zip->close();
+        //[Syahrul][08/05/2025] matikan extract zip menjadi file utuh
+        // $zip = new ZipArchive;
+        // $res = $zip->open('filemhs/' . $request->nim . '/berkas_ujian/' . $berkas);
+        // $zip->extractTo('filemhs/' . $request->nim . '/berkas_ujian/extract');
+        // $zip->close();
 
         $data = DB::table('mahasiswa')
             ->where('nim', $request->nim)
@@ -1381,10 +1382,10 @@ class MahasiswaController extends Controller
                 ]
             );
 
-        $zip = new ZipArchive;
-        $res = $zip->open('filemhs/' . $request->nim . '/berkas_ujian/' . $berkas);
-        $zip->extractTo('filemhs/' . $request->nim . '/berkas_ujian/extract');
-        $zip->close();
+        // $zip = new ZipArchive;
+        // $res = $zip->open('filemhs/' . $request->nim . '/berkas_ujian/' . $berkas);
+        // $zip->extractTo('filemhs/' . $request->nim . '/berkas_ujian/extract');
+        // $zip->close();
 
         return redirect('mahasiswa/skripsi/daftarujian')->with(['success' => 'Berhasil']);
     }

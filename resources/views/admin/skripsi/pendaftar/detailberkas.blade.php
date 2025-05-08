@@ -56,7 +56,7 @@
                           @if ($dosen2 -> depan == null)
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}
                           @else
-                              
+
                           {{ $dosen2 -> name }}, {{ $dosen2 -> gelar1 }}, {{ $dosen2 -> gelar2 }}, {{ $dosen2 -> gelar3 }}
                           @endif
                           @endif
@@ -70,7 +70,7 @@
                       </tr>
                     </tbody>
                   </table>
-                
+
             </div>
         </div>
         <div class="row mt-2">
@@ -82,7 +82,7 @@
             </thead>
             <tbody>
               <?php $no=1?>
-              @foreach($files as $file)
+              {{-- @foreach($file as $file)
               <tr>
                   <td>{{ $no++ }}</td>
                   <td>{{ $file }}</td>
@@ -91,8 +91,18 @@
                     <a class="btn btn-sm btn-danger" href="/admin/hapusberkasujian/{{ $item->nim }}/{{$file}}">Hapus berkas</a>
                   </td>
                 </tr>
-                @endforeach
-                
+                @endforeach --}}
+                @if($file)
+                <tr>
+                    <td>1</td>
+                    <td>{{ $file }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{{ url('/filemhs/'.$item->nim.'/berkas_ujian/'.$file) }}" target="_blank">Lihat berkas</a>
+                        <a class="btn btn-sm btn-danger" href="/admin/hapusberkasujian/{{ $item->nim }}/{{$file}}">Hapus berkas</a>
+                    </td>
+                </tr>
+                @endif
+
             </tbody>
         </table>
           <div class="ml-2 mt-4 mb-4 row">
