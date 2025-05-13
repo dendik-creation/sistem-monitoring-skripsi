@@ -7,6 +7,8 @@
             <h1 class="h3 mb-2 text-gray-800">Tambah Gelar S2</h1>
         </div>
 
+        @include('partials.alert')
+
         {{-- Form --}}
         <form class="user" action="/admin/inserts2dosen" method="POST">
             {{csrf_field()}}

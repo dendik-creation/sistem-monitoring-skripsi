@@ -24,8 +24,8 @@ class UserSeeder extends Seeder
             'email_verified_at' => \Carbon\Carbon::now()
         ]);
         DB::table('semester')->insert([
-            'semester' => 'GASAL',
-            'tahun' => '2021/2022',
+            'semester' => 'GENAP',
+            'tahun' => '2024/2025',
             'aktif' => 'Y',
         ]);
         DB::table('bidang')->insert([

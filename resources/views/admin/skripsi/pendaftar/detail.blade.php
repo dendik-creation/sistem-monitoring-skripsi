@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="" class="small">Jam Ujian Skripsi*</label>
-                                    <input type="text" class="form-control" id="timepicker" name="jam"
+                                    <input type="time" class="form-control" id="timepicker" name="jam"
                                         placeholder="Masukkan Jam (Jam:Menit:Detik)" required>
                                 </div>
                                 <div class="form-group">
