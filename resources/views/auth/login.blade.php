@@ -20,6 +20,14 @@
     <!-- Custom styles for this template-->
     <link href="sbadmin2/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        .bg-login-image{
+            background: url("TI%20UMK.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -92,7 +100,7 @@
 
     </div>
 
-    
+
 </body>
 
 <!-- Bootstrap core JavaScript-->
