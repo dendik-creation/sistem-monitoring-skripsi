@@ -17,7 +17,7 @@ class CreatePlotDosbingTable extends Migration
             $table->id();
             $table->string('smt', 50);
             $table->string('nim', 15)->unique();
-            $table->string('name');
+            // $table->string('name');
             $table->string('dosbing1', 15);
             $table->foreign('dosbing1')->references('nidn')->on('dosen');
             $table->string('dosbing2', 15)->nullable()->default('-');

@@ -4,7 +4,7 @@
     <div class="container-fluid mt-4">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-2 text-gray-800">Tambah Mahasiswa</h1>
+            <h1 class="h3 mb-2 text-gray-800">Tambah Mahasisswa</h1>
         </div>
 
         {{-- Form --}}
