@@ -2877,6 +2877,11 @@ class AdminController extends Controller
     }
     public function insertS1(Request $request)
     {
+        $request->validate([
+            'gelar' => 'required',
+        ], [
+            'gelar.required' => 'Gelar tidak boleh kosong',
+        ]);
         $s1Model = new S1Model;
 
         $s1Model->gelar = $request->gelar;
@@ -2894,6 +2899,11 @@ class AdminController extends Controller
     }
     public function updateS1(Request $request, $id)
     {
+        $request->validate([
+            'gelar' => 'required',
+        ], [
+            'gelar.required' => 'Gelar tidak boleh kosong',
+        ]);
         $gelar = $request->gelar;
 
 
@@ -2922,6 +2932,11 @@ class AdminController extends Controller
     }
     public function insertS2(Request $request)
     {
+        $request->validate([
+            'gelar' => 'required',
+        ], [
+            'gelar.required' => 'Gelar tidak boleh kosong',
+        ]);
         $s2Model = new S2Model;
 
         $s2Model->gelar = $request->gelar;
@@ -2939,6 +2954,11 @@ class AdminController extends Controller
     }
     public function updateS2(Request $request, $id)
     {
+        $request->validate([
+            'gelar' => 'required',
+        ], [
+            'gelar.required' => 'Gelar tidak boleh kosong',
+        ]);
         $gelar = $request->gelar;
 
 
@@ -2967,6 +2987,13 @@ class AdminController extends Controller
     }
     public function insertS3(Request $request)
     {
+        $request->validate([
+            'gelar' => 'required',
+            'depan' => 'required',
+        ], [
+            'gelar.required' => 'Gelar tidak boleh kosong',
+            'depan.required' => 'Depan tidak boleh kosong',
+        ]);
         $s3Model = new S3Model;
 
         $s3Model->gelar = $request->gelar;
@@ -2985,6 +3012,13 @@ class AdminController extends Controller
     }
     public function updateS3(Request $request, $id)
     {
+        $request->validate([
+            'gelar' => 'required',
+            'depan' => 'required',
+        ], [
+            'gelar.required' => 'Gelar tidak boleh kosong',
+            'depan.required' => 'Depan tidak boleh kosong',
+        ]);
         $gelar = $request->gelar;
 
 
@@ -3016,6 +3050,11 @@ class AdminController extends Controller
     }
     public function insertBidang(Request $request)
     {
+        $request->validate([
+            'nama_bidang' => 'required',
+        ], [
+            'nama_bidang.required' => 'Nama Bidang tidak boleh kosong',
+        ]);
         $bidangModel = new BidangModel;
 
         $bidangModel->nama_bidang = $request->nama_bidang;
@@ -3033,6 +3072,11 @@ class AdminController extends Controller
     }
     public function updateBidang(Request $request, $id)
     {
+        $request->validate([
+            'nama_bidang' => 'required',
+        ], [
+            'nama_bidang.required' => 'Nama Bidang tidak boleh kosong',
+        ]);
         $nama_bidang = $request->nama_bidang;
 
 

@@ -101,7 +101,7 @@
                       </div>
                       <div class="form-group">
                         <label for="" class="small">Jam Seminar*</label>
-                        <input type="text" class="form-control" id="timepicker" name="jam" placeholder="Masukkan Jam (Jam:Menit:Detik)" required>
+                        <input type="time" class="form-control" id="timepicker" name="jam" placeholder="Masukkan Jam (Jam:Menit:Detik)" required>
                       </div>
                       <div class="form-group">
                         <label for="" class="small">Tempat Seminar*</label>

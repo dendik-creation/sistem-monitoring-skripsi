@@ -16,6 +16,7 @@
                     <a href="/admin/berkas/sempro/exportexcel" class="btn btn-outline-success btn-flat mr-1">
                         <i class="fa fa-download"></i> Download data pendaftar sudah ok
                     </a>
+                    <a class="btn btn-flat btn-outline-success mr-2" href="/file_excel/Format_Import_Pendaftar_Sempro.xlsx">Download Format Excel</a>
                     <a href="#" data-toggle="modal" data-target="#importExcel" class="btn btn-success btn-flat">
                         <i class="fa fa-calendar"></i> Import jadwal dari excel
                     </a>
