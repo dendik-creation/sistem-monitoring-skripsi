@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\User;
 use Response;
 use Carbon\Carbon;
+use App\DosenModel;
 // use \PDF;
 
-use Illuminate\Support\Facades\DB;
-use App\HasilSemproModel;
-use App\PesanBimbinganModel;
-use App\StatusSkripsiModel;
-use App\HasilUjianModel;
 use App\SemesterModel;
+use App\HasilUjianModel;
+use App\HasilSemproModel;
+use App\StatusSkripsiModel;
+use App\PesanBimbinganModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DosenController extends Controller
 {
@@ -371,61 +374,62 @@ class DosenController extends Controller
                 's3.depan as depan',
                 'dosen.jabatan_fungsional as jabatan',
                 'bidang.nama_bidang as bidang',
+                'dosen.ttd as ttd',
                 'dosen.email as email'
             )
             ->where('nidn', $user->no_induk)->first();
+
         return view('dosen.edit',  compact('data', 'user'));
     }
+
     public function updateProfil(Request $request, $id)
     {
         $this->validate(
             $request,
             [
-                'photo' => 'max:2048',
+                'ttd' => 'nullable|file|max:2048|mimes:jpg,jpeg,png',
             ],
             [
-                'photo.max' => 'File terlalu besar, maksimal 2 mb',
+                'ttd.max' => 'File terlalu besar, maksimal 2 MB',
             ]
         );
 
-        $nidn = $request->nidn;
-        $name = $request->name;
+        $nidn  = $request->nidn;
+        $name  = $request->name;
         $email = $request->email;
+        $ttd   = $request->file('ttd');
 
-        $photo = $request->file('photo');
-
-        // Kalo ganti gambar
-        if ($photo) {
-            $tujuan_upload = 'photo';
-
-            $photo->move($tujuan_upload, $photo->getClientOriginalName());
-
-            $photo = $photo->getClientOriginalName();
-
-            $data = DB::table('users')
-                ->where('no_induk', $id)
-                ->update(
-                    ['photo' => $photo]
-                );
+        $dosen = DosenModel::where('nidn', $nidn)->first();
+        if (!$dosen) {
+            return back()->with('error', 'Dosen tidak ditemukan.');
         }
 
-        $data = DB::table('dosen')
-            ->where('nidn', $id)
-            ->update(
-                [
-                    'name' => $name,
-                    'email' => $email
-                ]
-            );
+        $user = User::where('no_induk', $id)->first();
+        if (!$user) {
+            return back()->with('error', 'User tidak ditemukan.');
+        }
 
-        $data = DB::table('users')
-            ->where('no_induk', $id)
-            ->update(
-                ['email' => $email,]
-            );
+        if ($ttd) {
+            $tujuan_upload = public_path('ttd/' . $nidn);
+            if (!file_exists($tujuan_upload)) {
+                mkdir($tujuan_upload, 0755, true);
+            }
 
-        return redirect('dosen')->with(['success' => 'Berhasil']);
+            $file_name = $ttd->getClientOriginalName();
+            $ttd->move($tujuan_upload, $file_name);
+            $dosen->ttd = $file_name;
+        }
+
+        $dosen->nidn = $nidn;
+        $dosen->email = $email;
+        $dosen->save();
+
+        $user->email = $email;
+        $user->save();
+
+        return back()->with('success', 'Profil berhasil diperbarui.');
     }
+
 
     public function viewProposalMahasiswa()
     {
