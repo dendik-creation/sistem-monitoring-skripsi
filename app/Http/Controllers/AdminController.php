@@ -39,6 +39,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PendaftarUjianExport;
 use App\Imports\PendaftarUjianImport;
 use App\Exports\PendaftarSemproExport;
+use App\Imports\DosenImport;
 use App\Imports\PendaftarSemproImport;
 
 class AdminController extends Controller
@@ -478,6 +479,31 @@ class AdminController extends Controller
 
         return redirect('admin/dosen')->with(['success' => 'Berhasil']);
     }
+
+    public function importDosen(Request $request){
+        $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        $file = $request->file('file');
+        if (!$file) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move(public_path('file_excel'), $nama_file);
+        try {
+            $import = new DosenImport();
+            $import->import(public_path('file_excel/' . $nama_file));
+
+            if (method_exists($import, 'failures') && $import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+
+            return redirect('admin/dosen')->with(['success' => 'Berhasil']);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function deleteDosen($id)
     {
         $user = DB::table('users')
@@ -615,6 +641,30 @@ class AdminController extends Controller
             ->where('nim', $id)->delete();
 
         return back()->with(['success' => 'Berhasil Hapus Data']);
+    }
+
+    public function mahasiswaImportExcel(Request $request){
+        $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        $file = $request->file('file');
+        if (!$file) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move(public_path('file_excel'), $nama_file);
+        try {
+            $import = new MahasiswaImport();
+            $import->import(public_path('file_excel/' . $nama_file));
+
+            if (method_exists($import, 'failures') && $import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+
+            return redirect('admin/mahasiswa')->with(['success' => 'Berhasil']);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function resetMahasiswa(Request $request, $id)

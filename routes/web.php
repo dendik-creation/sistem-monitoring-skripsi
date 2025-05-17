@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/insertdosen', 'AdminController@insertDosen')->name('insertdosen');
         Route::get('/admin/dosen/edit/{id}', 'AdminController@formEditDosen')->name('formeditdosen');
         Route::put('/admin/dosen/{id}', 'AdminController@updateDosen')->name('updatedosen');
+        Route::post('/admin/dosen/importexcel', 'AdminController@importDosen')->name('dosenimportexcel');
         Route::delete('/admin/dosen/{id}', 'AdminController@deleteDosen')->name('deletedosen');
         //End Dosen
 
@@ -92,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/insertmahasiswa', 'AdminController@insertMahasiswa')->name('insertmahasiswa');
         Route::get('/admin/mahasiswa/edit/{id}', 'AdminController@formEditMahasiswa')->name('formeditmahasiswa');
         Route::put('/admin/mahasiswa/{id}', 'AdminController@updateMahasiswa')->name('updatemahasiswa');
+        Route::post('/admin/mahasiswa/importexcel', 'AdminController@mahasiswaImportExcel')->name('mahasiswaimportexcel');
         Route::delete('/admin/mahasiswa/{id}', 'AdminController@deleteMahasiswa')->name('deletemahasiswa');
         Route::put('/admin/mahasiswa/reset/{id}', 'AdminController@resetMahasiswa')->name('resetmahasiswa');
         //End Mahasiswa
