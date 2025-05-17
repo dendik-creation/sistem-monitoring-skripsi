@@ -691,35 +691,35 @@ class AdminController extends Controller
 
     public function plotDosbingImportExcel(Request $request)
     {
-        // validasi
-        // $this->validate($request, [
-        // 	'file' => 'required|mimes:csv,xls,xlsx'
-        // ]);
+        // Validasi file
+        $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
 
-        // menangkap file excel
+        // Tangkap file excel
         $file = $request->file('file');
-
-        // membuat nama file unik
-        $nama_file = rand() . $file->getClientOriginalName();
-
-        // upload ke folder file_siswa di dalam folder public
-        $file->move('file_excel', $nama_file);
-
-        //1
-        $import1 = new plotDosbingImport;
-        // $import2 = new mahasiswaImport;
-        // $import3 = new userImport;
-        $import1->import(public_path('/file_excel/' . $nama_file));
-        // $import2->import(public_path('/file_excel/' . $nama_file));
-        // $import3->import(public_path('/file_excel/' . $nama_file));
-        // dd($import1);
-
-        if ($import1->failures()->isNotEmpty()) {
-            return back()->withFailures($import1->failures());
+        if (!$file) {
+            return back()->with('error', 'File tidak ditemukan.');
         }
 
+        // Membuat nama file unik
+        $nama_file = rand() . $file->getClientOriginalName();
 
-        return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
+        // Upload ke folder file_excel di dalam folder public
+        $file->move(public_path('file_excel'), $nama_file);
+
+        try {
+            $import = new PlotDosbingImport();
+            $import->import(public_path('file_excel/' . $nama_file));
+
+            if (method_exists($import, 'failures') && $import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+
+            return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function formAddSatuMahasiswa()
