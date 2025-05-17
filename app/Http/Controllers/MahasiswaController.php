@@ -291,7 +291,7 @@ class MahasiswaController extends Controller
             ],
             [
                 'proposal.max' => 'File terlalu besar, maksimal 10 mb',
-                'judul.required' => "Judul tidak boleh kosong",
+                'judul.required' => 'Judul tidak boleh kosong'
             ]
         );
 

@@ -47,13 +47,13 @@
                     </tr>
                 @endforeach
             </table>
-            
+
         @endif
 
         @if (isset($errors) && $errors->any())
             @foreach ($errors->all() as $error)
                 <div class="alert alert-danger alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <button type="button" class="close" data-dismiss="alert">×</button>
                     <strong>{{ $error }}</strong>
                 </div>
             @endforeach
@@ -61,14 +61,14 @@
 
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
 
         @if ($message = Session::get('error'))
         <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
         </div>
         @endif
@@ -81,14 +81,14 @@
 							<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
 						</div>
 						<div class="modal-body">
- 
+
 							{{ csrf_field() }}
- 
+
 							<label for="" class="small">Pilih File Excel*</label>
 							<div class="form-group">
 								<input type="file" name="file" accept=".xls, .xlsx" required>
 							</div>
- 
+
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -131,9 +131,9 @@
                                             {{ $item -> gelar31 }} {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                                         @else
                                         @if ($item->depan1==null)
-                                        {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}    
+                                        {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}
                                         @else
-                                        
+
                                         {{ $item -> dosbing1 }}, {{ $item -> gelar11 }}, {{ $item -> gelar21 }}, {{ $item -> gelar31 }}
                                         @endif
                                         @endif
@@ -146,9 +146,9 @@
                                             {{ $item -> gelar32 }} {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
                                         @else
                                         @if ($item->depan2==null)
-                                        {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}    
+                                        {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}
                                         @else
-                                        
+
                                         {{ $item -> dosbing2 }}, {{ $item -> gelar12 }}, {{ $item -> gelar22 }}, {{ $item -> gelar32 }}
                                         @endif
                                         @endif
@@ -166,16 +166,16 @@
                                         <button type="submit" value="delete" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                                         </form>
                                     </td> --}}
-                                    
+
                                 </tr>
                            @endforeach
                         </tbody>
                     </table>
                 </div>
-    
+
             </div>
         </div>
 
-        
+
     </div>
 @endsection

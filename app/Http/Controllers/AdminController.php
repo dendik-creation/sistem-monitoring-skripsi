@@ -39,6 +39,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PendaftarUjianExport;
 use App\Imports\PendaftarUjianImport;
 use App\Exports\PendaftarSemproExport;
+use App\Imports\DosenImport;
 use App\Imports\PendaftarSemproImport;
 
 class AdminController extends Controller
@@ -478,6 +479,31 @@ class AdminController extends Controller
 
         return redirect('admin/dosen')->with(['success' => 'Berhasil']);
     }
+
+    public function importDosen(Request $request){
+        $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        $file = $request->file('file');
+        if (!$file) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move(public_path('file_excel'), $nama_file);
+        try {
+            $import = new DosenImport();
+            $import->import(public_path('file_excel/' . $nama_file));
+
+            if (method_exists($import, 'failures') && $import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+
+            return redirect('admin/dosen')->with(['success' => 'Berhasil']);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function deleteDosen($id)
     {
         $user = DB::table('users')
@@ -617,6 +643,30 @@ class AdminController extends Controller
         return back()->with(['success' => 'Berhasil Hapus Data']);
     }
 
+    public function mahasiswaImportExcel(Request $request){
+        $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        $file = $request->file('file');
+        if (!$file) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move(public_path('file_excel'), $nama_file);
+        try {
+            $import = new MahasiswaImport();
+            $import->import(public_path('file_excel/' . $nama_file));
+
+            if (method_exists($import, 'failures') && $import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+
+            return redirect('admin/mahasiswa')->with(['success' => 'Berhasil']);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function resetMahasiswa(Request $request, $id)
     {
         $request->validate([
@@ -651,12 +701,12 @@ class AdminController extends Controller
             ->leftJoin('s1 as s12', 'dos2.gelar1', '=', 's12.id')
             ->leftJoin('s2 as s22', 'dos2.gelar2', '=', 's22.id')
             ->leftJoin('s3 as s32', 'dos2.gelar3', '=', 's32.id')
-
+            ->join('mahasiswa as mhs', 'plot_dosbing.nim', '=', 'mhs.nim')
             ->select(
                 'plot_dosbing.id as id',
                 'plot_dosbing.smt as smt',
                 'plot_dosbing.nim as nim',
-                'plot_dosbing.name as name',
+                'mhs.name as name',
                 'dos1.name as dosbing1',
                 'dos2.name as dosbing2',
                 's11.gelar as gelar11',
@@ -691,35 +741,35 @@ class AdminController extends Controller
 
     public function plotDosbingImportExcel(Request $request)
     {
-        // validasi
-        // $this->validate($request, [
-        // 	'file' => 'required|mimes:csv,xls,xlsx'
-        // ]);
+        // Validasi file
+        $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
 
-        // menangkap file excel
+        // Tangkap file excel
         $file = $request->file('file');
-
-        // membuat nama file unik
-        $nama_file = rand() . $file->getClientOriginalName();
-
-        // upload ke folder file_siswa di dalam folder public
-        $file->move('file_excel', $nama_file);
-
-        //1
-        $import1 = new plotDosbingImport;
-        $import2 = new mahasiswaImport;
-        $import3 = new userImport;
-        $import1->import(public_path('/file_excel/' . $nama_file));
-        $import2->import(public_path('/file_excel/' . $nama_file));
-        $import3->import(public_path('/file_excel/' . $nama_file));
-        // dd($import1);
-
-        if ($import1->failures()->isNotEmpty()) {
-            return back()->withFailures($import1->failures());
+        if (!$file) {
+            return back()->with('error', 'File tidak ditemukan.');
         }
 
+        // Membuat nama file unik
+        $nama_file = rand() . $file->getClientOriginalName();
 
-        return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
+        // Upload ke folder file_excel di dalam folder public
+        $file->move(public_path('file_excel'), $nama_file);
+
+        try {
+            $import = new PlotDosbingImport();
+            $import->import(public_path('file_excel/' . $nama_file));
+
+            if (method_exists($import, 'failures') && $import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+
+            return redirect('admin/proposal/plotting')->with(['success' => 'Berhasil']);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function formAddSatuMahasiswa()
@@ -761,52 +811,60 @@ class AdminController extends Controller
             )
             ->get();
 
-        return view('admin.proposal.plotting.add', compact('smt', 'dosen1', 'dosen2', 'user'));
+        $mahasiswa = DB::table('mahasiswa')
+            ->leftJoin('plot_dosbing as ptb', 'mahasiswa.nim', '=', 'ptb.nim')
+            ->select('mahasiswa.nim', 'mahasiswa.name')
+            ->whereNull('ptb.nim')
+            ->get();
+
+
+        return view('admin.proposal.plotting.add', compact('smt', 'dosen1', 'dosen2', 'user', 'mahasiswa'));
     }
     public function insertSatuMahasiswa(Request $request)
     {
+        //[Syahrul][15/95/2925] perubahan rule mahasiswa dengan relasi table mahasiswa
         $request->validate([
             'nim' => 'required|numeric|unique:plot_dosbing,nim',
-            'name' => 'required|string|max:255',
+            // 'name' => 'required|string|max:255',
             'smt' => 'required|string|max:255',
             'dosbing1' => 'required|string|max:255',
             'dosbing2' => 'nullable|string|max:255',
         ], [
-            'nim.required' => 'NIM tidak boleh kosong',
+            'nim.required' => 'Mahasiswa tidak boleh kosong',
             'nim.numeric' => 'NIM harus berupa angka',
             'nim.unique' => 'Data Mahasiswa dengan NIM ini sudah ada',
-            'name.required' => 'Nama tidak boleh kosong',
+            // 'name.required' => 'Nama tidak boleh kosong',
             'smt.required' => 'Semester tidak boleh kosong',
             'dosbing1.required' => 'Dosen pembimbing 1 tidak boleh kosong',
         ]);
 
-        $existingMahasiswa = MahasiswaModel::where('nim', $request->nim)->first();
-        if ($existingMahasiswa) {
-            return back()->with('error', 'Data Mahasiswa dengan NIM ini sudah ada');
-        }
+        // $existingMahasiswa = MahasiswaModel::where('nim', $request->nim)->first();
+        // if ($existingMahasiswa) {
+        //     return back()->with('error', 'Data Mahasiswa dengan NIM ini sudah ada');
+        // }
         $same_dosbing = $request->dosbing1 == $request->dosbing2;
         if ($same_dosbing) {
             return back()->with('error', 'Dosen pembimbing tidak boleh sama');
         }
 
         DB::transaction(function () use ($request) {
-            MahasiswaModel::create([
-                'nim' => $request->nim,
-                'name' => $request->name,
-            ]);
+            //sudah dilakukan saat input mahassiwa
+            // MahasiswaModel::create([
+            //     'nim' => $request->nim,
+            //     'name' => $request->name,
+            // ]);
 
-            DB::table('users')->insert([
-                'no_induk' => $request->nim,
-                'name' => $request->name,
-                'username' => $request->nim,
-                'password' => Hash::make($request->nim),
-                'role' => 'mahasiswa',
-            ]);
+            // DB::table('users')->insert([
+            //     'no_induk' => $request->nim,
+            //     'name' => $request->name,
+            //     'username' => $request->nim,
+            //     'password' => Hash::make($request->nim),
+            //     'role' => 'mahasiswa',
+            // ]);
 
             PlotDosbingModel::create([
                 'smt' => $request->smt,
                 'nim' => $request->nim,
-                'name' => $request->name,
                 'dosbing1' => $request->dosbing1,
                 'dosbing2' => $request->dosbing2,
             ]);
@@ -818,8 +876,15 @@ class AdminController extends Controller
     public function formEditPlotDosbing($id)
     {
         $user = Auth::user();
-        $data = DB::table('plot_dosbing')
-            ->where('id', $id)->first();
+        $data = DB::table('plot_dosbing')->join('mahasiswa as mhs', 'plot_dosbing.nim', '=', 'mhs.nim')->select(
+            'plot_dosbing.id',
+            'plot_dosbing.smt',
+            'plot_dosbing.nim',
+            'mhs.name',
+            'plot_dosbing.dosbing1',
+            'plot_dosbing.dosbing2',
+        )
+            ->where('plot_dosbing.id', $id)->first();
 
         $dosen1 = DB::table('dosen')
             ->join('s1', 'dosen.gelar1', '=', 's1.id')
@@ -855,6 +920,8 @@ class AdminController extends Controller
             )
             // ->where('nidn', $data->dosbing2)
             ->get();
+
+
 
         return view('admin.proposal.plotting.edit', compact('data', 'dosen1', 'dosen2', 'user'));
     }
